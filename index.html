@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminarz Klasy</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        h1 {
+            color: #2c3e50;
+        }
+
+        .month-selector {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .add-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .add-button:hover {
+            background-color: #2980b9;
+        }
+
+        .calendar {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .calendar th {
+            background-color: #2c3e50;
+            color: white;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .calendar th.weekend {
+            background-color: #34495e;
+        }
+
+        .calendar td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            height: 120px;
+            vertical-align: top;
+            position: relative;
+        }
+
+        .calendar td.weekend {
+            background-color: #f8f9fa;
+            color: #95a5a6;
+        }
+
+        .calendar td.empty {
+            background-color: #f9f9f9;
+        }
+
+        .day-number {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .weekend .day-number {
+            color: #95a5a6;
+        }
+
+        .event {
+            margin-top: 5px;
+            padding: 5px;
+            border-radius: 3px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .absence {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .trip {
+            background-color: #9b59b6;
+            color: white;
+        }
+
+        .holiday {
+            background-color:  #000000;
+            color: white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #777;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .time-range {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .time-range input {
+            flex: 1;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .event-details {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+
+        .event-details p {
+            margin-bottom: 8px;
+        }
+
+        .event-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .event-type-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .event-type {
+            flex: 1;
+            min-width: 120px;
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .event-type.selected {
+            background-color: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Terminarz Szkolny</h1>
+            <div class="month-selector">
+                <label for="month-select">Miesiąc:</label>
+                <select id="month-select">
+                    <option value="2025-09">Wrzesień 2025</option>
+                    <option value="2025-10">Październik 2025</option>
+                    <option value="2025-11">Listopad 2025</option>
+                    <option value="2025-12">Grudzień 2025</option>
+                    <option value="2026-01">Styczeń 2026</option>
+                    <option value="2026-02">Luty 2026</option>
+                    <option value="2026-03">Marzec 2026</option>
+                    <option value="2026-04">Kwiecień 2026</option>
+                    <option value="2026-05">Maj 2026</option>
+                    <option value="2026-06">Czerwiec 2026</option>
+                </select>
+            </div>
+            <button class="add-button" id="add-event-btn">DODAJ</button>
+        </header>
+
+        <table class="calendar">
+            <thead>
+                <tr>
+                    <th>Poniedziałek</th>
+                    <th>Wtorek</th>
+                    <th>Środa</th>
+                    <th>Czwartek</th>
+                    <th>Piątek</th>
+                    <th class="weekend">Sobota</th>
+                    <th class="weekend">Niedziela</th>
+                </tr>
+            </thead>
+            <tbody id="calendar-body">
+                <!-- Calendar will be generated here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal for adding events -->
+    <div class="modal" id="event-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Dodaj wydarzenie</h2>
+                <button class="close-button" id="close-modal">&times;</button>
+            </div>
+            <div id="modal-body">
+                <!-- Content will be dynamically filled -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCzyqI6k2xHGM9mecAyGNJfAq7XjTKWqHs",
+            authDomain: "na57-a08ec.firebaseapp.com",
+            databaseURL: "https://na57-a08ec-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "na57-a08ec",
+            storageBucket: "na57-a08ec.firebasestorage.app",
+            messagingSenderId: "730540135505",
+            appId: "1:730540135505:web:7a539a5eb3cb3d148d9470"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Data storage
+        let events = {};
+        let currentEditingEvent = null;
+        let currentEditingDate = null;
+        let currentEditingIndex = null;
+        
+        // DOM elements
+        const monthSelect = document.getElementById('month-select');
+        const calendarBody = document.getElementById('calendar-body');
+        const addEventBtn = document.getElementById('add-event-btn');
+        const eventModal = document.getElementById('event-modal');
+        const closeModal = document.getElementById('close-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalBody = document.getElementById('modal-body');
+        
+        // Current month and year
+        let currentMonth = 8; // September (0-indexed)
+        let currentYear = 2025;
+        
+        // Load events from Firebase
+        function loadEvents() {
+            return new Promise((resolve) => {
+                database.ref('schoolCalendarEvents').on('value', (snapshot) => {
+                    const data = snapshot.val();
+                    events = data || {};
+                    resolve(events);
+                });
+            });
+        }
+        
+        // Save events to Firebase
+        function saveEvents() {
+            return database.ref('schoolCalendarEvents').set(events);
+        }
+        
+        // Initialize the calendar
+        async function initCalendar() {
+            // Load events from Firebase
+            await loadEvents();
+            
+            // Set current month and year from select value
+            const selectedValue = monthSelect.value.split('-');
+            currentYear = parseInt(selectedValue[0]);
+            currentMonth = parseInt(selectedValue[1]) - 1; // 0-indexed
+            
+            generateCalendar(currentYear, currentMonth);
+        }
+        
+        // Generate calendar for given month and year
+        function generateCalendar(year, month) {
+            calendarBody.innerHTML = '';
+            
+            // Get first day of month and number of days
+            const firstDay = new Date(year, month, 1);
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            
+            // Get day of week for first day (0 = Sunday, 1 = Monday, etc.)
+            let firstDayOfWeek = firstDay.getDay();
+            // Adjust to start from Monday (0 = Monday, 6 = Sunday)
+            firstDayOfWeek = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1;
+            
+            let date = 1;
+            let calendarHTML = '';
+            
+            // Generate 4-6 weeks (depending on the month)
+            for (let week = 0; week < 6; week++) {
+                calendarHTML += '<tr>';
+                
+                for (let dayOfWeek = 0; dayOfWeek < 7; dayOfWeek++) { // Monday to Sunday
+                    if (week === 0 && dayOfWeek < firstDayOfWeek) {
+                        // Empty cells before the first day of the month
+                        calendarHTML += '<td class="empty"></td>';
+                    } else if (date > daysInMonth) {
+                        // Empty cells after the last day of the month
+                        calendarHTML += '<td class="empty"></td>';
+                    } else {
+                        // Cell with date
+                        const currentDate = new Date(year, month, date);
+                        const dayOfMonth = currentDate.getDate();
+                        const isWeekend = dayOfWeek === 5 || dayOfWeek === 6; // Saturday or Sunday
+                        
+                        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(dayOfMonth).padStart(2, '0')}`;
+                        const dayEvents = events[dateStr] || [];
+                        
+                        calendarHTML += `<td class="${isWeekend ? 'weekend' : ''}" data-date="${dateStr}">`;
+                        calendarHTML += `<div class="day-number">${dayOfMonth}</div>`;
+                        
+                        // Add events for this day
+                        dayEvents.forEach((event, index) => {
+                            let eventClass = '';
+                            let eventText = '';
+                            
+                            if (event.type === 'absence') {
+                                eventClass = 'absence';
+                                eventText = `Nieobecność: ${event.teacher}`;
+                                if (event.timeRange) {
+                                    eventText += ` (${event.timeRange})`;
+                                }
+                            } else if (event.type === 'trip') {
+                                eventClass = 'trip';
+                                eventText = `Wycieczka: ${event.className}`;
+                                if (event.timeRange) {
+                                    eventText += ` (${event.timeRange})`;
+                                }
+                            } else if (event.type === 'holiday') {
+                                eventClass = 'holiday';
+                                eventText = `Dzień Wolny: ${event.title}`;
+                            }
+                            
+                            calendarHTML += `<div class="event ${eventClass}" data-date="${dateStr}" data-index="${index}">${eventText}</div>`;
+                        });
+                        
+                        calendarHTML += '</td>';
+                        date++;
+                    }
+                }
+                
+                calendarHTML += '</tr>';
+                
+                // Stop if we've displayed all days
+                if (date > daysInMonth) {
+                    break;
+                }
+            }
+            
+            calendarBody.innerHTML = calendarHTML;
+            
+            // Add event listeners to event elements
+            document.querySelectorAll('.event').forEach(eventEl => {
+                eventEl.addEventListener('click', function() {
+                    const date = this.getAttribute('data-date');
+                    const index = parseInt(this.getAttribute('data-index'));
+                    showEventDetails(date, index);
+                });
+            });
+        }
+        
+        // Show event details
+        function showEventDetails(date, index) {
+            const event = events[date][index];
+            let detailsHTML = '';
+            
+            if (event.type === 'absence') {
+                detailsHTML = `
+                    <h3>Nieobecność</h3>
+                    <div class="event-details">
+                        <p><strong>Nauczyciel:</strong> ${event.teacher}</p>
+                        <p><strong>Data:</strong> ${formatDate(event.startDate)}${event.endDate && event.endDate !== event.startDate ? ` - ${formatDate(event.endDate)}` : ''}</p>
+                        ${event.timeRange ? `<p><strong>Godziny:</strong> ${event.timeRange}</p>` : ''}
+                        <p><strong>Dodano:</strong> ${formatDateTime(event.createdAt)}</p>
+                    </div>
+                `;
+            } else if (event.type === 'trip') {
+                detailsHTML = `
+                    <h3>Wycieczka</h3>
+                    <div class="event-details">
+                        <p><strong>Klasa:</strong> ${event.className}</p>
+                        <p><strong>Data:</strong> ${formatDate(event.date)}</p>
+                        ${event.timeRange ? `<p><strong>Godziny:</strong> ${event.timeRange}</p>` : ''}
+                        ${event.description ? `<p><strong>Opis:</strong> ${event.description}</p>` : ''}
+                        <p><strong>Dodano:</strong> ${formatDateTime(event.createdAt)}</p>
+                    </div>
+                `;
+            } else if (event.type === 'holiday') {
+                detailsHTML = `
+                    <h3>Dzień Wolny</h3>
+                    <div class="event-details">
+                        <p><strong>Tytuł:</strong> ${event.title}</p>
+                        <p><strong>Data:</strong> ${formatDate(event.startDate)}${event.endDate && event.endDate !== event.startDate ? ` - ${formatDate(event.endDate)}` : ''}</p>
+                        <p><strong>Dodano:</strong> ${formatDateTime(event.createdAt)}</p>
+                    </div>
+                `;
+            }
+            
+            detailsHTML += `
+                <div class="event-actions">
+                    <button class="btn btn-primary" id="edit-event">Edytuj</button>
+                    <button class="btn btn-danger" id="delete-event">Usuń</button>
+                </div>
+            `;
+            
+            modalTitle.textContent = 'Szczegóły wydarzenia';
+            modalBody.innerHTML = detailsHTML;
+            
+            // Store editing context
+            currentEditingEvent = event;
+            currentEditingDate = date;
+            currentEditingIndex = index;
+            
+            // Add event listeners for buttons
+            document.getElementById('edit-event').addEventListener('click', function() {
+                showEventForm(event.type, true);
+            });
+            
+            document.getElementById('delete-event').addEventListener('click', function() {
+                if (confirm('Czy na pewno chcesz usunąć to wydarzenie?')) {
+                    // For range events (absence, holiday), we need to remove from all dates
+                    if (currentEditingEvent.type === 'absence' || currentEditingEvent.type === 'holiday') {
+                        const startDate = new Date(currentEditingEvent.startDate);
+                        const endDate = new Date(currentEditingEvent.endDate || currentEditingEvent.startDate);
+                        
+                        for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+                            const dateKey = formatDateForStorage(d);
+                            if (events[dateKey]) {
+                                // Find and remove the specific event
+                                events[dateKey] = events[dateKey].filter(e => 
+                                    !(e.type === currentEditingEvent.type && 
+                                      e.teacher === currentEditingEvent.teacher && 
+                                      e.startDate === currentEditingEvent.startDate)
+                                );
+                                if (events[dateKey].length === 0) {
+                                    delete events[dateKey];
+                                }
+                            }
+                        }
+                    } else {
+                        // For single date events
+                        events[date].splice(index, 1);
+                        if (events[date].length === 0) {
+                            delete events[date];
+                        }
+                    }
+                    saveEvents().then(() => {
+                        initCalendar();
+                        eventModal.style.display = 'none';
+                        resetEditingContext();
+                    });
+                }
+            });
+            
+            eventModal.style.display = 'flex';
+        }
+        
+        // Show event form
+        function showEventForm(type = null, isEdit = false) {
+            if (!type && !isEdit) {
+                // Show event type selection for new event
+                modalTitle.textContent = 'Dodaj wydarzenie';
+                modalBody.innerHTML = `
+                    <div class="event-type-selector">
+                        <div class="event-type" data-type="absence">Nieobecność</div>
+                        <div class="event-type" data-type="trip">Wycieczka</div>
+                        <div class="event-type" data-type="holiday">Dzień Wolny</div>
+                    </div>
+                `;
+                
+                // Add event listeners to event type buttons
+                document.querySelectorAll('.event-type').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const selectedType = this.getAttribute('data-type');
+                        showSpecificEventForm(selectedType, false);
+                    });
+                });
+            } else {
+                // Show specific form
+                showSpecificEventForm(type, isEdit);
+            }
+            
+            eventModal.style.display = 'flex';
+        }
+        
+        // Show specific event form based on type
+        function showSpecificEventForm(type, isEdit = false) {
+            let formHTML = '';
+            const eventData = isEdit ? currentEditingEvent : null;
+            
+            modalTitle.textContent = isEdit ? 'Edytuj wydarzenie' : 'Dodaj wydarzenie';
+            
+            if (type === 'absence') {
+                formHTML = `
+                    <div class="form-group">
+                        <label for="absence-teacher">Nauczyciel:</label>
+                        <input type="text" id="absence-teacher" value="${isEdit ? eventData.teacher : ''}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Data nieobecności:</label>
+                        <div class="time-range">
+                            <input type="date" id="absence-start-date" value="${isEdit ? eventData.startDate : ''}" required>
+                            <input type="date" id="absence-end-date" value="${isEdit ? eventData.endDate || eventData.startDate : ''}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="absence-time">Godziny (np. 8:00-14:00):</label>
+                        <input type="text" id="absence-time" value="${isEdit ? eventData.timeRange || '' : ''}" placeholder="8:00-14:00">
+                    </div>
+                `;
+            } else if (type === 'trip') {
+                formHTML = `
+                    <div class="form-group">
+                        <label for="trip-class">Klasa:</label>
+                        <input type="text" id="trip-class" value="${isEdit ? eventData.className : ''}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="trip-date">Data wycieczki:</label>
+                        <input type="date" id="trip-date" value="${isEdit ? eventData.date : ''}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="trip-time">Godziny (np. 8:00-14:00):</label>
+                        <input type="text" id="trip-time" value="${isEdit ? eventData.timeRange || '' : ''}" placeholder="8:00-14:00">
+                    </div>
+                    <div class="form-group">
+                        <label for="trip-description">Opis wycieczki:</label>
+                        <textarea id="trip-description">${isEdit ? eventData.description : ''}</textarea>
+                    </div>
+                `;
+            } else if (type === 'holiday') {
+                formHTML = `
+                    <div class="form-group">
+                        <label for="holiday-title">Tytuł dnia wolnego:</label>
+                        <input type="text" id="holiday-title" value="${isEdit ? eventData.title : ''}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Data dnia wolnego:</label>
+                        <div class="time-range">
+                            <input type="date" id="holiday-start-date" value="${isEdit ? eventData.startDate : ''}" required>
+                            <input type="date" id="holiday-end-date" value="${isEdit ? eventData.endDate || eventData.startDate : ''}">
+                        </div>
+                    </div>
+                `;
+            }
+            
+            formHTML += `
+                <div class="form-actions">
+                    <button class="btn btn-secondary" id="cancel-form">Anuluj</button>
+                    <button class="btn btn-primary" id="save-event">${isEdit ? 'Zapisz zmiany' : 'Dodaj'}</button>
+                </div>
+            `;
+            
+            modalBody.innerHTML = formHTML;
+            
+            // Add event listeners
+            document.getElementById('cancel-form').addEventListener('click', function() {
+                eventModal.style.display = 'none';
+                resetEditingContext();
+            });
+            
+            document.getElementById('save-event').addEventListener('click', function() {
+                saveEvent(type, isEdit);
+            });
+        }
+        
+        // Save event
+        function saveEvent(type, isEdit = false) {
+            const eventData = {
+                type: type,
+                createdAt: isEdit ? currentEditingEvent.createdAt : new Date().toISOString()
+            };
+            
+            if (type === 'absence') {
+                eventData.teacher = document.getElementById('absence-teacher').value;
+                eventData.startDate = document.getElementById('absence-start-date').value;
+                eventData.endDate = document.getElementById('absence-end-date').value || eventData.startDate;
+                eventData.timeRange = document.getElementById('absence-time').value;
+                
+                // Validate
+                if (!eventData.teacher || !eventData.startDate) {
+                    alert('Proszę wypełnić wymagane pola');
+                    return;
+                }
+            } else if (type === 'trip') {
+                eventData.className = document.getElementById('trip-class').value;
+                eventData.date = document.getElementById('trip-date').value;
+                eventData.timeRange = document.getElementById('trip-time').value;
+                eventData.description = document.getElementById('trip-description').value;
+                
+                // Validate
+                if (!eventData.className || !eventData.date) {
+                    alert('Proszę wypełnić wymagane pola');
+                    return;
+                }
+            } else if (type === 'holiday') {
+                eventData.title = document.getElementById('holiday-title').value;
+                eventData.startDate = document.getElementById('holiday-start-date').value;
+                eventData.endDate = document.getElementById('holiday-end-date').value || eventData.startDate;
+                
+                // Validate
+                if (!eventData.title || !eventData.startDate) {
+                    alert('Proszę wypełnić wymagane pola');
+                    return;
+                }
+            }
+            
+            if (isEdit) {
+                // For editing, first remove the old event
+                if (currentEditingEvent.type === 'absence' || currentEditingEvent.type === 'holiday') {
+                    const startDate = new Date(currentEditingEvent.startDate);
+                    const endDate = new Date(currentEditingEvent.endDate || currentEditingEvent.startDate);
+                    
+                    for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+                        const dateKey = formatDateForStorage(d);
+                        if (events[dateKey]) {
+                            events[dateKey] = events[dateKey].filter(e => 
+                                !(e.type === currentEditingEvent.type && 
+                                  e.teacher === currentEditingEvent.teacher && 
+                                  e.startDate === currentEditingEvent.startDate)
+                            );
+                            if (events[dateKey].length === 0) {
+                                delete events[dateKey];
+                            }
+                        }
+                    }
+                } else {
+                    // For single date events
+                    events[currentEditingDate].splice(currentEditingIndex, 1);
+                    if (events[currentEditingDate].length === 0) {
+                        delete events[currentEditingDate];
+                    }
+                }
+            }
+            
+            // Add new/updated event
+            let dateKey;
+            
+            if (type === 'absence' || type === 'holiday') {
+                // For absence and holiday, add events for all dates in the range
+                const startDate = new Date(eventData.startDate);
+                const endDate = new Date(eventData.endDate);
+                
+                for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+                    dateKey = formatDateForStorage(d);
+                    
+                    if (!events[dateKey]) {
+                        events[dateKey] = [];
+                    }
+                    
+                    // Create a copy for each date
+                    const eventCopy = {...eventData};
+                    eventCopy.date = dateKey;
+                    events[dateKey].push(eventCopy);
+                }
+            } else {
+                // For other events, just add to the specific date
+                dateKey = eventData.date;
+                
+                if (!events[dateKey]) {
+                    events[dateKey] = [];
+                }
+                
+                events[dateKey].push(eventData);
+            }
+            
+            saveEvents().then(() => {
+                initCalendar();
+                eventModal.style.display = 'none';
+                resetEditingContext();
+            });
+        }
+        
+        // Reset editing context
+        function resetEditingContext() {
+            currentEditingEvent = null;
+            currentEditingDate = null;
+            currentEditingIndex = null;
+        }
+        
+        // Format date for display
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('pl-PL');
+        }
+        
+        // Format date and time for display
+        function formatDateTime(dateTimeString) {
+            const date = new Date(dateTimeString);
+            return date.toLocaleString('pl-PL');
+        }
+        
+        // Format date for storage (YYYY-MM-DD)
+        function formatDateForStorage(date) {
+            return date.toISOString().split('T')[0];
+        }
+        
+        // Event listeners
+        monthSelect.addEventListener('change', initCalendar);
+        addEventBtn.addEventListener('click', () => showEventForm());
+        closeModal.addEventListener('click', () => {
+            eventModal.style.display = 'none';
+            resetEditingContext();
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === eventModal) {
+                eventModal.style.display = 'none';
+                resetEditingContext();
+            }
+        });
+        
+        // Initialize the calendar
+        initCalendar();
+    </script>
+</body>
+</html>
