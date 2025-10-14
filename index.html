@@ -273,37 +273,94 @@
             color: white;
             border-color: #3498db;
         }
-.menu {
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  background: #222;
-  padding: 10px 15px;
-  border-radius: 8px;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column; /* kluczowe – ustawia linki jeden pod drugim */
-}
-.menu a {
-  color: white;
-  text-decoration: none;
-  margin-bottom: 8px; /* odstęp między linkami */
-  font-family: Arial, sans-serif;
-}
-.menu a:hover {
-  text-decoration: underline;
-}
+        
+        .menu {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: #222;
+            padding: 10px 15px;
+            border-radius: 8px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .menu a {
+            color: white;
+            text-decoration: none;
+            margin-bottom: 8px;
+            font-family: Arial, sans-serif;
+        }
+        
+        .menu a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Styl dla zakładki Aktualności */
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 16px;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab.active {
+            border-bottom: 3px solid #3498db;
+            color: #3498db;
+            font-weight: bold;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .news-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        
+        .news-item:last-child {
+            border-bottom: none;
+        }
+        
+        .news-time {
+            color: #777;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        
+        .news-action {
+            font-weight: bold;
+            color: #2c3e50;
+        }
     </style>
 </head>
 <body>
 <div class="menu">
-  <a href="https://fillxd.github.io/sz57">Syst</a>
-  <a href="https://fillxd.github.io/pl57">Plan</a>
-  <a href="https://fillxd.github.io/kl57">5b</a>
-  <a href="https://fillxd.github.io/na57">MG</a>
-  <a href="https://fillxd.github.io/tm57">TM</a>
-  <a href="https://docs.google.com/spreadsheets/d/18OV9Sar_ENFseGPn8wppwrIeJXm6j4dsa890OTg6Ioo/edit?gid=1302175797#gid=1302175797">ARK</a>
+    <a href="https://fillxd.github.io/sz57">Syst</a>
+    <a href="https://fillxd.github.io/pl57">Plan</a>
+    <a href="https://fillxd.github.io/kl57">5b</a>
+    <a href="https://fillxd.github.io/na57">MG</a>
+    <a href="https://fillxd.github.io/tm57">TM</a>
+    <a href="https://docs.google.com/spreadsheets/d/18OV9Sar_ENFseGPn8wppwrIeJXm6j4dsa890OTg6Ioo/edit?gid=1302175797#gid=1302175797">ARK</a>
 </div>
+
     <div class="container">
         <header>
             <h1>Terminarz Szkolny</h1>
@@ -325,22 +382,37 @@
             <button class="add-button" id="add-event-btn">DODAJ</button>
         </header>
 
-        <table class="calendar">
-            <thead>
-                <tr>
-                    <th>Poniedziałek</th>
-                    <th>Wtorek</th>
-                    <th>Środa</th>
-                    <th>Czwartek</th>
-                    <th>Piątek</th>
-                    <th class="weekend">Sobota</th>
-                    <th class="weekend">Niedziela</th>
-                </tr>
-            </thead>
-            <tbody id="calendar-body">
-                <!-- Calendar will be generated here -->
-            </tbody>
-        </table>
+        <!-- Zakładki Terminarz i Aktualności -->
+        <div class="tabs">
+            <button class="tab active" data-tab="calendar">Terminarz</button>
+            <button class="tab" data-tab="news">Aktualności</button>
+        </div>
+
+        <!-- Zawartość zakładek -->
+        <div class="tab-content active" id="calendar-tab">
+            <table class="calendar">
+                <thead>
+                    <tr>
+                        <th>Poniedziałek</th>
+                        <th>Wtorek</th>
+                        <th>Środa</th>
+                        <th>Czwartek</th>
+                        <th>Piątek</th>
+                        <th class="weekend">Sobota</th>
+                        <th class="weekend">Niedziela</th>
+                    </tr>
+                </thead>
+                <tbody id="calendar-body">
+                    <!-- Calendar will be generated here -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="tab-content" id="news-tab">
+            <div id="news-container">
+                <!-- Aktualności będą generowane tutaj -->
+            </div>
+        </div>
     </div>
 
     <!-- Modal for adding events -->
@@ -378,9 +450,10 @@
 
         // Data storage
         let events = {};
+        let news = [];
         let currentEditingEvent = null;
-        let currentEditingDate = null;
-        let currentEditingIndex = null;
+        currentEditingDate = null;
+        currentEditingIndex = null;
         
         // DOM elements
         const monthSelect = document.getElementById('month-select');
@@ -390,6 +463,9 @@
         const closeModal = document.getElementById('close-modal');
         const modalTitle = document.getElementById('modal-title');
         const modalBody = document.getElementById('modal-body');
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const newsContainer = document.getElementById('news-container');
         
         // Current month and year
         let currentMonth = 8; // September (0-indexed)
@@ -406,15 +482,47 @@
             });
         }
         
+        // Load news from Firebase
+        function loadNews() {
+            return new Promise((resolve) => {
+                database.ref('schoolCalendarNews').on('value', (snapshot) => {
+                    const data = snapshot.val();
+                    news = data || [];
+                    resolve(news);
+                });
+            });
+        }
+        
         // Save events to Firebase
         function saveEvents() {
             return database.ref('schoolCalendarEvents').set(events);
         }
         
+        // Save news to Firebase
+        function saveNews() {
+            return database.ref('schoolCalendarNews').set(news);
+        }
+        
+        // Add news item
+        function addNewsItem(action, details) {
+            const newsItem = {
+                action: action,
+                details: details,
+                timestamp: new Date().toISOString()
+            };
+            
+            news.unshift(newsItem); // Add to beginning of array
+            if (news.length > 100) { // Keep only last 100 items
+                news = news.slice(0, 100);
+            }
+            
+            return saveNews();
+        }
+        
         // Initialize the calendar
         async function initCalendar() {
-            // Load events from Firebase
-            await loadEvents();
+            // Load events and news from Firebase
+            await Promise.all([loadEvents(), loadNews()]);
             
             // Set current month and year from select value
             const selectedValue = monthSelect.value.split('-');
@@ -422,6 +530,7 @@
             currentMonth = parseInt(selectedValue[1]) - 1; // 0-indexed
             
             generateCalendar(currentYear, currentMonth);
+            displayNews();
         }
         
         // Generate calendar for given month and year
@@ -513,6 +622,53 @@
             });
         }
         
+        // Display news
+        function displayNews() {
+            newsContainer.innerHTML = '';
+            
+            if (news.length === 0) {
+                newsContainer.innerHTML = '<p>Brak aktualności.</p>';
+                return;
+            }
+            
+            news.forEach(item => {
+                const newsItem = document.createElement('div');
+                newsItem.className = 'news-item';
+                
+                const timeAgo = getTimeAgo(item.timestamp);
+                
+                newsItem.innerHTML = `
+                    <div class="news-action">${item.action}</div>
+                    <div>${item.details}</div>
+                    <div class="news-time">${timeAgo}</div>
+                `;
+                
+                newsContainer.appendChild(newsItem);
+            });
+        }
+        
+        // Calculate time ago
+        function getTimeAgo(timestamp) {
+            const now = new Date();
+            const past = new Date(timestamp);
+            const diffMs = now - past;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
+            
+            if (diffMins < 1) {
+                return 'Przed chwilą';
+            } else if (diffMins < 60) {
+                return `${diffMins} ${diffMins === 1 ? 'minutę' : diffMins < 5 ? 'minuty' : 'minut'} temu`;
+            } else if (diffHours < 24) {
+                return `${diffHours} ${diffHours === 1 ? 'godzinę' : diffHours < 5 ? 'godziny' : 'godzin'} temu`;
+            } else if (diffDays < 7) {
+                return `${diffDays} ${diffDays === 1 ? 'dzień' : 'dni'} temu`;
+            } else {
+                return past.toLocaleDateString('pl-PL');
+            }
+        }
+        
         // Show event details
         function showEventDetails(date, index) {
             const event = events[date][index];
@@ -525,6 +681,7 @@
                         <p><strong>Nauczyciel:</strong> ${event.teacher}</p>
                         <p><strong>Data:</strong> ${formatDate(event.startDate)}${event.endDate && event.endDate !== event.startDate ? ` - ${formatDate(event.endDate)}` : ''}</p>
                         ${event.timeRange ? `<p><strong>Godziny:</strong> ${event.timeRange}</p>` : ''}
+                        ${event.reason ? `<p><strong>Powód:</strong> ${event.reason}</p>` : ''}
                         <p><strong>Dodano:</strong> ${formatDateTime(event.createdAt)}</p>
                     </div>
                 `;
@@ -535,7 +692,7 @@
                         <p><strong>Klasa:</strong> ${event.className}</p>
                         <p><strong>Data:</strong> ${formatDate(event.date)}</p>
                         ${event.timeRange ? `<p><strong>Godziny:</strong> ${event.timeRange}</p>` : ''}
-                        ${event.description ? `<p><strong>Opis:</strong> ${event.description}</p>` : ''}
+                        ${event.description ? `<p><strong>Opis wycieczki:</strong> ${event.description}</p>` : ''}
                         <p><strong>Dodano:</strong> ${formatDateTime(event.createdAt)}</p>
                     </div>
                 `;
@@ -598,10 +755,34 @@
                             delete events[date];
                         }
                     }
-                    saveEvents().then(() => {
-                        initCalendar();
-                        eventModal.style.display = 'none';
-                        resetEditingContext();
+                    
+                    // Add news item for deletion
+                    let newsAction = '';
+                    let newsDetails = '';
+                    
+                    if (currentEditingEvent.type === 'absence') {
+                        newsAction = 'Usunięto nieobecność nauczyciela';
+                        const dateRange = currentEditingEvent.startDate === currentEditingEvent.endDate || !currentEditingEvent.endDate 
+                            ? `w dniu ${formatDate(currentEditingEvent.startDate)}`
+                            : `od ${formatDate(currentEditingEvent.startDate)} do ${formatDate(currentEditingEvent.endDate)}`;
+                        newsDetails = `${currentEditingEvent.teacher} ${dateRange}${currentEditingEvent.timeRange ? ` w godzinach ${currentEditingEvent.timeRange}` : ''}`;
+                    } else if (currentEditingEvent.type === 'trip') {
+                        newsAction = 'Usunięto wycieczkę';
+                        newsDetails = `dla klasy ${currentEditingEvent.className} w dniu ${formatDate(currentEditingEvent.date)}`;
+                    } else if (currentEditingEvent.type === 'holiday') {
+                        newsAction = 'Usunięto dzień wolny';
+                        const dateRange = currentEditingEvent.startDate === currentEditingEvent.endDate || !currentEditingEvent.endDate 
+                            ? `w dniu ${formatDate(currentEditingEvent.startDate)}`
+                            : `od ${formatDate(currentEditingEvent.startDate)} do ${formatDate(currentEditingEvent.endDate)}`;
+                        newsDetails = `"${currentEditingEvent.title}" ${dateRange}`;
+                    }
+                    
+                    addNewsItem(newsAction, newsDetails).then(() => {
+                        saveEvents().then(() => {
+                            initCalendar();
+                            eventModal.style.display = 'none';
+                            resetEditingContext();
+                        });
                     });
                 }
             });
@@ -654,12 +835,17 @@
                         <label>Data nieobecności:</label>
                         <div class="time-range">
                             <input type="date" id="absence-start-date" value="${isEdit ? eventData.startDate : ''}" required>
+                            <span>do</span>
                             <input type="date" id="absence-end-date" value="${isEdit ? eventData.endDate || eventData.startDate : ''}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="absence-time">Godziny (np. 8:00-14:00):</label>
                         <input type="text" id="absence-time" value="${isEdit ? eventData.timeRange || '' : ''}" placeholder="8:00-14:00">
+                    </div>
+                    <div class="form-group">
+                        <label for="absence-reason">Powód nieobecności:</label>
+                        <textarea id="absence-reason" placeholder="Np. choroba, szkolenie, urlop...">${isEdit ? eventData.reason || '' : ''}</textarea>
                     </div>
                 `;
             } else if (type === 'trip') {
@@ -691,6 +877,7 @@
                         <label>Data dnia wolnego:</label>
                         <div class="time-range">
                             <input type="date" id="holiday-start-date" value="${isEdit ? eventData.startDate : ''}" required>
+                            <span>do</span>
                             <input type="date" id="holiday-end-date" value="${isEdit ? eventData.endDate || eventData.startDate : ''}">
                         </div>
                     </div>
@@ -729,6 +916,7 @@
                 eventData.startDate = document.getElementById('absence-start-date').value;
                 eventData.endDate = document.getElementById('absence-end-date').value || eventData.startDate;
                 eventData.timeRange = document.getElementById('absence-time').value;
+                eventData.reason = document.getElementById('absence-reason').value;
                 
                 // Validate
                 if (!eventData.teacher || !eventData.startDate) {
@@ -817,10 +1005,33 @@
                 events[dateKey].push(eventData);
             }
             
-            saveEvents().then(() => {
-                initCalendar();
-                eventModal.style.display = 'none';
-                resetEditingContext();
+            // Add news item
+            let newsAction = '';
+            let newsDetails = '';
+            
+            if (type === 'absence') {
+                newsAction = isEdit ? 'Zmieniono nieobecność nauczyciela' : 'Dodano nieobecność nauczyciela';
+                const dateRange = eventData.startDate === eventData.endDate 
+                    ? `w dniu ${formatDate(eventData.startDate)}`
+                    : `od ${formatDate(eventData.startDate)} do ${formatDate(eventData.endDate)}`;
+                newsDetails = `${eventData.teacher} ${dateRange}${eventData.timeRange ? ` w godzinach ${eventData.timeRange}` : ''}`;
+            } else if (type === 'trip') {
+                newsAction = isEdit ? 'Zmieniono dzień wolny klasy' : 'Dodano dzień wolny klasy';
+                newsDetails = `dla klasy ${eventData.className} w dniu ${formatDate(eventData.date)}`;
+            } else if (type === 'holiday') {
+                newsAction = isEdit ? 'Zmieniono dzień wolny szkoły' : 'Dodano dzień wolny szkoły';
+                const dateRange = eventData.startDate === eventData.endDate 
+                    ? `w dniu ${formatDate(eventData.startDate)}`
+                    : `od ${formatDate(eventData.startDate)} do ${formatDate(eventData.endDate)}`;
+                newsDetails = `"${eventData.title}" ${dateRange}`;
+            }
+            
+            addNewsItem(newsAction, newsDetails).then(() => {
+                saveEvents().then(() => {
+                    initCalendar();
+                    eventModal.style.display = 'none';
+                    resetEditingContext();
+                });
             });
         }
         
@@ -847,6 +1058,23 @@
         function formatDateForStorage(date) {
             return date.toISOString().split('T')[0];
         }
+        
+        // Event listeners for tabs
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.getAttribute('data-tab');
+                
+                // Update active tab
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Update active content
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(`${tabId}-tab`).classList.add('active');
+            });
+        });
         
         // Event listeners
         monthSelect.addEventListener('change', initCalendar);
