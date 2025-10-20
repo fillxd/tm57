@@ -469,8 +469,8 @@
         const newsContainer = document.getElementById('news-container');
         
         // Current month and year
-        let currentMonth = 8; // September (0-indexed)
-        let currentYear = 2025;
+// Current month and year - będą ustawiane automatycznie
+let currentMonth, currentYear;
         
         // Load events from Firebase
         function loadEvents() {
@@ -521,18 +521,23 @@
         }
         
         // Initialize the calendar
-        async function initCalendar() {
-            // Load events and news from Firebase
-            await Promise.all([loadEvents(), loadNews()]);
-            
-            // Set current month and year from select value
-            const selectedValue = monthSelect.value.split('-');
-            currentYear = parseInt(selectedValue[0]);
-            currentMonth = parseInt(selectedValue[1]) - 1; // 0-indexed
-            
-            generateCalendar(currentYear, currentMonth);
-            displayNews();
-        }
+        // Initialize the calendar
+async function initCalendar() {
+    // Load events and news from Firebase
+    await Promise.all([loadEvents(), loadNews()]);
+    
+    // Ustaw aktualny miesiąc i rok zamiast stałej wartości
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth(); // 0-11 (0=styczeń, 8=wrzesień)
+    
+    // Ustaw wartość w selektorze miesięcy
+    const currentMonthValue = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}`;
+    monthSelect.value = currentMonthValue;
+    
+    generateCalendar(currentYear, currentMonth);
+    displayNews();
+}
         
         // Generate calendar for given month and year
         function generateCalendar(year, month) {
