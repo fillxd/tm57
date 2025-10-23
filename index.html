@@ -1010,25 +1010,28 @@ async function initCalendar() {
             }
             
             // Add news item
-            let newsAction = '';
-            let newsDetails = '';
-            
-            if (type === 'absence') {
-                newsAction = isEdit ? 'Zmieniono nieobecność nauczyciela' : 'Dodano nieobecność nauczyciela';
-                const dateRange = eventData.startDate === eventData.endDate 
-                    ? `w dniu ${formatDate(eventData.startDate)}`
-                    : `od ${formatDate(eventData.startDate)} do ${formatDate(eventData.endDate)}`;
-                newsDetails = `${eventData.teacher} ${dateRange}${eventData.timeRange ? ` w godzinach ${eventData.timeRange}` : ''}`;
-            } else if (type === 'trip') {
-                newsAction = isEdit ? 'Zmieniono dzień wolny klasy' : 'Dodano dzień wolny klasy';
-                newsDetails = `dla klasy ${eventData.className} w dniu ${formatDate(eventData.date)}`;
-            } else if (type === 'holiday') {
-                newsAction = isEdit ? 'Zmieniono dzień wolny szkoły' : 'Dodano dzień wolny szkoły';
-                const dateRange = eventData.startDate === eventData.endDate 
-                    ? `w dniu ${formatDate(eventData.startDate)}`
-                    : `od ${formatDate(eventData.startDate)} do ${formatDate(eventData.endDate)}`;
-                newsDetails = `"${eventData.title}" ${dateRange}`;
-            }
+           // Add news item
+let newsAction = '';
+let newsDetails = '';
+
+if (type === 'absence') {
+    newsAction = isEdit ? 'Zmieniono nieobecność nauczyciela' : 'Dodano nieobecność nauczyciela';
+    const dateRange = eventData.startDate === eventData.endDate 
+        ? `w dniu ${formatDate(eventData.startDate)}`
+        : `w dniach ${formatDate(eventData.startDate)}-${formatDate(eventData.endDate)}`;
+    newsDetails = `${eventData.teacher} ${dateRange}${eventData.timeRange ? ` w godzinach ${eventData.timeRange}` : ''}`;
+} else if (type === 'trip') {
+    newsAction = isEdit ? 'Zmieniono dzień wolny dla klasy' : 'Dodano dzień wolny dla klasy';
+    newsDetails = `${eventData.className} w dniu ${formatDate(eventData.date)}${eventData.timeRange ? ` w godzinach ${eventData.timeRange}` : ''}`;
+} else if (type === 'holiday') {
+    newsAction = isEdit ? 'Zmieniono dzień wolny szkoły' : 'Dodano dzień wolny szkoły';
+    const dateRange = eventData.startDate === eventData.endDate 
+        ? `w dniu ${formatDate(eventData.startDate)}`
+        : `w dniach ${formatDate(eventData.startDate)}-${formatDate(eventData.endDate)}`;
+    newsDetails = `${dateRange}. ${eventData.title}`;
+}
+
+// Potem znajdź funkcję showEventDetails() i zrób te same 3 zmiany w tej funkcji.
             
             addNewsItem(newsAction, newsDetails).then(() => {
                 saveEvents().then(() => {
