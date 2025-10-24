@@ -133,8 +133,18 @@
         }
 
         .holiday {
-            background-color:  #000000;
+            background-color: #000000;
             color: white;
+        }
+
+        .custom {
+            background-color: #ADD8E6;
+            color: black;
+        }
+
+        .bookmark {
+            background-color: #E8C547;
+            color: black;
         }
 
         .modal {
@@ -297,7 +307,6 @@
             text-decoration: underline;
         }
         
-        /* Styl dla zakładki Aktualności */
         .tabs {
             display: flex;
             margin-bottom: 20px;
@@ -356,10 +365,10 @@
     <a href="https://fillxd.github.io/sz57">Syst</a>
     <a href="https://fillxd.github.io/tm57">TM</a>
     <a href="https://fillxd.github.io/pl57">Plan</a>
-        <a href="https://fillxd.github.io/na57">MG</a>
+    <a href="https://fillxd.github.io/na57">MG</a>
     <a href="https://fillxd.github.io/tk57">D5b</a>
     <a href="https://fillxd.github.io/kl57">T5b</a>
- <a href="https://docs.google.com/spreadsheets/d/18OV9Sar_ENFseGPn8wppwrIeJXm6j4dsa890OTg6Ioo/edit?gid=1302175797#gid=1302175797">ARK</a>
+    <a href="https://docs.google.com/spreadsheets/d/18OV9Sar_ENFseGPn8wppwrIeJXm6j4dsa890OTg6Ioo/edit?gid=1302175797#gid=1302175797">ARK</a>
 </div>
 
     <div class="container">
@@ -383,13 +392,11 @@
             <button class="add-button" id="add-event-btn">DODAJ</button>
         </header>
 
-        <!-- Zakładki Terminarz i Aktualności -->
         <div class="tabs">
             <button class="tab active" data-tab="calendar">Terminarz</button>
             <button class="tab" data-tab="news">Aktualności</button>
         </div>
 
-        <!-- Zawartość zakładek -->
         <div class="tab-content active" id="calendar-tab">
             <table class="calendar">
                 <thead>
@@ -404,19 +411,16 @@
                     </tr>
                 </thead>
                 <tbody id="calendar-body">
-                    <!-- Calendar will be generated here -->
                 </tbody>
             </table>
         </div>
 
         <div class="tab-content" id="news-tab">
             <div id="news-container">
-                <!-- Aktualności będą generowane tutaj -->
             </div>
         </div>
     </div>
 
-    <!-- Modal for adding events -->
     <div class="modal" id="event-modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -424,17 +428,14 @@
                 <button class="close-button" id="close-modal">&times;</button>
             </div>
             <div id="modal-body">
-                <!-- Content will be dynamically filled -->
             </div>
         </div>
     </div>
 
-    <!-- Add Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     
     <script>
-        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyCzyqI6k2xHGM9mecAyGNJfAq7XjTKWqHs",
             authDomain: "na57-a08ec.firebaseapp.com",
@@ -445,18 +446,15 @@
             appId: "1:730540135505:web:7a539a5eb3cb3d148d9470"
         };
 
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
-        // Data storage
         let events = {};
         let news = [];
         let currentEditingEvent = null;
-        currentEditingDate = null;
-        currentEditingIndex = null;
+        let currentEditingDate = null;
+        let currentEditingIndex = null;
         
-        // DOM elements
         const monthSelect = document.getElementById('month-select');
         const calendarBody = document.getElementById('calendar-body');
         const addEventBtn = document.getElementById('add-event-btn');
@@ -468,8 +466,6 @@
         const tabContents = document.querySelectorAll('.tab-content');
         const newsContainer = document.getElementById('news-container');
        
-        
-        // Load events from Firebase
         function loadEvents() {
             return new Promise((resolve) => {
                 database.ref('schoolCalendarEvents').on('value', (snapshot) => {
@@ -480,7 +476,6 @@
             });
         }
         
-        // Load news from Firebase
         function loadNews() {
             return new Promise((resolve) => {
                 database.ref('schoolCalendarNews').on('value', (snapshot) => {
@@ -491,17 +486,14 @@
             });
         }
         
-        // Save events to Firebase
         function saveEvents() {
             return database.ref('schoolCalendarEvents').set(events);
         }
         
-        // Save news to Firebase
         function saveNews() {
             return database.ref('schoolCalendarNews').set(news);
         }
         
-        // Add news item
         function addNewsItem(action, details) {
             const newsItem = {
                 action: action,
@@ -509,66 +501,54 @@
                 timestamp: new Date().toISOString()
             };
             
-            news.unshift(newsItem); // Add to beginning of array
-            if (news.length > 100) { // Keep only last 100 items
+            news.unshift(newsItem);
+            if (news.length > 100) {
                 news = news.slice(0, 100);
             }
             
             return saveNews();
         }
         
-		
-		// Update calendar based on month selector
-function updateCalendarFromSelector() {
-    const [year, month] = monthSelect.value.split('-').map(Number);
-    generateCalendar(year, month - 1); // month - 1 bo miesiące są 0-11
-}
-async function initCalendar() {
-    // Load events and news from Firebase
-    await Promise.all([loadEvents(), loadNews()]);
-    
-    // Ustaw aktualny miesiąc i rok
-    const now = new Date();
-    const currentMonthValue = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-    monthSelect.value = currentMonthValue;
-    
-    // Generuj kalendarz dla wybranego miesiąca
-    updateCalendarFromSelector();
-    displayNews();
-}
+        function updateCalendarFromSelector() {
+            const [year, month] = monthSelect.value.split('-').map(Number);
+            generateCalendar(year, month - 1);
+        }
+
+        async function initCalendar() {
+            await Promise.all([loadEvents(), loadNews()]);
+            
+            const now = new Date();
+            const currentMonthValue = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+            monthSelect.value = currentMonthValue;
+            
+            updateCalendarFromSelector();
+            displayNews();
+        }
         
-        // Generate calendar for given month and year
         function generateCalendar(year, month) {
             calendarBody.innerHTML = '';
             
-            // Get first day of month and number of days
             const firstDay = new Date(year, month, 1);
             const daysInMonth = new Date(year, month + 1, 0).getDate();
             
-            // Get day of week for first day (0 = Sunday, 1 = Monday, etc.)
             let firstDayOfWeek = firstDay.getDay();
-            // Adjust to start from Monday (0 = Monday, 6 = Sunday)
             firstDayOfWeek = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1;
             
             let date = 1;
             let calendarHTML = '';
             
-            // Generate 4-6 weeks (depending on the month)
             for (let week = 0; week < 6; week++) {
                 calendarHTML += '<tr>';
                 
-                for (let dayOfWeek = 0; dayOfWeek < 7; dayOfWeek++) { // Monday to Sunday
+                for (let dayOfWeek = 0; dayOfWeek < 7; dayOfWeek++) {
                     if (week === 0 && dayOfWeek < firstDayOfWeek) {
-                        // Empty cells before the first day of the month
                         calendarHTML += '<td class="empty"></td>';
                     } else if (date > daysInMonth) {
-                        // Empty cells after the last day of the month
                         calendarHTML += '<td class="empty"></td>';
                     } else {
-                        // Cell with date
                         const currentDate = new Date(year, month, date);
                         const dayOfMonth = currentDate.getDate();
-                        const isWeekend = dayOfWeek === 5 || dayOfWeek === 6; // Saturday or Sunday
+                        const isWeekend = dayOfWeek === 5 || dayOfWeek === 6;
                         
                         const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(dayOfMonth).padStart(2, '0')}`;
                         const dayEvents = events[dateStr] || [];
@@ -576,7 +556,6 @@ async function initCalendar() {
                         calendarHTML += `<td class="${isWeekend ? 'weekend' : ''}" data-date="${dateStr}">`;
                         calendarHTML += `<div class="day-number">${dayOfMonth}</div>`;
                         
-                        // Add events for this day
                         dayEvents.forEach((event, index) => {
                             let eventClass = '';
                             let eventText = '';
@@ -596,6 +575,21 @@ async function initCalendar() {
                             } else if (event.type === 'holiday') {
                                 eventClass = 'holiday';
                                 eventText = `Dzień Wolny: ${event.title}`;
+                                if (event.timeRange) {
+                                    eventText += ` (${event.timeRange})`;
+                                }
+                            } else if (event.type === 'custom') {
+                                eventClass = 'custom';
+                                eventText = `${event.title}`;
+                                if (event.timeRange) {
+                                    eventText += ` (${event.timeRange})`;
+                                }
+                            } else if (event.type === 'bookmark') {
+                                eventClass = 'bookmark';
+                                eventText = `${event.title}`;
+                                if (event.timeRange) {
+                                    eventText += ` (${event.timeRange})`;
+                                }
                             }
                             
                             calendarHTML += `<div class="event ${eventClass}" data-date="${dateStr}" data-index="${index}">${eventText}</div>`;
@@ -608,7 +602,6 @@ async function initCalendar() {
                 
                 calendarHTML += '</tr>';
                 
-                // Stop if we've displayed all days
                 if (date > daysInMonth) {
                     break;
                 }
@@ -616,7 +609,6 @@ async function initCalendar() {
             
             calendarBody.innerHTML = calendarHTML;
             
-            // Add event listeners to event elements
             document.querySelectorAll('.event').forEach(eventEl => {
                 eventEl.addEventListener('click', function() {
                     const date = this.getAttribute('data-date');
@@ -626,7 +618,6 @@ async function initCalendar() {
             });
         }
         
-        // Display news
         function displayNews() {
             newsContainer.innerHTML = '';
             
@@ -651,7 +642,6 @@ async function initCalendar() {
             });
         }
         
-        // Calculate time ago
         function getTimeAgo(timestamp) {
             const now = new Date();
             const past = new Date(timestamp);
@@ -673,7 +663,6 @@ async function initCalendar() {
             }
         }
         
-        // Show event details
         function showEventDetails(date, index) {
             const event = events[date][index];
             let detailsHTML = '';
@@ -694,7 +683,7 @@ async function initCalendar() {
                     <h3>Wycieczka</h3>
                     <div class="event-details">
                         <p><strong>Klasa:</strong> ${event.className}</p>
-                        <p><strong>Data:</strong> ${formatDate(event.date)}</p>
+                        <p><strong>Data:</strong> ${formatDate(event.startDate)}${event.endDate && event.endDate !== event.startDate ? ` - ${formatDate(event.endDate)}` : ''}</p>
                         ${event.timeRange ? `<p><strong>Godziny:</strong> ${event.timeRange}</p>` : ''}
                         ${event.description ? `<p><strong>Opis wycieczki:</strong> ${event.description}</p>` : ''}
                         <p><strong>Dodano:</strong> ${formatDateTime(event.createdAt)}</p>
@@ -706,6 +695,29 @@ async function initCalendar() {
                     <div class="event-details">
                         <p><strong>Tytuł:</strong> ${event.title}</p>
                         <p><strong>Data:</strong> ${formatDate(event.startDate)}${event.endDate && event.endDate !== event.startDate ? ` - ${formatDate(event.endDate)}` : ''}</p>
+                        ${event.timeRange ? `<p><strong>Godziny:</strong> ${event.timeRange}</p>` : ''}
+                        <p><strong>Dodano:</strong> ${formatDateTime(event.createdAt)}</p>
+                    </div>
+                `;
+            } else if (event.type === 'custom') {
+                detailsHTML = `
+                    <h3>Wydarzenie Niestandardowe</h3>
+                    <div class="event-details">
+                        <p><strong>Tytuł:</strong> ${event.title}</p>
+                        <p><strong>Data:</strong> ${formatDate(event.startDate)}${event.endDate && event.endDate !== event.startDate ? ` - ${formatDate(event.endDate)}` : ''}</p>
+                        ${event.timeRange ? `<p><strong>Godziny:</strong> ${event.timeRange}</p>` : ''}
+                        ${event.description ? `<p><strong>Opis:</strong> ${event.description}</p>` : ''}
+                        <p><strong>Dodano:</strong> ${formatDateTime(event.createdAt)}</p>
+                    </div>
+                `;
+            } else if (event.type === 'bookmark') {
+                detailsHTML = `
+                    <h3>Zakładka</h3>
+                    <div class="event-details">
+                        <p><strong>Tytuł:</strong> ${event.title}</p>
+                        <p><strong>Data:</strong> ${formatDate(event.startDate)}${event.endDate && event.endDate !== event.startDate ? ` - ${formatDate(event.endDate)}` : ''}</p>
+                        ${event.timeRange ? `<p><strong>Godziny:</strong> ${event.timeRange}</p>` : ''}
+                        ${event.description ? `<p><strong>Opis:</strong> ${event.description}</p>` : ''}
                         <p><strong>Dodano:</strong> ${formatDateTime(event.createdAt)}</p>
                     </div>
                 `;
@@ -721,93 +733,102 @@ async function initCalendar() {
             modalTitle.textContent = 'Szczegóły wydarzenia';
             modalBody.innerHTML = detailsHTML;
             
-            // Store editing context
             currentEditingEvent = event;
             currentEditingDate = date;
             currentEditingIndex = index;
             
-            // Add event listeners for buttons
             document.getElementById('edit-event').addEventListener('click', function() {
                 showEventForm(event.type, true);
             });
             
             document.getElementById('delete-event').addEventListener('click', function() {
                 if (confirm('Czy na pewno chcesz usunąć to wydarzenie?')) {
-                    // For range events (absence, holiday), we need to remove from all dates
-                    if (currentEditingEvent.type === 'absence' || currentEditingEvent.type === 'holiday') {
+                    if (currentEditingEvent.type === 'absence' || currentEditingEvent.type === 'holiday' || currentEditingEvent.type === 'trip' || currentEditingEvent.type === 'custom' || currentEditingEvent.type === 'bookmark') {
                         const startDate = new Date(currentEditingEvent.startDate);
                         const endDate = new Date(currentEditingEvent.endDate || currentEditingEvent.startDate);
                         
                         for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
                             const dateKey = formatDateForStorage(d);
                             if (events[dateKey]) {
-                                // Find and remove the specific event
                                 events[dateKey] = events[dateKey].filter(e => 
                                     !(e.type === currentEditingEvent.type && 
-                                      e.teacher === currentEditingEvent.teacher && 
-                                      e.startDate === currentEditingEvent.startDate)
+                                      e.startDate === currentEditingEvent.startDate &&
+                                      (e.teacher === currentEditingEvent.teacher || 
+                                       e.className === currentEditingEvent.className ||
+                                       e.title === currentEditingEvent.title))
                                 );
                                 if (events[dateKey].length === 0) {
                                     delete events[dateKey];
                                 }
                             }
                         }
-                    } else {
-                        // For single date events
-                        events[date].splice(index, 1);
-                        if (events[date].length === 0) {
-                            delete events[date];
+                    }
+                    
+                    // Zakładki nie dodają aktualności
+                    if (currentEditingEvent.type !== 'bookmark') {
+                        let newsAction = '';
+                        let newsDetails = '';
+                        
+                        if (currentEditingEvent.type === 'absence') {
+                            newsAction = 'Usunięto nieobecność nauczyciela';
+                            const dateRange = currentEditingEvent.startDate === currentEditingEvent.endDate || !currentEditingEvent.endDate 
+                                ? `w dniu ${formatDate(currentEditingEvent.startDate)}`
+                                : `w dniach ${formatDate(currentEditingEvent.startDate)}-${formatDate(currentEditingEvent.endDate)}`;
+                            newsDetails = `${currentEditingEvent.teacher} ${dateRange}${currentEditingEvent.timeRange ? ` /// w godzinach ${currentEditingEvent.timeRange}` : ''}`;
+                        } else if (currentEditingEvent.type === 'trip') {
+                            newsAction = 'Usunięto wycieczkę';
+                            const dateRange = currentEditingEvent.startDate === currentEditingEvent.endDate || !currentEditingEvent.endDate 
+                                ? `w dniu ${formatDate(currentEditingEvent.startDate)}`
+                                : `w dniach ${formatDate(currentEditingEvent.startDate)}-${formatDate(currentEditingEvent.endDate)}`;
+                            newsDetails = `dla klasy ${currentEditingEvent.className} ${dateRange}${currentEditingEvent.timeRange ? ` /// w godzinach ${currentEditingEvent.timeRange}` : ''}`;
+                        } else if (currentEditingEvent.type === 'holiday') {
+                            newsAction = 'Usunięto dzień wolny';
+                            const dateRange = currentEditingEvent.startDate === currentEditingEvent.endDate || !currentEditingEvent.endDate 
+                                ? `w dniu ${formatDate(currentEditingEvent.startDate)}`
+                                : `w dniach ${formatDate(currentEditingEvent.startDate)}-${formatDate(currentEditingEvent.endDate)}`;
+                            newsDetails = `"${currentEditingEvent.title}" ${dateRange}${currentEditingEvent.timeRange ? ` /// w godzinach ${currentEditingEvent.timeRange}` : ''}`;
+                        } else if (currentEditingEvent.type === 'custom') {
+                            newsAction = 'Usunięto wydarzenie';
+                            const dateRange = currentEditingEvent.startDate === currentEditingEvent.endDate || !currentEditingEvent.endDate 
+                                ? `w dniu ${formatDate(currentEditingEvent.startDate)}`
+                                : `w dniach ${formatDate(currentEditingEvent.startDate)}-${formatDate(currentEditingEvent.endDate)}`;
+                            newsDetails = `"${currentEditingEvent.title}" ${dateRange}${currentEditingEvent.timeRange ? ` /// w godzinach ${currentEditingEvent.timeRange}` : ''}`;
                         }
-                    }
-                    
-                    // Add news item for deletion
-                    let newsAction = '';
-                    let newsDetails = '';
-                    
-                    if (currentEditingEvent.type === 'absence') {
-                        newsAction = 'Usunięto nieobecność nauczyciela';
-                        const dateRange = currentEditingEvent.startDate === currentEditingEvent.endDate || !currentEditingEvent.endDate 
-                            ? `w dniu ${formatDate(currentEditingEvent.startDate)}`
-                            : `od ${formatDate(currentEditingEvent.startDate)} do ${formatDate(currentEditingEvent.endDate)}`;
-                        newsDetails = `${currentEditingEvent.teacher} ${dateRange}${currentEditingEvent.timeRange ? ` w godzinach ${currentEditingEvent.timeRange}` : ''}`;
-                    } else if (currentEditingEvent.type === 'trip') {
-                        newsAction = 'Usunięto wycieczkę';
-                        newsDetails = `dla klasy ${currentEditingEvent.className} w dniu ${formatDate(currentEditingEvent.date)}`;
-                    } else if (currentEditingEvent.type === 'holiday') {
-                        newsAction = 'Usunięto dzień wolny';
-                        const dateRange = currentEditingEvent.startDate === currentEditingEvent.endDate || !currentEditingEvent.endDate 
-                            ? `w dniu ${formatDate(currentEditingEvent.startDate)}`
-                            : `od ${formatDate(currentEditingEvent.startDate)} do ${formatDate(currentEditingEvent.endDate)}`;
-                        newsDetails = `"${currentEditingEvent.title}" ${dateRange}`;
-                    }
-                    
-                    addNewsItem(newsAction, newsDetails).then(() => {
+                        
+                        addNewsItem(newsAction, newsDetails).then(() => {
+                            saveEvents().then(() => {
+                                initCalendar();
+                                eventModal.style.display = 'none';
+                                resetEditingContext();
+                            });
+                        });
+                    } else {
+                        // Dla zakładek - tylko zapisz bez aktualności
                         saveEvents().then(() => {
                             initCalendar();
                             eventModal.style.display = 'none';
                             resetEditingContext();
                         });
-                    });
+                    }
                 }
             });
             
             eventModal.style.display = 'flex';
         }
         
-        // Show event form
         function showEventForm(type = null, isEdit = false) {
             if (!type && !isEdit) {
-                // Show event type selection for new event
                 modalTitle.textContent = 'Dodaj wydarzenie';
                 modalBody.innerHTML = `
                     <div class="event-type-selector">
                         <div class="event-type" data-type="absence">Nieobecność</div>
                         <div class="event-type" data-type="trip">Wycieczka</div>
                         <div class="event-type" data-type="holiday">Dzień Wolny</div>
+                        <div class="event-type" data-type="custom">Wydarzenie Niestandardowe</div>
+                        <div class="event-type" data-type="bookmark">Zakładka</div>
                     </div>
                 `;
                 
-                // Add event listeners to event type buttons
                 document.querySelectorAll('.event-type').forEach(button => {
                     button.addEventListener('click', function() {
                         const selectedType = this.getAttribute('data-type');
@@ -815,14 +836,12 @@ async function initCalendar() {
                     });
                 });
             } else {
-                // Show specific form
                 showSpecificEventForm(type, isEdit);
             }
             
             eventModal.style.display = 'flex';
         }
         
-        // Show specific event form based on type
         function showSpecificEventForm(type, isEdit = false) {
             let formHTML = '';
             const eventData = isEdit ? currentEditingEvent : null;
@@ -859,8 +878,12 @@ async function initCalendar() {
                         <input type="text" id="trip-class" value="${isEdit ? eventData.className : ''}" required>
                     </div>
                     <div class="form-group">
-                        <label for="trip-date">Data wycieczki:</label>
-                        <input type="date" id="trip-date" value="${isEdit ? eventData.date : ''}" required>
+                        <label>Data wycieczki:</label>
+                        <div class="time-range">
+                            <input type="date" id="trip-start-date" value="${isEdit ? eventData.startDate : ''}" required>
+                            <span>do</span>
+                            <input type="date" id="trip-end-date" value="${isEdit ? eventData.endDate || eventData.startDate : ''}">
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="trip-time">Godziny (np. 8:00-14:00):</label>
@@ -868,7 +891,7 @@ async function initCalendar() {
                     </div>
                     <div class="form-group">
                         <label for="trip-description">Opis wycieczki:</label>
-                        <textarea id="trip-description">${isEdit ? eventData.description : ''}</textarea>
+                        <textarea id="trip-description">${isEdit ? eventData.description || '' : ''}</textarea>
                     </div>
                 `;
             } else if (type === 'holiday') {
@@ -885,6 +908,56 @@ async function initCalendar() {
                             <input type="date" id="holiday-end-date" value="${isEdit ? eventData.endDate || eventData.startDate : ''}">
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="holiday-time">Godziny (np. 8:00-14:00) - opcjonalnie:</label>
+                        <input type="text" id="holiday-time" value="${isEdit ? eventData.timeRange || '' : ''}" placeholder="8:00-14:00">
+                    </div>
+                `;
+            } else if (type === 'custom') {
+                formHTML = `
+                    <div class="form-group">
+                        <label for="custom-title">Tytuł wydarzenia:</label>
+                        <input type="text" id="custom-title" value="${isEdit ? eventData.title : ''}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Data wydarzenia:</label>
+                        <div class="time-range">
+                            <input type="date" id="custom-start-date" value="${isEdit ? eventData.startDate : ''}" required>
+                            <span>do</span>
+                            <input type="date" id="custom-end-date" value="${isEdit ? eventData.endDate || eventData.startDate : ''}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="custom-time">Godziny (np. 8:00-14:00):</label>
+                        <input type="text" id="custom-time" value="${isEdit ? eventData.timeRange || '' : ''}" placeholder="8:00-14:00">
+                    </div>
+                    <div class="form-group">
+                        <label for="custom-description">Opis wydarzenia:</label>
+                        <textarea id="custom-description">${isEdit ? eventData.description || '' : ''}</textarea>
+                    </div>
+                `;
+            } else if (type === 'bookmark') {
+                formHTML = `
+                    <div class="form-group">
+                        <label for="bookmark-title">Tytuł zakładki:</label>
+                        <input type="text" id="bookmark-title" value="${isEdit ? eventData.title : ''}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Data zakładki:</label>
+                        <div class="time-range">
+                            <input type="date" id="bookmark-start-date" value="${isEdit ? eventData.startDate : ''}" required>
+                            <span>do</span>
+                            <input type="date" id="bookmark-end-date" value="${isEdit ? eventData.endDate || eventData.startDate : ''}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="bookmark-time">Godziny (np. 8:00-14:00):</label>
+                        <input type="text" id="bookmark-time" value="${isEdit ? eventData.timeRange || '' : ''}" placeholder="8:00-14:00">
+                    </div>
+                    <div class="form-group">
+                        <label for="bookmark-description">Opis zakładki:</label>
+                        <textarea id="bookmark-description">${isEdit ? eventData.description || '' : ''}</textarea>
+                    </div>
                 `;
             }
             
@@ -897,7 +970,6 @@ async function initCalendar() {
             
             modalBody.innerHTML = formHTML;
             
-            // Add event listeners
             document.getElementById('cancel-form').addEventListener('click', function() {
                 eventModal.style.display = 'none';
                 resetEditingContext();
@@ -908,7 +980,6 @@ async function initCalendar() {
             });
         }
         
-        // Save event
         function saveEvent(type, isEdit = false) {
             const eventData = {
                 type: type,
@@ -922,19 +993,18 @@ async function initCalendar() {
                 eventData.timeRange = document.getElementById('absence-time').value;
                 eventData.reason = document.getElementById('absence-reason').value;
                 
-                // Validate
                 if (!eventData.teacher || !eventData.startDate) {
                     alert('Proszę wypełnić wymagane pola');
                     return;
                 }
             } else if (type === 'trip') {
                 eventData.className = document.getElementById('trip-class').value;
-                eventData.date = document.getElementById('trip-date').value;
+                eventData.startDate = document.getElementById('trip-start-date').value;
+                eventData.endDate = document.getElementById('trip-end-date').value || eventData.startDate;
                 eventData.timeRange = document.getElementById('trip-time').value;
                 eventData.description = document.getElementById('trip-description').value;
                 
-                // Validate
-                if (!eventData.className || !eventData.date) {
+                if (!eventData.className || !eventData.startDate) {
                     alert('Proszę wypełnić wymagane pola');
                     return;
                 }
@@ -942,8 +1012,30 @@ async function initCalendar() {
                 eventData.title = document.getElementById('holiday-title').value;
                 eventData.startDate = document.getElementById('holiday-start-date').value;
                 eventData.endDate = document.getElementById('holiday-end-date').value || eventData.startDate;
+                eventData.timeRange = document.getElementById('holiday-time').value;
                 
-                // Validate
+                if (!eventData.title || !eventData.startDate) {
+                    alert('Proszę wypełnić wymagane pola');
+                    return;
+                }
+            } else if (type === 'custom') {
+                eventData.title = document.getElementById('custom-title').value;
+                eventData.startDate = document.getElementById('custom-start-date').value;
+                eventData.endDate = document.getElementById('custom-end-date').value || eventData.startDate;
+                eventData.timeRange = document.getElementById('custom-time').value;
+                eventData.description = document.getElementById('custom-description').value;
+                
+                if (!eventData.title || !eventData.startDate) {
+                    alert('Proszę wypełnić wymagane pola');
+                    return;
+                }
+            } else if (type === 'bookmark') {
+                eventData.title = document.getElementById('bookmark-title').value;
+                eventData.startDate = document.getElementById('bookmark-start-date').value;
+                eventData.endDate = document.getElementById('bookmark-end-date').value || eventData.startDate;
+                eventData.timeRange = document.getElementById('bookmark-time').value;
+                eventData.description = document.getElementById('bookmark-description').value;
+                
                 if (!eventData.title || !eventData.startDate) {
                     alert('Proszę wypełnić wymagane pola');
                     return;
@@ -951,8 +1043,7 @@ async function initCalendar() {
             }
             
             if (isEdit) {
-                // For editing, first remove the old event
-                if (currentEditingEvent.type === 'absence' || currentEditingEvent.type === 'holiday') {
+                if (currentEditingEvent.type === 'absence' || currentEditingEvent.type === 'holiday' || currentEditingEvent.type === 'trip' || currentEditingEvent.type === 'custom' || currentEditingEvent.type === 'bookmark') {
                     const startDate = new Date(currentEditingEvent.startDate);
                     const endDate = new Date(currentEditingEvent.endDate || currentEditingEvent.startDate);
                     
@@ -961,121 +1052,109 @@ async function initCalendar() {
                         if (events[dateKey]) {
                             events[dateKey] = events[dateKey].filter(e => 
                                 !(e.type === currentEditingEvent.type && 
-                                  e.teacher === currentEditingEvent.teacher && 
-                                  e.startDate === currentEditingEvent.startDate)
+                                  e.startDate === currentEditingEvent.startDate &&
+                                  (e.teacher === currentEditingEvent.teacher || 
+                                   e.className === currentEditingEvent.className ||
+                                   e.title === currentEditingEvent.title))
                             );
                             if (events[dateKey].length === 0) {
                                 delete events[dateKey];
                             }
                         }
                     }
-                } else {
-                    // For single date events
-                    events[currentEditingDate].splice(currentEditingIndex, 1);
-                    if (events[currentEditingDate].length === 0) {
-                        delete events[currentEditingDate];
-                    }
                 }
             }
             
-            // Add new/updated event
-            let dateKey;
+            const startDate = new Date(eventData.startDate);
+            const endDate = new Date(eventData.endDate);
             
-            if (type === 'absence' || type === 'holiday') {
-                // For absence and holiday, add events for all dates in the range
-                const startDate = new Date(eventData.startDate);
-                const endDate = new Date(eventData.endDate);
-                
-                for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
-                    dateKey = formatDateForStorage(d);
-                    
-                    if (!events[dateKey]) {
-                        events[dateKey] = [];
-                    }
-                    
-                    // Create a copy for each date
-                    const eventCopy = {...eventData};
-                    eventCopy.date = dateKey;
-                    events[dateKey].push(eventCopy);
-                }
-            } else {
-                // For other events, just add to the specific date
-                dateKey = eventData.date;
+            for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+                const dateKey = formatDateForStorage(d);
                 
                 if (!events[dateKey]) {
                     events[dateKey] = [];
                 }
                 
-                events[dateKey].push(eventData);
+                const eventCopy = {...eventData};
+                eventCopy.date = dateKey;
+                events[dateKey].push(eventCopy);
             }
             
-            // Add news item
-           // Add news item
-let newsAction = '';
-let newsDetails = '';
+            // Zakładki nie dodają aktualności
+            if (type !== 'bookmark') {
+                let newsAction = '';
+                let newsDetails = '';
 
-if (type === 'absence') {
-    newsAction = isEdit ? 'Zmieniono nieobecność nauczyciela' : 'Dodano nieobecność nauczyciela';
-    const dateRange = eventData.startDate === eventData.endDate 
-        ? `w dniu ${formatDate(eventData.startDate)}`
-        : `w dniach ${formatDate(eventData.startDate)}-${formatDate(eventData.endDate)}`;
-    newsDetails = `${eventData.teacher} ${dateRange}${eventData.timeRange ? ` w godzinach ${eventData.timeRange}` : ''}`;
-} else if (type === 'trip') {
-    newsAction = isEdit ? 'Zmieniono dzień wolny dla klasy' : 'Dodano dzień wolny dla klasy';
-    newsDetails = `${eventData.className} w dniu ${formatDate(eventData.date)}${eventData.timeRange ? ` w godzinach ${eventData.timeRange}` : ''}`;
-} else if (type === 'holiday') {
-    newsAction = isEdit ? 'Zmieniono dzień wolny szkoły' : 'Dodano dzień wolny szkoły';
-    const dateRange = eventData.startDate === eventData.endDate 
-        ? `w dniu ${formatDate(eventData.startDate)}`
-        : `w dniach ${formatDate(eventData.startDate)}-${formatDate(eventData.endDate)}`;
-    newsDetails = `${dateRange}. ${eventData.title}`;
-}
-
-// Potem znajdź funkcję showEventDetails() i zrób te same 3 zmiany w tej funkcji.
-            
-            addNewsItem(newsAction, newsDetails).then(() => {
+                if (type === 'absence') {
+                    newsAction = isEdit ? 'Zmieniono nieobecność nauczyciela' : 'Dodano nieobecność nauczyciela';
+                    const dateRange = eventData.startDate === eventData.endDate 
+                        ? `w dniu ${formatDate(eventData.startDate)}`
+                        : `w dniach ${formatDate(eventData.startDate)}-${formatDate(eventData.endDate)}`;
+                    newsDetails = `${eventData.teacher} ${dateRange}${eventData.timeRange ? ` /// w godzinach ${eventData.timeRange}` : ''}`;
+                } else if (type === 'trip') {
+                    newsAction = isEdit ? 'Zmieniono wycieczkę' : 'Dodano wycieczkę';
+                    const dateRange = eventData.startDate === eventData.endDate 
+                        ? `w dniu ${formatDate(eventData.startDate)}`
+                        : `w dniach ${formatDate(eventData.startDate)}-${formatDate(eventData.endDate)}`;
+                    newsDetails = `dla klasy ${eventData.className} ${dateRange}${eventData.timeRange ? ` /// w godzinach ${eventData.timeRange}` : ''}`;
+                } else if (type === 'holiday') {
+                    newsAction = isEdit ? 'Zmieniono dzień wolny' : 'Dodano dzień wolny';
+                    const dateRange = eventData.startDate === eventData.endDate 
+                        ? `w dniu ${formatDate(eventData.startDate)}`
+                        : `w dniach ${formatDate(eventData.startDate)}-${formatDate(eventData.endDate)}`;
+                    newsDetails = `${dateRange}. ${eventData.title}${eventData.timeRange ? ` /// w godzinach ${eventData.timeRange}` : ''}`;
+                } else if (type === 'custom') {
+                    newsAction = isEdit ? 'Zmieniono wydarzenie' : 'Dodano wydarzenie';
+                    const dateRange = eventData.startDate === eventData.endDate 
+                        ? `w dniu ${formatDate(eventData.startDate)}`
+                        : `w dniach ${formatDate(eventData.startDate)}-${formatDate(eventData.endDate)}`;
+                    newsDetails = `"${eventData.title}" ${dateRange}${eventData.timeRange ? ` /// w godzinach ${eventData.timeRange}` : ''}`;
+                }
+                
+                addNewsItem(newsAction, newsDetails).then(() => {
+                    saveEvents().then(() => {
+                        initCalendar();
+                        eventModal.style.display = 'none';
+                        resetEditingContext();
+                    });
+                });
+            } else {
+                // Dla zakładek - tylko zapisz bez aktualności
                 saveEvents().then(() => {
                     initCalendar();
                     eventModal.style.display = 'none';
                     resetEditingContext();
                 });
-            });
+            }
         }
         
-        // Reset editing context
         function resetEditingContext() {
             currentEditingEvent = null;
             currentEditingDate = null;
             currentEditingIndex = null;
         }
         
-        // Format date for display
         function formatDate(dateString) {
             const date = new Date(dateString);
             return date.toLocaleDateString('pl-PL');
         }
         
-        // Format date and time for display
         function formatDateTime(dateTimeString) {
             const date = new Date(dateTimeString);
             return date.toLocaleString('pl-PL');
         }
         
-        // Format date for storage (YYYY-MM-DD)
         function formatDateForStorage(date) {
             return date.toISOString().split('T')[0];
         }
         
-        // Event listeners for tabs
         tabs.forEach(tab => {
             tab.addEventListener('click', () => {
                 const tabId = tab.getAttribute('data-tab');
                 
-                // Update active tab
                 tabs.forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
                 
-                // Update active content
                 tabContents.forEach(content => {
                     content.classList.remove('active');
                 });
@@ -1083,15 +1162,13 @@ if (type === 'absence') {
             });
         });
         
-        // Event listeners
-monthSelect.addEventListener('change', updateCalendarFromSelector);
+        monthSelect.addEventListener('change', updateCalendarFromSelector);
         addEventBtn.addEventListener('click', () => showEventForm());
         closeModal.addEventListener('click', () => {
             eventModal.style.display = 'none';
             resetEditingContext();
         });
         
-        // Close modal when clicking outside
         window.addEventListener('click', (e) => {
             if (e.target === eventModal) {
                 eventModal.style.display = 'none';
@@ -1099,7 +1176,6 @@ monthSelect.addEventListener('change', updateCalendarFromSelector);
             }
         });
         
-        // Initialize the calendar
         initCalendar();
     </script>
 </body>
