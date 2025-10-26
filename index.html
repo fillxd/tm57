@@ -750,13 +750,20 @@
                         for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
                             const dateKey = formatDateForStorage(d);
                             if (events[dateKey]) {
-                                events[dateKey] = events[dateKey].filter(e => 
-                                    !(e.type === currentEditingEvent.type && 
-                                      e.startDate === currentEditingEvent.startDate &&
-                                      (e.teacher === currentEditingEvent.teacher || 
-                                       e.className === currentEditingEvent.className ||
-                                       e.title === currentEditingEvent.title))
-                                );
+                                events[dateKey] = events[dateKey].filter(e => {
+    // Nie usuwaj jeśli to nie ten sam typ lub data
+    if (e.type !== currentEditingEvent.type) return true;
+    if (e.startDate !== currentEditingEvent.startDate) return true;
+    
+    // Porównaj tylko odpowiednie pole dla danego typu
+    if (e.type === 'absence') {
+        return e.teacher !== currentEditingEvent.teacher || e.timeRange !== currentEditingEvent.timeRange;
+    } else if (e.type === 'trip') {
+        return e.className !== currentEditingEvent.className || e.timeRange !== currentEditingEvent.timeRange;
+    } else {
+        return e.title !== currentEditingEvent.title || e.timeRange !== currentEditingEvent.timeRange;
+    }
+});
                                 if (events[dateKey].length === 0) {
                                     delete events[dateKey];
                                 }
@@ -1050,13 +1057,20 @@
                     for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
                         const dateKey = formatDateForStorage(d);
                         if (events[dateKey]) {
-                            events[dateKey] = events[dateKey].filter(e => 
-                                !(e.type === currentEditingEvent.type && 
-                                  e.startDate === currentEditingEvent.startDate &&
-                                  (e.teacher === currentEditingEvent.teacher || 
-                                   e.className === currentEditingEvent.className ||
-                                   e.title === currentEditingEvent.title))
-                            );
+                            events[dateKey] = events[dateKey].filter(e => {
+    // Nie usuwaj jeśli to nie ten sam typ lub data
+    if (e.type !== currentEditingEvent.type) return true;
+    if (e.startDate !== currentEditingEvent.startDate) return true;
+    
+    // Porównaj tylko odpowiednie pole dla danego typu
+    if (e.type === 'absence') {
+        return e.teacher !== currentEditingEvent.teacher || e.timeRange !== currentEditingEvent.timeRange;
+    } else if (e.type === 'trip') {
+        return e.className !== currentEditingEvent.className || e.timeRange !== currentEditingEvent.timeRange;
+    } else {
+        return e.title !== currentEditingEvent.title || e.timeRange !== currentEditingEvent.timeRange;
+    }
+});
                             if (events[dateKey].length === 0) {
                                 delete events[dateKey];
                             }
