@@ -774,25 +774,25 @@
                             const dateRange = currentEditingEvent.startDate === currentEditingEvent.endDate || !currentEditingEvent.endDate 
                                 ? `w dniu ${formatDate(currentEditingEvent.startDate)}`
                                 : `w dniach ${formatDate(currentEditingEvent.startDate)}-${formatDate(currentEditingEvent.endDate)}`;
-                            newsDetails = `${currentEditingEvent.teacher} ${dateRange}${currentEditingEvent.timeRange ? ` /// w godzinach ${currentEditingEvent.timeRange}` : ''}`;
+                            newsDetails = `${currentEditingEvent.teacher} ${dateRange}${currentEditingEvent.timeRange ? ` w godzinach ${currentEditingEvent.timeRange}` : ''}`;
                         } else if (currentEditingEvent.type === 'trip') {
                             newsAction = 'Usunięto wycieczkę';
                             const dateRange = currentEditingEvent.startDate === currentEditingEvent.endDate || !currentEditingEvent.endDate 
                                 ? `w dniu ${formatDate(currentEditingEvent.startDate)}`
                                 : `w dniach ${formatDate(currentEditingEvent.startDate)}-${formatDate(currentEditingEvent.endDate)}`;
-                            newsDetails = `dla klasy ${currentEditingEvent.className} ${dateRange}${currentEditingEvent.timeRange ? ` /// w godzinach ${currentEditingEvent.timeRange}` : ''}`;
+                            newsDetails = `dla klasy ${currentEditingEvent.className} ${dateRange}${currentEditingEvent.timeRange ? ` w godzinach ${currentEditingEvent.timeRange}` : ''}`;
                         } else if (currentEditingEvent.type === 'holiday') {
                             newsAction = 'Usunięto dzień wolny';
                             const dateRange = currentEditingEvent.startDate === currentEditingEvent.endDate || !currentEditingEvent.endDate 
                                 ? `w dniu ${formatDate(currentEditingEvent.startDate)}`
                                 : `w dniach ${formatDate(currentEditingEvent.startDate)}-${formatDate(currentEditingEvent.endDate)}`;
-                            newsDetails = `"${currentEditingEvent.title}" ${dateRange}${currentEditingEvent.timeRange ? ` /// w godzinach ${currentEditingEvent.timeRange}` : ''}`;
+                            newsDetails = `"${currentEditingEvent.title}" ${dateRange}${currentEditingEvent.timeRange ? ` w godzinach ${currentEditingEvent.timeRange}` : ''}`;
                         } else if (currentEditingEvent.type === 'custom') {
                             newsAction = 'Usunięto wydarzenie';
                             const dateRange = currentEditingEvent.startDate === currentEditingEvent.endDate || !currentEditingEvent.endDate 
                                 ? `w dniu ${formatDate(currentEditingEvent.startDate)}`
                                 : `w dniach ${formatDate(currentEditingEvent.startDate)}-${formatDate(currentEditingEvent.endDate)}`;
-                            newsDetails = `"${currentEditingEvent.title}" ${dateRange}${currentEditingEvent.timeRange ? ` /// w godzinach ${currentEditingEvent.timeRange}` : ''}`;
+                            newsDetails = `"${currentEditingEvent.title}" ${dateRange}${currentEditingEvent.timeRange ? ` w godzinach ${currentEditingEvent.timeRange}` : ''}`;
                         }
                         
                         addNewsItem(newsAction, newsDetails).then(() => {
@@ -1090,25 +1090,25 @@
                     const dateRange = eventData.startDate === eventData.endDate 
                         ? `w dniu ${formatDate(eventData.startDate)}`
                         : `w dniach ${formatDate(eventData.startDate)}-${formatDate(eventData.endDate)}`;
-                    newsDetails = `${eventData.teacher} ${dateRange}${eventData.timeRange ? ` /// w godzinach ${eventData.timeRange}` : ''}`;
+                    newsDetails = `${eventData.teacher} ${dateRange}${eventData.timeRange ? ` w godzinach ${eventData.timeRange}` : ''}`;
                 } else if (type === 'trip') {
                     newsAction = isEdit ? 'Zmieniono wycieczkę' : 'Dodano wycieczkę';
                     const dateRange = eventData.startDate === eventData.endDate 
                         ? `w dniu ${formatDate(eventData.startDate)}`
                         : `w dniach ${formatDate(eventData.startDate)}-${formatDate(eventData.endDate)}`;
-                    newsDetails = `dla klasy ${eventData.className} ${dateRange}${eventData.timeRange ? ` /// w godzinach ${eventData.timeRange}` : ''}`;
+                    newsDetails = `dla klasy ${eventData.className} ${dateRange}${eventData.timeRange ? ` w godzinach ${eventData.timeRange}` : ''}`;
                 } else if (type === 'holiday') {
                     newsAction = isEdit ? 'Zmieniono dzień wolny' : 'Dodano dzień wolny';
                     const dateRange = eventData.startDate === eventData.endDate 
                         ? `w dniu ${formatDate(eventData.startDate)}`
                         : `w dniach ${formatDate(eventData.startDate)}-${formatDate(eventData.endDate)}`;
-                    newsDetails = `${dateRange}. ${eventData.title}${eventData.timeRange ? ` /// w godzinach ${eventData.timeRange}` : ''}`;
+                    newsDetails = `${dateRange}. ${eventData.title}${eventData.timeRange ? ` w godzinach ${eventData.timeRange}` : ''}`;
                 } else if (type === 'custom') {
                     newsAction = isEdit ? 'Zmieniono wydarzenie' : 'Dodano wydarzenie';
                     const dateRange = eventData.startDate === eventData.endDate 
                         ? `w dniu ${formatDate(eventData.startDate)}`
                         : `w dniach ${formatDate(eventData.startDate)}-${formatDate(eventData.endDate)}`;
-                    newsDetails = `"${eventData.title}" ${dateRange}${eventData.timeRange ? ` /// w godzinach ${eventData.timeRange}` : ''}`;
+                    newsDetails = `"${eventData.title}" ${dateRange}${eventData.timeRange ? ` w godzinach ${eventData.timeRange}` : ''}`;
                 }
                 
                 addNewsItem(newsAction, newsDetails).then(() => {
