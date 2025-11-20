@@ -468,10 +468,6 @@
 					<option value="8a">8a</option>
                     <option value="8b">8b</option>
                     <option value="8m">8m</option>
-					
-					
-
-                    <!-- TUTAJ DODAJ WIĘCEJ KLAS -->
                 </select>
             </div>
             <div id="class-calendar-container" class="class-calendar-container">
@@ -505,368 +501,31 @@
             appId: "1:730540135505:web:7a539a5eb3cb3d148d9470"
         };
 
-        // ============================================================
-        // TUTAJ EDYTUJESZ NAUCZYCIELI DLA KAŻDEJ KLASY
-        // ============================================================
         const classTeachersMap = {
-            '1a': [
-                "Weronika Rogalska",
-                "Sylwia Kozakowska",
-                "Katarzyna Sieczko",
-                "Ignacy Włoszek",
-                "Elżbieta Gawin",
-				"Małgorzata Domagała",
-				"Anna Grześkowiak",
-				"Marlena Wyszyńska"
-            ],
-                      '1b': [
-                "Katarzyna Buzdro",
-                "Marlena Wyszyńska",
-                "Antonnio Myszkowski",
-                "Magdalena Joelesh",
-                "Marcin Krupnicki",
-                "Elżbieta Gawin",
-                "Ignacy Włoszek"
-            ],
-			           '1m': [
-                "Anna Brzeska",
-                "Antonina Pawelczyk",
-                "Hanna Brzeska",
-                "Katarzyna Sieczko",
-                "Elżbieta Gawin",
-                "Ignacy Włoszek",
-                "Marcin Krupnicki"
-            ],
-			 '2a': [
-                "Martyna Kołodziejczyk",
-                "Małgorzata Domagała",
-                "Ignacy Włoszek",
-                "Zofia Lisek",
-                "Elżbieta Gawin"
-            ],
-                      '2b': [
-                "Rozalia Lipska",
-                "Kinga Młodzik",
-                "Ignacy Włoszek",
-                "Elżbieta Gawin",
-                "Sylwia Cześniewicz",
-                "Zofia Lisek"
-            ],
-			           '2c': [
-                "Faustyna Dobrzek",
-                "Zofia Lisek",
-                "Ignacy Włoszek",
-                "Michał Pietruszewski",
-                "Natalia Raczyńska",
-                "Elżbieta Gawin"
-            ],
-			 '3a': [
-                "Alicja Rajewicz-Drzemała",
-                "Marcin Krupnicki",
-                "Katarzyna Sieczko",
-                "Natalia Raczyńska",
-                "Ignacy Włoszek",
-                "Elżbieta Gawin"
-            ],
-                      '3b': [
-                "Agnieszka Miłasz",
-                "Natalia Raczyńska",
-                "Katarzyna Sieczko",
-                "Marcin Krupnicki",
-                "Ignacy Włoszek",
-                "Elżbieta Gawin"
-            ],
-			           '3c': [
-                "Daria Musherina",
-                "Marlena Wyszyńska",
-                "Natalia Raczyńska",
-                "Marcin Krupnicki",
-                "Elżbieta Gawin",
-                "Irynna Goshevniyk",
-                "Ignacy Włoszek",
-                "Celina Włodarczyk",
-				"Anna Grześkowiak",
-				"Urszula Złocińska"
-            ],
-			 '4a': [
-                "Małgorzata Lesińska",
-                "Grażyna Gruszka",
-                "Karolina Dominiak",
-                "Paweł Grzegorzewski",
-                "Hanna Brzeska",
-                "Marcin Krupnicki",
-				"Mateusz Gig",
-                "Barbara Trzaskowska",
-                "Ludwik Parkowiak",
-                "Lena Skwierzyńska",
-                "Elżbieta Gawin",
-                "Zuzanna Świerczek",
-				"Ignacy Włoszek"
-            ],
-                      '4b': [
-                "Małgorzata Lesińska",
-                "Joanna Małek",
-                "Marlena Wyszyńska",
-                "Karolina Żukowska",
-                "Hanna Brzeska",
-                "Michał Pietruszewski",
-				"Mateusz Gig",
-                "Barbara Trzaskowska",
-                "Ludwik Parkowiak",
-                "Lena Skwierzyńska",
-                "Elżbieta Gawin",
-                "Zuzanna Świerczek",
-				"Ignacy Włoszek"
-            ],
-			           '4c': [
-                "Oliwia Żabkiewicz",
-                "Renata Skleszewska",
-                "Karolina Dominiak",
-                "Karolina Żukowska",
-                "Hanna Brzeska",
-                "Kinga Młodzik",
-                "Ewelina Śmigalska",
-                "Barbara Trzaskowska",
-                "Ludwik Parkowiak",
-                "Lena Skwierzyńska",
-                "Elżbieta Gawin",
-                "Zuzanna Świerczek",
-				"Ignacy Włoszek"
-            ],
-			 '5a': [
-                "Oliwia Żabkiewicz",
-                "Renata Skleszewska",
-                "Karolina Dominiak",
-                "Karolina Żukowska",
-                "Hanna Brzeska",
-                "Natalia Raczyńska",
-                "Ewelina Śmigalska",
-				"Mateusz Gig",
-                "Barbara Trzaskowska",
-                "Ludwik Parkowiak",
-                "Lena Skwierzyńska",
-                "Elżbieta Gawin",
-                "Zuzanna Świerczek",
-				"Ignacy Włoszek"
-            ],
-                      '5b': [
-                "Oliwia Żabkiewicz",
-                "Michał Tarczyn",
-                "Zofia Lisek",
-                "Karolina Żukowska",
-                "Hanna Brzeska",
-                "Michał Pietruszewski",
-				"Mateusz Gig",
-                "Barbara Trzaskowska",
-                "Ludwik Parkowiak",
-                "Lena Skwierzyńska",
-                "Elżbieta Gawin",
-                "Zuzanna Świerczek",
-				"Ignacy Włoszek"
-            ],
-			           '5c': [
-                "Małgorzata Lesińska",
-                "Michał Tarczyn",
-                "Zofia Lisek",
-                "Paweł Grzegorzewski",
-                "Hanna Brzeska",
-				"Antonina Pawelczyk",
-                "Natalia Raczyńska",
-                "Bożena Szpilkiewicz",
-				"Anna Burakowska",
-				"Aleksandra Malczyk",
-				"Mateusz Gig",
-				"Karolina Dominiak",
-				"Anna Grześkowiak",
-				"Alicja Rajewicz-Drzemała",
-                "Barbara Trzaskowska",
-                "Ludwik Parkowiak",
-                "Lena Skwierzyńska",
-                "Elżbieta Gawin",
-                "Zuzanna Świerczek",
-				"Ignacy Włoszek"
-            ],
-			 '6a': [
-                "Dorota Maszkiewska",
-                "Grażyna Gruszka",
-                "Katarzyna Sieczko",
-                "Karolina Żukowska",
-                "Hanna Brzeska",
-                "Małgorzata Domagała",
-				"Sylwia Cześniewicz",
-                "Ewelina Śmigalska",
-				"Mateusz Gig",
-                "Barbara Trzaskowska",
-                "Ludwik Parkowiak",
-                "Lena Skwierzyńska",
-                "Elżbieta Gawin",
-                "Zuzanna Świerczek",
-				"Ignacy Włoszek"
-            ],
-                      '6b': [
-                "Dorota Maszkiewska",
-                "Grażyna Gruszka",
-                "Zofia Lisek",
-				"Katarzyna Sieczko",
-                "Karolina Żukowska",
-                "Hanna Brzeska",
-                "Sylwia Cześniewicz",
-                "Ewelina Śmigalska",
-				"Mateusz Gig",
-                "Barbara Trzaskowska",
-                "Ludwik Parkowiak",
-                "Lena Skwierzyńska",
-                "Elżbieta Gawin",
-                "Zuzanna Świerczek",
-				"Ignacy Włoszek"
-            ],
-			           '6m': [
-                "Oliwia Żabkiewicz",
-                "Renata Skleszewska",
-                "Zofia Lisek",
-                "Paweł Grzegorzewski",
-				"Natalia Raczyńska",
-				"Antonina Pawelczyk",
-                "Hanna Brzeska",
-                "Ewelina Śmigalska",
-				"Mateusz Gig",
-                "Barbara Trzaskowska",
-                "Ludwik Parkowiak",
-                "Lena Skwierzyńska",
-                "Elżbieta Gawin",
-                "Zuzanna Świerczek",
-				"Ignacy Włoszek"
-            ],
-			 '7a': [
-                "Anna Burakowska",
-                "Michał Tarczyn",
-                "Celina Włodarczyk",
-                "Paweł Grzegorzewski",
-                "Hanna Brzeska",
-                "Kinga Młodzik",
-                "Ewelina Śmigalska",
-				"Tadeusz Ostrowski",
-				"Marian Woźniak",
-				"Mateusz Gig",
-                "Barbara Trzaskowska",
-                "Lena Skwierzyńska",
-                "Elżbieta Gawin",
-                "Zuzanna Świerczek",
-				"Ignacy Włoszek",
-				"Antonnio Myszkowski",
-				"Martyna Kołodziejczyk",
-				"Magdalena Joelesh"
-            ],
-                      '7b': [
-                "Dorota Maszkiewska",
-                "Joanna Małek",
-                "Celina Włodarczyk",
-                "Karolina Żukowska",
-                "Hanna Brzeska",
-                "Kinga Młodzik",
-                "Ewelina Śmigalska",
-				"Tadeusz Ostrowski",
-				"Marian Woźniak",
-				"Mateusz Gig",
-                "Barbara Trzaskowska",
-                "Lena Skwierzyńska",
-                "Elżbieta Gawin",
-                "Zuzanna Świerczek",
-				"Magdalena Joelesh",
-				"Antonnio Myszkowski",
-				"Ignacy Włoszek",
-				"Martyna Kołodziejczyk"
-            ],
-			           '7m': [
-                "Dorota Maszkiewska",
-                "Michał Tarczyn",
-                "Katarzyna Sieczko",
-                "Paweł Grzegorzewski",
-                "Hanna Brzeska",
-				"Bożena Szpilkiewicz",
-				"Małgorzata Lesińska",
-				"Alicja Rajewicz-Drzemała",
-				"Anna Grześkowiak",
-				"Marlena Wyszyńska",
-				"Dariusz Drzemała",
-				"Antonina Pawelczyk",
-                "Małgorzata Domagała",
-                "Ewelina Śmigalska",
-				"Tadeusz Ostrowski",
-				"Antonnio Myszkowski",
-				"Magdalena Joelesh",
-				"Marian Woźniak",
-				"Mateusz Gig",
-                "Barbara Trzaskowska",
-                "Lena Skwierzyńska",
-                "Elżbieta Gawin",
-                "Zuzanna Świerczek",
-				"Ignacy Włoszek",
-				"Martyna Kołodziejczyk"
-            ],
-			 '8a': [
-                "Anna Burakowska",
-                "Joanna Małek",
-                "Celina Włodarczyk",
-                "Paweł Grzegorzewski",
-                "Sylwia Cześniewicz",
-                "Ewelina Śmigalska",
-				"Tadeusz Ostrowski",
-				"Marian Woźniak",
-				"Mateusz Gig",
-				"Zuzanna Kośnicka",
-				"Bożena Szpilkiewicz",
-				"Alicja Rajewicz-Drzemała",
-				"Anna Grześkowiak",
-				"Marlena Wyszyńska",
-				"Magdalena Joelesh",
-                "Dariusz Drzemała",
-                "Lena Skwierzyńska",
-                "Elżbieta Gawin",
-                "Zuzanna Świerczek",
-				"Ignacy Włoszek",
-				"Ludwik Parkowiak",
-				"Martyna Kołodziejczyk"
-            ],
-                      '8b': [
-                "Elżbieta Gawin",
-                "Joanna Małek",
-                "Karolina Dominiak",
-                "Paweł Grzegorzewski",
-                "Sylwia Cześniewicz",
-				"Magdalena Joelesh",
-                "Ewelina Śmigalska",
-				"Tadeusz Ostrowski",
-				"Marian Woźniak",
-				"Mateusz Gig",
-                "Dariusz Drzemała",
-                "Lena Skwierzyńska",
-                "Elżbieta Gawin",
-                "Zuzanna Świerczek",
-				"Ignacy Włoszek",
-				"Ludwik Parkowiak",
-				"Martyna Kołodziejczyk"
-            ],
-			           '8m': [
-                "Anna Burakowska",
-                "Renata Skleszewska",
-                "Celina Włodarczyk",
-                "Paweł Grzegorzewski",
-                "Antonina Pawelczyk",
-				"Hanna Brzeska",
-                "Małgorzata Domagała",
-                "Ewelina Śmigalska",
-				"Tadeusz Ostrowski",
-				"Marian Woźniak",
-				"Mateusz Gig",
-                "Dariusz Drzemała",
-                "Lena Skwierzyńska",
-                "Elżbieta Gawin",
-                "Zuzanna Świerczek",
-				"Ignacy Włoszek",
-				"Ludwik Parkowiak",
-				"Martyna Kołodziejczyk"
-            ],
+            '1a': ["Weronika Rogalska", "Sylwia Kozakowska", "Katarzyna Sieczko", "Ignacy Włoszek", "Elżbieta Gawin", "Małgorzata Domagała", "Anna Grześkowiak", "Marlena Wyszyńska"],
+            '1b': ["Katarzyna Buzdro", "Marlena Wyszyńska", "Antonnio Myszkowski", "Magdalena Joelesh", "Marcin Krupnicki", "Elżbieta Gawin", "Ignacy Włoszek"],
+            '1m': ["Anna Brzeska", "Antonina Pawelczyk", "Hanna Brzeska", "Katarzyna Sieczko", "Elżbieta Gawin", "Ignacy Włoszek", "Marcin Krupnicki"],
+            '2a': ["Martyna Kołodziejczyk", "Małgorzata Domagała", "Ignacy Włoszek", "Zofia Lisek", "Elżbieta Gawin"],
+            '2b': ["Rozalia Lipska", "Kinga Młodzik", "Ignacy Włoszek", "Elżbieta Gawin", "Sylwia Cześniewicz", "Zofia Lisek"],
+            '2c': ["Faustyna Dobrzek", "Zofia Lisek", "Ignacy Włoszek", "Michał Pietruszewski", "Natalia Raczyńska", "Elżbieta Gawin"],
+            '3a': ["Alicja Rajewicz-Drzemała", "Marcin Krupnicki", "Katarzyna Sieczko", "Natalia Raczyńska", "Ignacy Włoszek", "Elżbieta Gawin"],
+            '3b': ["Agnieszka Miłasz", "Natalia Raczyńska", "Katarzyna Sieczko", "Marcin Krupnicki", "Ignacy Włoszek", "Elżbieta Gawin"],
+            '3c': ["Daria Musherina", "Marlena Wyszyńska", "Natalia Raczyńska", "Marcin Krupnicki", "Elżbieta Gawin", "Irynna Goshevniyk", "Ignacy Włoszek", "Celina Włodarczyk", "Anna Grześkowiak", "Urszula Złocińska"],
+            '4a': ["Małgorzata Lesińska", "Grażyna Gruszka", "Karolina Dominiak", "Paweł Grzegorzewski", "Hanna Brzeska", "Marcin Krupnicki", "Mateusz Gig", "Barbara Trzaskowska", "Ludwik Parkowiak", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek"],
+            '4b': ["Małgorzata Lesińska", "Joanna Małek", "Marlena Wyszyńska", "Karolina Żukowska", "Hanna Brzeska", "Michał Pietruszewski", "Mateusz Gig", "Barbara Trzaskowska", "Ludwik Parkowiak", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek"],
+            '4c': ["Oliwia Żabkiewicz", "Renata Skleszewska", "Karolina Dominiak", "Karolina Żukowska", "Hanna Brzeska", "Kinga Młodzik", "Ewelina Śmigalska", "Barbara Trzaskowska", "Ludwik Parkowiak", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek"],
+            '5a': ["Oliwia Żabkiewicz", "Renata Skleszewska", "Karolina Dominiak", "Karolina Żukowska", "Hanna Brzeska", "Natalia Raczyńska", "Ewelina Śmigalska", "Mateusz Gig", "Barbara Trzaskowska", "Ludwik Parkowiak", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek"],
+            '5b': ["Oliwia Żabkiewicz", "Michał Tarczyn", "Zofia Lisek", "Karolina Żukowska", "Hanna Brzeska", "Michał Pietruszewski", "Mateusz Gig", "Barbara Trzaskowska", "Ludwik Parkowiak", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek"],
+            '5c': ["Małgorzata Lesińska", "Michał Tarczyn", "Zofia Lisek", "Paweł Grzegorzewski", "Hanna Brzeska", "Antonina Pawelczyk", "Natalia Raczyńska", "Bożena Szpilkiewicz", "Anna Burakowska", "Aleksandra Malczyk", "Mateusz Gig", "Karolina Dominiak", "Anna Grześkowiak", "Alicja Rajewicz-Drzemała", "Barbara Trzaskowska", "Ludwik Parkowiak", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek"],
+            '6a': ["Dorota Maszkiewska", "Grażyna Gruszka", "Katarzyna Sieczko", "Karolina Żukowska", "Hanna Brzeska", "Małgorzata Domagała", "Sylwia Cześniewicz", "Ewelina Śmigalska", "Mateusz Gig", "Barbara Trzaskowska", "Ludwik Parkowiak", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek"],
+            '6b': ["Dorota Maszkiewska", "Grażyna Gruszka", "Zofia Lisek", "Katarzyna Sieczko", "Karolina Żukowska", "Hanna Brzeska", "Sylwia Cześniewicz", "Ewelina Śmigalska", "Mateusz Gig", "Barbara Trzaskowska", "Ludwik Parkowiak", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek"],
+            '6m': ["Oliwia Żabkiewicz", "Renata Skleszewska", "Zofia Lisek", "Paweł Grzegorzewski", "Natalia Raczyńska", "Antonina Pawelczyk", "Hanna Brzeska", "Ewelina Śmigalska", "Mateusz Gig", "Barbara Trzaskowska", "Ludwik Parkowiak", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek"],
+            '7a': ["Anna Burakowska", "Michał Tarczyn", "Celina Włodarczyk", "Paweł Grzegorzewski", "Hanna Brzeska", "Kinga Młodzik", "Ewelina Śmigalska", "Tadeusz Ostrowski", "Marian Woźniak", "Mateusz Gig", "Barbara Trzaskowska", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek", "Antonnio Myszkowski", "Martyna Kołodziejczyk", "Magdalena Joelesh"],
+            '7b': ["Dorota Maszkiewska", "Joanna Małek", "Celina Włodarczyk", "Karolina Żukowska", "Hanna Brzeska", "Kinga Młodzik", "Ewelina Śmigalska", "Tadeusz Ostrowski", "Marian Woźniak", "Mateusz Gig", "Barbara Trzaskowska", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Magdalena Joelesh", "Antonnio Myszkowski", "Ignacy Włoszek", "Martyna Kołodziejczyk"],
+            '7m': ["Dorota Maszkiewska", "Michał Tarczyn", "Katarzyna Sieczko", "Paweł Grzegorzewski", "Hanna Brzeska", "Bożena Szpilkiewicz", "Małgorzata Lesińska", "Alicja Rajewicz-Drzemała", "Anna Grześkowiak", "Marlena Wyszyńska", "Dariusz Drzemała", "Antonina Pawelczyk", "Małgorzata Domagała", "Ewelina Śmigalska", "Tadeusz Ostrowski", "Antonnio Myszkowski", "Magdalena Joelesh", "Marian Woźniak", "Mateusz Gig", "Barbara Trzaskowska", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek", "Martyna Kołodziejczyk"],
+            '8a': ["Anna Burakowska", "Joanna Małek", "Celina Włodarczyk", "Paweł Grzegorzewski", "Sylwia Cześniewicz", "Ewelina Śmigalska", "Tadeusz Ostrowski", "Marian Woźniak", "Mateusz Gig", "Zuzanna Kośnicka", "Bożena Szpilkiewicz", "Alicja Rajewicz-Drzemała", "Anna Grześkowiak", "Marlena Wyszyńska", "Magdalena Joelesh", "Dariusz Drzemała", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek", "Ludwik Parkowiak", "Martyna Kołodziejczyk"],
+            '8b': ["Elżbieta Gawin", "Joanna Małek", "Karolina Dominiak", "Paweł Grzegorzewski", "Sylwia Cześniewicz", "Magdalena Joelesh", "Ewelina Śmigalska", "Tadeusz Ostrowski", "Marian Woźniak", "Mateusz Gig", "Dariusz Drzemała", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek", "Ludwik Parkowiak", "Martyna Kołodziejczyk"],
+            '8m': ["Anna Burakowska", "Renata Skleszewska", "Celina Włodarczyk", "Paweł Grzegorzewski", "Antonina Pawelczyk", "Hanna Brzeska", "Małgorzata Domagała", "Ewelina Śmigalska", "Tadeusz Ostrowski", "Marian Woźniak", "Mateusz Gig", "Dariusz Drzemała", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek", "Ludwik Parkowiak", "Martyna Kołodziejczyk"],
         };
 
         firebase.initializeApp(firebaseConfig);
@@ -911,7 +570,6 @@
             });
         }
 
-        // Funkcja generująca kalendarz dla wybranej klasy (tylko nieobecności i dni wolne)
         function generateClassCalendar(className) {
             if (!classTeachersMap[className]) {
                 classCalendarContainer.innerHTML = '<p>Brak danych dla wybranej klasy.</p>';
@@ -952,16 +610,14 @@
                         const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
                         const dayEvents = events[dateStr] || [];
                         
-                        // Filtruj tylko nieobecności nauczycieli tej klasy, dni wolne i wycieczki tej klasy
                         const filteredEvents = dayEvents.filter(event => {
                             if (event.type === 'holiday') {
-                                return true; // Pokazuj wszystkie dni wolne
+                                return true;
                             }
                             if (event.type === 'absence' && classTeachers.includes(event.teacher)) {
-                                return true; // Pokazuj nieobecności nauczycieli tej klasy
+                                return true;
                             }
                             if (event.type === 'trip' && event.className) {
-                                // Pokazuj wycieczki tej klasy
                                 return event.className.toLowerCase() === className.toLowerCase() || 
                                        event.className.toLowerCase().includes(className.toLowerCase());
                             }
@@ -1037,7 +693,6 @@
             const [year, month] = monthSelect.value.split('-').map(Number);
             generateCalendar(year, month - 1);
             
-            // Jeśli jesteśmy w zakładce klasowej, odśwież też kalendarz klasy
             const activeTab = document.querySelector('.tab.active');
             if (activeTab && activeTab.getAttribute('data-tab') === 'class-calendar' && classSelect.value) {
                 generateClassCalendar(classSelect.value);
@@ -1355,6 +1010,7 @@
                 modalBody.innerHTML = `
                     <div class="event-type-selector">
                         <div class="event-type" data-type="absence">Nieobecność</div>
+                        <div class="event-type" data-type="bulk-absence">Nieobecność Zbiorowa</div>
                         <div class="event-type" data-type="trip">Wycieczka</div>
                         <div class="event-type" data-type="holiday">Dzień Wolny</div>
                         <div class="event-type" data-type="custom">Wydarzenie Niestandardowe</div>
@@ -1380,6 +1036,51 @@
             const eventData = isEdit ? currentEditingEvent : null;
             
             modalTitle.textContent = isEdit ? 'Edytuj wydarzenie' : 'Dodaj wydarzenie';
+            
+            if (type === 'bulk-absence') {
+                formHTML = `
+                    <div class="info-box">
+                        <strong>ℹ️ Nieobecność Zbiorowa</strong><br>
+                        <small>Wpisz nauczycieli po przecinku. Każda nieobecność zostanie zapisana osobno.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="bulk-teachers">Nauczyciele (po przecinku):</label>
+                        <textarea id="bulk-teachers" placeholder="Np. Jan Kowalski, Anna Nowak, Piotr Wiśniewski" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Data nieobecności:</label>
+                        <div class="time-range">
+                            <input type="date" id="bulk-absence-start-date" required>
+                            <span>do</span>
+                            <input type="date" id="bulk-absence-end-date">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="bulk-absence-time">Godziny (np. 8:00-14:00):</label>
+                        <input type="text" id="bulk-absence-time" placeholder="8:00-14:00">
+                    </div>
+                    <div class="form-group">
+                        <label for="bulk-absence-reason">Powód nieobecności:</label>
+                        <textarea id="bulk-absence-reason" placeholder="Np. wycieczka, szkolenie..."></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn btn-secondary" id="cancel-form">Anuluj</button>
+                        <button class="btn btn-primary" id="save-bulk-absence">Dodaj nieobecności</button>
+                    </div>
+                `;
+                
+                modalBody.innerHTML = formHTML;
+                
+                document.getElementById('cancel-form').addEventListener('click', function() {
+                    eventModal.style.display = 'none';
+                });
+                
+                document.getElementById('save-bulk-absence').addEventListener('click', function() {
+                    saveBulkAbsence();
+                });
+                
+                return;
+            }
             
             if (type === 'absence') {
                 formHTML = `
@@ -1510,6 +1211,75 @@
             
             document.getElementById('save-event').addEventListener('click', function() {
                 saveEvent(type, isEdit);
+            });
+        }
+
+        function saveBulkAbsence() {
+            const teachersInput = document.getElementById('bulk-teachers').value.trim();
+            const startDate = document.getElementById('bulk-absence-start-date').value;
+            const endDate = document.getElementById('bulk-absence-end-date').value || startDate;
+            const timeRange = document.getElementById('bulk-absence-time').value.trim();
+            const reason = document.getElementById('bulk-absence-reason').value.trim();
+            
+            if (!teachersInput) {
+                alert('Wpisz nauczycieli!');
+                return;
+            }
+            
+            if (!startDate) {
+                alert('Podaj datę nieobecności!');
+                return;
+            }
+            
+            // Rozdziel nauczycieli po przecinku i usuń białe znaki
+            const teachers = teachersInput.split(',').map(t => t.trim()).filter(t => t);
+            
+            if (teachers.length === 0) {
+                alert('Wpisz przynajmniej jednego nauczyciela!');
+                return;
+            }
+            
+            // Dla każdego nauczyciela tworzymy osobną nieobecność
+            teachers.forEach(teacher => {
+                const eventData = {
+                    type: 'absence',
+                    teacher: teacher,
+                    startDate: startDate,
+                    endDate: endDate,
+                    timeRange: timeRange,
+                    reason: reason,
+                    createdAt: new Date().toISOString()
+                };
+                
+                const start = new Date(startDate);
+                const end = new Date(endDate);
+                
+                for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+                    const dateKey = formatDateForStorage(d);
+                    
+                    if (!events[dateKey]) {
+                        events[dateKey] = [];
+                    }
+                    
+                    const eventCopy = {...eventData};
+                    eventCopy.date = dateKey;
+                    events[dateKey].push(eventCopy);
+                }
+                
+                // Dodaj osobną wiadomość do aktualności dla każdego nauczyciela
+                const dateRange = startDate === endDate 
+                    ? `w dniu ${formatDate(startDate)}`
+                    : `w dniach ${formatDate(startDate)}-${formatDate(endDate)}`;
+                
+                const newsAction = 'Dodano nieobecność nauczyciela';
+                const newsDetails = `${teacher} ${dateRange}${timeRange ? ` w godzinach ${timeRange}` : ''}`;
+                
+                addNewsItem(newsAction, newsDetails);
+            });
+            
+            saveEvents().then(() => {
+                initCalendar();
+                eventModal.style.display = 'none';
             });
         }
         
@@ -1684,7 +1454,6 @@
             return date.toISOString().split('T')[0];
         }
 
-        // Event listener dla wyboru klasy
         classSelect.addEventListener('change', function() {
             const selectedClass = this.value;
             
