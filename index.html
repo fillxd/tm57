@@ -699,16 +699,18 @@
             }
         }
 
-        async function initCalendar() {
-            await Promise.all([loadEvents(), loadNews()]);
-            
-            const now = new Date();
-            const currentMonthValue = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-            monthSelect.value = currentMonthValue;
-            
-            updateCalendarFromSelector();
-            displayNews();
-        }
+        async function initCalendar(resetMonth = false) {
+    await Promise.all([loadEvents(), loadNews()]);
+    
+    if (resetMonth) {
+        const now = new Date();
+        const currentMonthValue = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+        monthSelect.value = currentMonthValue;
+    }
+    
+    updateCalendarFromSelector();
+    displayNews();
+}
         
         function generateCalendar(year, month) {
             calendarBody.innerHTML = '';
@@ -1493,7 +1495,7 @@
             }
         });
         
-        initCalendar();
+        initCalendar(true);
     </script>
 </body>
 </html>
