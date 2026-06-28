@@ -30,66 +30,69 @@
 
         header {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
             border-bottom: 1px solid #eee;
-            flex-wrap: wrap;
             gap: 10px;
-        }
-
-        h1 {
-            color: #2c3e50;
         }
 
         .month-selector {
             display: flex;
             align-items: center;
             gap: 10px;
-            flex-wrap: wrap;
         }
 
         select {
-            padding: 8px 12px;
+            padding: 4px 8px;
             border: 1px solid #ddd;
             border-radius: 4px;
-            font-size: 16px;
-        }
-
-        .add-button {
-    background-color: #3498db;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s;
-}
-
-        .add-button:hover {
-            background-color: #2980b9;
+            font-size: 14px;
         }
 
         .nav-button {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 4px;
+            background: none;
+            border: 2px solid #3498db;
+            color: #3498db;
+            padding: 2px 12px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 18px;
-            transition: background-color 0.3s;
-            line-height: 1;
+            font-size: 20px;
+            transition: all 0.3s;
+            line-height: 1.4;
         }
 
         .nav-button:hover {
-            background-color: #2980b9;
+            background-color: #3498db;
+            color: white;
         }
 
         .nav-button:active {
             transform: scale(0.95);
+        }
+
+        /* PRZYCISK DODAJ - ZAWSZE WIDOCZNY */
+        #add-event-btn-fixed {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+            transition: all 0.3s;
+        }
+
+        #add-event-btn-fixed:hover {
+            background-color: #2980b9;
+            transform: scale(1.05);
         }
 
         .calendar {
@@ -412,1053 +415,638 @@
     <a href="https://docs.google.com/spreadsheets/d/18OV9Sar_ENFseGPn8wppwrIeJXm6j4dsa890OTg6Ioo/edit?gid=1302175797#gid=1302175797">ARK</a>
 </div>
 
-    <div class="container">
-        <header>
-            <h1>Terminarz Szkolny</h1>
-            <div class="month-selector">
-                <button id="prev-month" class="nav-button" title="Poprzedni miesiąc">◀</button>
-                <label for="month-select">Miesiąc:</label>
-                <select id="month-select">
-                    <!-- Opcje będą generowane dynamicznie przez JavaScript -->
-                </select>
-                <button id="next-month" class="nav-button" title="Następny miesiąc">▶</button>
-                <button class="add-button" id="add-event-btn">DODAJ</button>
-            </div>
-        </header>
+<!-- PRZYCISK DODAJ - ZAWSZE WIDOCZNY -->
+<button id="add-event-btn-fixed">+ DODAJ</button>
 
-        <div class="tabs">
-            <button class="tab active" data-tab="calendar">Terminarz</button>
-            <button class="tab" data-tab="news">Aktualności</button>
-            <button class="tab" data-tab="class-calendar">Terminarz Klasowy</button>
+<div class="container">
+    <header>
+        <button id="prev-month" class="nav-button" title="Poprzedni miesiąc">◀</button>
+        <div class="month-selector">
+            <label for="month-select">Miesiąc:</label>
+            <select id="month-select">
+                <!-- Opcje będą generowane dynamicznie przez JavaScript -->
+            </select>
         </div>
+        <button id="next-month" class="nav-button" title="Następny miesiąc">▶</button>
+    </header>
 
-        <div class="tab-content active" id="calendar-tab">
-            <table class="calendar">
-                <thead>
-                    <tr>
-                        <th>Poniedziałek</th>
-                        <th>Wtorek</th>
-                        <th>Środa</th>
-                        <th>Czwartek</th>
-                        <th>Piątek</th>
-                        <th class="weekend">Sobota</th>
-                        <th class="weekend">Niedziela</th>
-                    </tr>
-                </thead>
-                <tbody id="calendar-body">
-                </tbody>
-            </table>
-        </div>
+    <div class="tabs">
+        <button class="tab active" data-tab="calendar">Terminarz</button>
+        <button class="tab" data-tab="news">Aktualności</button>
+        <button class="tab" data-tab="class-calendar">Terminarz Klasowy</button>
+    </div>
 
-        <div class="tab-content" id="news-tab">
-            <div id="news-container">
-            </div>
-        </div>
+    <div class="tab-content active" id="calendar-tab">
+        <table class="calendar">
+            <thead>
+                <tr>
+                    <th>Poniedziałek</th>
+                    <th>Wtorek</th>
+                    <th>Środa</th>
+                    <th>Czwartek</th>
+                    <th>Piątek</th>
+                    <th class="weekend">Sobota</th>
+                    <th class="weekend">Niedziela</th>
+                </tr>
+            </thead>
+            <tbody id="calendar-body">
+            </tbody>
+        </table>
+    </div>
 
-        <div class="tab-content" id="class-calendar-tab">
-            <div class="class-selector-container">
-                <label for="class-select">Wybierz klasę:</label>
-                <select id="class-select">
-                    <option value="">-- Wybierz klasę --</option>
-                    <option value="1a">1a</option>
-                    <option value="1b">1b</option>
-                    <option value="1m">1m</option>
-                    <option value="2a">2a</option>
-                    <option value="2b">2b</option>
-                    <option value="2c">2c</option>
-                    <option value="3a">3a</option>
-                    <option value="3b">3b</option>
-                    <option value="3c">3c</option>
-                    <option value="4a">4a</option>
-                    <option value="4b">4b</option>
-                    <option value="4c">4c</option>
-                    <option value="5a">5a</option>
-                    <option value="5b">5b</option>
-                    <option value="5c">5c</option>
-                    <option value="6a">6a</option>
-                    <option value="6b">6b</option>
-                    <option value="6m">6m</option>
-                    <option value="7a">7a</option>
-                    <option value="7b">7b</option>
-                    <option value="7m">7m</option>
-                    <option value="8a">8a</option>
-                    <option value="8b">8b</option>
-                    <option value="8m">8m</option>
-                </select>
-            </div>
-            <div id="class-calendar-container" class="class-calendar-container">
-                <p>Wybierz klasę, aby zobaczyć nieobecności jej nauczycieli.</p>
-            </div>
+    <div class="tab-content" id="news-tab">
+        <div id="news-container">
         </div>
     </div>
 
-    <div class="modal" id="event-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modal-title">Dodaj wydarzenie</h2>
-                <button class="close-button" id="close-modal">&times;</button>
-            </div>
-            <div id="modal-body">
-            </div>
+    <div class="tab-content" id="class-calendar-tab">
+        <div class="class-selector-container">
+            <label for="class-select">Wybierz klasę:</label>
+            <select id="class-select">
+                <option value="">-- Wybierz klasę --</option>
+                <option value="1a">1a</option>
+                <option value="1b">1b</option>
+                <option value="1m">1m</option>
+                <option value="2a">2a</option>
+                <option value="2b">2b</option>
+                <option value="2c">2c</option>
+                <option value="3a">3a</option>
+                <option value="3b">3b</option>
+                <option value="3c">3c</option>
+                <option value="4a">4a</option>
+                <option value="4b">4b</option>
+                <option value="4c">4c</option>
+                <option value="5a">5a</option>
+                <option value="5b">5b</option>
+                <option value="5c">5c</option>
+                <option value="6a">6a</option>
+                <option value="6b">6b</option>
+                <option value="6m">6m</option>
+                <option value="7a">7a</option>
+                <option value="7b">7b</option>
+                <option value="7m">7m</option>
+                <option value="8a">8a</option>
+                <option value="8b">8b</option>
+                <option value="8m">8m</option>
+            </select>
+        </div>
+        <div id="class-calendar-container" class="class-calendar-container">
+            <p>Wybierz klasę, aby zobaczyć nieobecności jej nauczycieli.</p>
         </div>
     </div>
+</div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-    
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyCzyqI6k2xHGM9mecAyGNJfAq7XjTKWqHs",
-            authDomain: "na57-a08ec.firebaseapp.com",
-            databaseURL: "https://na57-a08ec-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "na57-a08ec",
-            storageBucket: "na57-a08ec.firebasestorage.app",
-            messagingSenderId: "730540135505",
-            appId: "1:730540135505:web:7a539a5eb3cb3d148d9470"
-        };
+<div class="modal" id="event-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modal-title">Dodaj wydarzenie</h2>
+            <button class="close-button" id="close-modal">&times;</button>
+        </div>
+        <div id="modal-body">
+        </div>
+    </div>
+</div>
 
-        const classTeachersMap = {
-            '1a': ["Weronika Rogalska", "Sylwia Kozakowska", "Katarzyna Sieczko", "Ignacy Włoszek", "Elżbieta Gawin", "Małgorzata Domagała", "Anna Grześkowiak", "Marlena Wyszyńska"],
-            '1b': ["Katarzyna Buzdro", "Marlena Wyszyńska", "Antonnio Myszkowski", "Magdalena Joelesh", "Marcin Krupnicki", "Elżbieta Gawin", "Ignacy Włoszek"],
-            '1m': ["Anna Brzeska", "Antonina Pawelczyk", "Hanna Brzeska", "Katarzyna Sieczko", "Elżbieta Gawin", "Ignacy Włoszek", "Marcin Krupnicki"],
-            '2a': ["Martyna Kołodziejczyk", "Małgorzata Domagała", "Ignacy Włoszek", "Zofia Lisek", "Elżbieta Gawin"],
-            '2b': ["Rozalia Lipska", "Kinga Młodzik", "Ignacy Włoszek", "Elżbieta Gawin", "Sylwia Cześniewicz", "Zofia Lisek"],
-            '2c': ["Faustyna Dobrzek", "Zofia Lisek", "Ignacy Włoszek", "Michał Pietruszewski", "Natalia Raczyńska", "Elżbieta Gawin"],
-            '3a': ["Alicja Rajewicz-Drzemała", "Marcin Krupnicki", "Katarzyna Sieczko", "Natalia Raczyńska", "Ignacy Włoszek", "Elżbieta Gawin"],
-            '3b': ["Agnieszka Miłasz", "Natalia Raczyńska", "Katarzyna Sieczko", "Marcin Krupnicki", "Ignacy Włoszek", "Elżbieta Gawin"],
-            '3c': ["Daria Musherina", "Marlena Wyszyńska", "Natalia Raczyńska", "Marcin Krupnicki", "Elżbieta Gawin", "Irynna Goshevniyk", "Ignacy Włoszek", "Celina Włodarczyk", "Anna Grześkowiak", "Urszula Złocińska"],
-            '4a': ["Małgorzata Lesińska", "Grażyna Gruszka", "Karolina Dominiak", "Paweł Grzegorzewski", "Hanna Brzeska", "Marcin Krupnicki", "Mateusz Gig", "Barbara Trzaskowska", "Ludwik Parkowiak", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek"],
-            '4b': ["Małgorzata Lesińska", "Joanna Małek", "Marlena Wyszyńska", "Karolina Żukowska", "Hanna Brzeska", "Michał Pietruszewski", "Mateusz Gig", "Barbara Trzaskowska", "Ludwik Parkowiak", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek"],
-            '4c': ["Oliwia Żabkiewicz", "Renata Skleszewska", "Karolina Dominiak", "Karolina Żukowska", "Hanna Brzeska", "Kinga Młodzik", "Ewelina Śmigalska", "Barbara Trzaskowska", "Ludwik Parkowiak", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek"],
-            '5a': ["Oliwia Żabkiewicz", "Renata Skleszewska", "Karolina Dominiak", "Karolina Żukowska", "Hanna Brzeska", "Natalia Raczyńska", "Ewelina Śmigalska", "Mateusz Gig", "Barbara Trzaskowska", "Ludwik Parkowiak", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek"],
-            '5b': ["Oliwia Żabkiewicz", "Michał Tarczyn", "Zofia Lisek", "Karolina Żukowska", "Hanna Brzeska", "Michał Pietruszewski", "Mateusz Gig", "Barbara Trzaskowska", "Ludwik Parkowiak", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek"],
-            '5c': ["Małgorzata Lesińska", "Michał Tarczyn", "Zofia Lisek", "Paweł Grzegorzewski", "Hanna Brzeska", "Antonina Pawelczyk", "Natalia Raczyńska", "Bożena Szpilkiewicz", "Anna Burakowska", "Aleksandra Malczyk", "Mateusz Gig", "Karolina Dominiak", "Anna Grześkowiak", "Alicja Rajewicz-Drzemała", "Barbara Trzaskowska", "Ludwik Parkowiak", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek"],
-            '6a': ["Dorota Maszkiewska", "Grażyna Gruszka", "Katarzyna Sieczko", "Karolina Żukowska", "Hanna Brzeska", "Małgorzata Domagała", "Sylwia Cześniewicz", "Ewelina Śmigalska", "Mateusz Gig", "Barbara Trzaskowska", "Ludwik Parkowiak", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek"],
-            '6b': ["Dorota Maszkiewska", "Grażyna Gruszka", "Zofia Lisek", "Katarzyna Sieczko", "Karolina Żukowska", "Hanna Brzeska", "Sylwia Cześniewicz", "Ewelina Śmigalska", "Mateusz Gig", "Barbara Trzaskowska", "Ludwik Parkowiak", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek"],
-            '6m': ["Oliwia Żabkiewicz", "Renata Skleszewska", "Zofia Lisek", "Paweł Grzegorzewski", "Natalia Raczyńska", "Antonina Pawelczyk", "Hanna Brzeska", "Ewelina Śmigalska", "Mateusz Gig", "Barbara Trzaskowska", "Ludwik Parkowiak", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek"],
-            '7a': ["Anna Burakowska", "Michał Tarczyn", "Celina Włodarczyk", "Paweł Grzegorzewski", "Hanna Brzeska", "Kinga Młodzik", "Ewelina Śmigalska", "Tadeusz Ostrowski", "Marian Woźniak", "Mateusz Gig", "Barbara Trzaskowska", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek", "Antonnio Myszkowski", "Martyna Kołodziejczyk", "Magdalena Joelesh"],
-            '7b': ["Dorota Maszkiewska", "Joanna Małek", "Celina Włodarczyk", "Karolina Żukowska", "Hanna Brzeska", "Kinga Młodzik", "Ewelina Śmigalska", "Tadeusz Ostrowski", "Marian Woźniak", "Mateusz Gig", "Barbara Trzaskowska", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Magdalena Joelesh", "Antonnio Myszkowski", "Ignacy Włoszek", "Martyna Kołodziejczyk"],
-            '7m': ["Dorota Maszkiewska", "Michał Tarczyn", "Katarzyna Sieczko", "Paweł Grzegorzewski", "Hanna Brzeska", "Bożena Szpilkiewicz", "Małgorzata Lesińska", "Alicja Rajewicz-Drzemała", "Anna Grześkowiak", "Marlena Wyszyńska", "Dariusz Drzemała", "Antonina Pawelczyk", "Małgorzata Domagała", "Ewelina Śmigalska", "Tadeusz Ostrowski", "Antonnio Myszkowski", "Magdalena Joelesh", "Marian Woźniak", "Mateusz Gig", "Barbara Trzaskowska", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek", "Martyna Kołodziejczyk"],
-            '8a': ["Anna Burakowska", "Joanna Małek", "Celina Włodarczyk", "Paweł Grzegorzewski", "Sylwia Cześniewicz", "Ewelina Śmigalska", "Tadeusz Ostrowski", "Marian Woźniak", "Mateusz Gig", "Zuzanna Kośnicka", "Bożena Szpilkiewicz", "Alicja Rajewicz-Drzemała", "Anna Grześkowiak", "Marlena Wyszyńska", "Magdalena Joelesh", "Dariusz Drzemała", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek", "Ludwik Parkowiak", "Martyna Kołodziejczyk"],
-            '8b': ["Elżbieta Gawin", "Joanna Małek", "Karolina Dominiak", "Paweł Grzegorzewski", "Sylwia Cześniewicz", "Magdalena Joelesh", "Ewelina Śmigalska", "Tadeusz Ostrowski", "Marian Woźniak", "Mateusz Gig", "Dariusz Drzemała", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek", "Ludwik Parkowiak", "Martyna Kołodziejczyk"],
-            '8m': ["Anna Burakowska", "Renata Skleszewska", "Celina Włodarczyk", "Paweł Grzegorzewski", "Antonina Pawelczyk", "Hanna Brzeska", "Małgorzata Domagała", "Ewelina Śmigalska", "Tadeusz Ostrowski", "Marian Woźniak", "Mateusz Gig", "Dariusz Drzemała", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek", "Ludwik Parkowiak", "Martyna Kołodziejczyk"],
-        };
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyCzyqI6k2xHGM9mecAyGNJfAq7XjTKWqHs",
+        authDomain: "na57-a08ec.firebaseapp.com",
+        databaseURL: "https://na57-a08ec-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "na57-a08ec",
+        storageBucket: "na57-a08ec.firebasestorage.app",
+        messagingSenderId: "730540135505",
+        appId: "1:730540135505:web:7a539a5eb3cb3d148d9470"
+    };
 
-        let events = {};
-        let news = [];
-        let currentEditingEvent = null;
-        let currentEditingDate = null;
-        let currentEditingIndex = null;
-        
-        // KONFIGURACJA ZAKRESU MIESIĘCY
-        const MONTH_RANGE = {
-            startYear: 2025,
-            startMonth: 8,    // Wrzesień
-            endYear: 2027,
-            endMonth: 5       // Czerwiec
-        };
-        
-        const monthSelect = document.getElementById('month-select');
-        const calendarBody = document.getElementById('calendar-body');
-        const addEventBtn = document.getElementById('add-event-btn');
-        const eventModal = document.getElementById('event-modal');
-        const closeModal = document.getElementById('close-modal');
-        const modalTitle = document.getElementById('modal-title');
-        const modalBody = document.getElementById('modal-body');
-        const tabs = document.querySelectorAll('.tab');
-        const tabContents = document.querySelectorAll('.tab-content');
-        const newsContainer = document.getElementById('news-container');
-        const classSelect = document.getElementById('class-select');
-        const classCalendarContainer = document.getElementById('class-calendar-container');
-       
-        function loadEvents() {
-            return new Promise((resolve) => {
-                database.ref('schoolCalendarEvents').on('value', (snapshot) => {
-                    const data = snapshot.val();
-                    events = data || {};
-                    resolve(events);
-                });
+    const classTeachersMap = {
+        '1a': ["Weronika Rogalska", "Sylwia Kozakowska", "Katarzyna Sieczko", "Ignacy Włoszek", "Elżbieta Gawin", "Małgorzata Domagała", "Anna Grześkowiak", "Marlena Wyszyńska"],
+        '1b': ["Katarzyna Buzdro", "Marlena Wyszyńska", "Antonnio Myszkowski", "Magdalena Joelesh", "Marcin Krupnicki", "Elżbieta Gawin", "Ignacy Włoszek"],
+        '1m': ["Anna Brzeska", "Antonina Pawelczyk", "Hanna Brzeska", "Katarzyna Sieczko", "Elżbieta Gawin", "Ignacy Włoszek", "Marcin Krupnicki"],
+        '2a': ["Martyna Kołodziejczyk", "Małgorzata Domagała", "Ignacy Włoszek", "Zofia Lisek", "Elżbieta Gawin"],
+        '2b': ["Rozalia Lipska", "Kinga Młodzik", "Ignacy Włoszek", "Elżbieta Gawin", "Sylwia Cześniewicz", "Zofia Lisek"],
+        '2c': ["Faustyna Dobrzek", "Zofia Lisek", "Ignacy Włoszek", "Michał Pietruszewski", "Natalia Raczyńska", "Elżbieta Gawin"],
+        '3a': ["Alicja Rajewicz-Drzemała", "Marcin Krupnicki", "Katarzyna Sieczko", "Natalia Raczyńska", "Ignacy Włoszek", "Elżbieta Gawin"],
+        '3b': ["Agnieszka Miłasz", "Natalia Raczyńska", "Katarzyna Sieczko", "Marcin Krupnicki", "Ignacy Włoszek", "Elżbieta Gawin"],
+        '3c': ["Daria Musherina", "Marlena Wyszyńska", "Natalia Raczyńska", "Marcin Krupnicki", "Elżbieta Gawin", "Irynna Goshevniyk", "Ignacy Włoszek", "Celina Włodarczyk", "Anna Grześkowiak", "Urszula Złocińska"],
+        '4a': ["Małgorzata Lesińska", "Grażyna Gruszka", "Karolina Dominiak", "Paweł Grzegorzewski", "Hanna Brzeska", "Marcin Krupnicki", "Mateusz Gig", "Barbara Trzaskowska", "Ludwik Parkowiak", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek"],
+        '4b': ["Małgorzata Lesińska", "Joanna Małek", "Marlena Wyszyńska", "Karolina Żukowska", "Hanna Brzeska", "Michał Pietruszewski", "Mateusz Gig", "Barbara Trzaskowska", "Ludwik Parkowiak", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek"],
+        '4c': ["Oliwia Żabkiewicz", "Renata Skleszewska", "Karolina Dominiak", "Karolina Żukowska", "Hanna Brzeska", "Kinga Młodzik", "Ewelina Śmigalska", "Barbara Trzaskowska", "Ludwik Parkowiak", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek"],
+        '5a': ["Oliwia Żabkiewicz", "Renata Skleszewska", "Karolina Dominiak", "Karolina Żukowska", "Hanna Brzeska", "Natalia Raczyńska", "Ewelina Śmigalska", "Mateusz Gig", "Barbara Trzaskowska", "Ludwik Parkowiak", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek"],
+        '5b': ["Oliwia Żabkiewicz", "Michał Tarczyn", "Zofia Lisek", "Karolina Żukowska", "Hanna Brzeska", "Michał Pietruszewski", "Mateusz Gig", "Barbara Trzaskowska", "Ludwik Parkowiak", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek"],
+        '5c': ["Małgorzata Lesińska", "Michał Tarczyn", "Zofia Lisek", "Paweł Grzegorzewski", "Hanna Brzeska", "Antonina Pawelczyk", "Natalia Raczyńska", "Bożena Szpilkiewicz", "Anna Burakowska", "Aleksandra Malczyk", "Mateusz Gig", "Karolina Dominiak", "Anna Grześkowiak", "Alicja Rajewicz-Drzemała", "Barbara Trzaskowska", "Ludwik Parkowiak", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek"],
+        '6a': ["Dorota Maszkiewska", "Grażyna Gruszka", "Katarzyna Sieczko", "Karolina Żukowska", "Hanna Brzeska", "Małgorzata Domagała", "Sylwia Cześniewicz", "Ewelina Śmigalska", "Mateusz Gig", "Barbara Trzaskowska", "Ludwik Parkowiak", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek"],
+        '6b': ["Dorota Maszkiewska", "Grażyna Gruszka", "Zofia Lisek", "Katarzyna Sieczko", "Karolina Żukowska", "Hanna Brzeska", "Sylwia Cześniewicz", "Ewelina Śmigalska", "Mateusz Gig", "Barbara Trzaskowska", "Ludwik Parkowiak", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek"],
+        '6m': ["Oliwia Żabkiewicz", "Renata Skleszewska", "Zofia Lisek", "Paweł Grzegorzewski", "Natalia Raczyńska", "Antonina Pawelczyk", "Hanna Brzeska", "Ewelina Śmigalska", "Mateusz Gig", "Barbara Trzaskowska", "Ludwik Parkowiak", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek"],
+        '7a': ["Anna Burakowska", "Michał Tarczyn", "Celina Włodarczyk", "Paweł Grzegorzewski", "Hanna Brzeska", "Kinga Młodzik", "Ewelina Śmigalska", "Tadeusz Ostrowski", "Marian Woźniak", "Mateusz Gig", "Barbara Trzaskowska", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek", "Antonnio Myszkowski", "Martyna Kołodziejczyk", "Magdalena Joelesh"],
+        '7b': ["Dorota Maszkiewska", "Joanna Małek", "Celina Włodarczyk", "Karolina Żukowska", "Hanna Brzeska", "Kinga Młodzik", "Ewelina Śmigalska", "Tadeusz Ostrowski", "Marian Woźniak", "Mateusz Gig", "Barbara Trzaskowska", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Magdalena Joelesh", "Antonnio Myszkowski", "Ignacy Włoszek", "Martyna Kołodziejczyk"],
+        '7m': ["Dorota Maszkiewska", "Michał Tarczyn", "Katarzyna Sieczko", "Paweł Grzegorzewski", "Hanna Brzeska", "Bożena Szpilkiewicz", "Małgorzata Lesińska", "Alicja Rajewicz-Drzemała", "Anna Grześkowiak", "Marlena Wyszyńska", "Dariusz Drzemała", "Antonina Pawelczyk", "Małgorzata Domagała", "Ewelina Śmigalska", "Tadeusz Ostrowski", "Antonnio Myszkowski", "Magdalena Joelesh", "Marian Woźniak", "Mateusz Gig", "Barbara Trzaskowska", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek", "Martyna Kołodziejczyk"],
+        '8a': ["Anna Burakowska", "Joanna Małek", "Celina Włodarczyk", "Paweł Grzegorzewski", "Sylwia Cześniewicz", "Ewelina Śmigalska", "Tadeusz Ostrowski", "Marian Woźniak", "Mateusz Gig", "Zuzanna Kośnicka", "Bożena Szpilkiewicz", "Alicja Rajewicz-Drzemała", "Anna Grześkowiak", "Marlena Wyszyńska", "Magdalena Joelesh", "Dariusz Drzemała", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek", "Ludwik Parkowiak", "Martyna Kołodziejczyk"],
+        '8b': ["Elżbieta Gawin", "Joanna Małek", "Karolina Dominiak", "Paweł Grzegorzewski", "Sylwia Cześniewicz", "Magdalena Joelesh", "Ewelina Śmigalska", "Tadeusz Ostrowski", "Marian Woźniak", "Mateusz Gig", "Dariusz Drzemała", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek", "Ludwik Parkowiak", "Martyna Kołodziejczyk"],
+        '8m': ["Anna Burakowska", "Renata Skleszewska", "Celina Włodarczyk", "Paweł Grzegorzewski", "Antonina Pawelczyk", "Hanna Brzeska", "Małgorzata Domagała", "Ewelina Śmigalska", "Tadeusz Ostrowski", "Marian Woźniak", "Mateusz Gig", "Dariusz Drzemała", "Lena Skwierzyńska", "Elżbieta Gawin", "Zuzanna Świerczek", "Ignacy Włoszek", "Ludwik Parkowiak", "Martyna Kołodziejczyk"],
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    let events = {};
+    let news = [];
+    let currentEditingEvent = null;
+    let currentEditingDate = null;
+    let currentEditingIndex = null;
+
+    const MONTH_RANGE = {
+        startYear: 2025,
+        startMonth: 8,
+        endYear: 2027,
+        endMonth: 5
+    };
+
+    const monthSelect = document.getElementById('month-select');
+    const calendarBody = document.getElementById('calendar-body');
+    const addEventBtn = document.getElementById('add-event-btn-fixed');
+    const eventModal = document.getElementById('event-modal');
+    const closeModal = document.getElementById('close-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalBody = document.getElementById('modal-body');
+    const tabs = document.querySelectorAll('.tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+    const newsContainer = document.getElementById('news-container');
+    const classSelect = document.getElementById('class-select');
+    const classCalendarContainer = document.getElementById('class-calendar-container');
+
+    function loadEvents() {
+        return new Promise((resolve) => {
+            database.ref('schoolCalendarEvents').on('value', (snapshot) => {
+                const data = snapshot.val();
+                events = data || {};
+                resolve(events);
             });
-        }
-        
-        function loadNews() {
-            return new Promise((resolve) => {
-                database.ref('schoolCalendarNews').on('value', (snapshot) => {
-                    const data = snapshot.val();
-                    news = data || [];
-                    resolve(news);
-                });
+        });
+    }
+
+    function loadNews() {
+        return new Promise((resolve) => {
+            database.ref('schoolCalendarNews').on('value', (snapshot) => {
+                const data = snapshot.val();
+                news = data || [];
+                resolve(news);
             });
+        });
+    }
+
+    function generateClassCalendar(className) {
+        if (!classTeachersMap[className]) {
+            classCalendarContainer.innerHTML = '<p>Brak danych dla wybranej klasy.</p>';
+            return;
         }
 
-        function generateClassCalendar(className) {
-            if (!classTeachersMap[className]) {
-                classCalendarContainer.innerHTML = '<p>Brak danych dla wybranej klasy.</p>';
-                return;
-            }
+        const classTeachers = classTeachersMap[className];
+        const [year, month] = monthSelect.value.split('-').map(Number);
 
-            const classTeachers = classTeachersMap[className];
-            const [year, month] = monthSelect.value.split('-').map(Number);
-            
-            let calendarHTML = '<div class="info-box">';
-            calendarHTML += `<strong>ℹ️ Klasa ${className.toUpperCase()}</strong> - Nieobecności nauczycieli i dni wolne<br>`;
-            calendarHTML += `<small>Nauczyciele: ${classTeachers.join(', ')}</small>`;
-            calendarHTML += '</div>';
-            
-            calendarHTML += '<table class="calendar"><thead><tr>';
-            calendarHTML += '<th>Poniedziałek</th><th>Wtorek</th><th>Środa</th><th>Czwartek</th><th>Piątek</th>';
-            calendarHTML += '<th class="weekend">Sobota</th><th class="weekend">Niedziela</th>';
-            calendarHTML += '</tr></thead><tbody>';
-            
-            const firstDay = new Date(year, month - 1, 1);
-            const daysInMonth = new Date(year, month, 0).getDate();
-            
-            let firstDayOfWeek = firstDay.getDay();
-            firstDayOfWeek = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1;
-            
-            let date = 1;
-            
-            for (let week = 0; week < 6; week++) {
-                calendarHTML += '<tr>';
-                
-                for (let dayOfWeek = 0; dayOfWeek < 7; dayOfWeek++) {
-                    if (week === 0 && dayOfWeek < firstDayOfWeek) {
-                        calendarHTML += '<td class="empty"></td>';
-                    } else if (date > daysInMonth) {
-                        calendarHTML += '<td class="empty"></td>';
-                    } else {
-                        const isWeekend = dayOfWeek === 5 || dayOfWeek === 6;
-                        const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
-                        const dayEvents = events[dateStr] || [];
-                        
-                        const filteredEvents = dayEvents.filter(event => {
-                            if (event.type === 'holiday') {
-                                return true;
+        let calendarHTML = '<div class="info-box">';
+        calendarHTML += `<strong>ℹ️ Klasa ${className.toUpperCase()}</strong> - Nieobecności nauczycieli i dni wolne<br>`;
+        calendarHTML += `<small>Nauczyciele: ${classTeachers.join(', ')}</small>`;
+        calendarHTML += '</div>';
+
+        calendarHTML += '<table class="calendar"><thead><tr>';
+        calendarHTML += '<th>Poniedziałek</th><th>Wtorek</th><th>Środa</th><th>Czwartek</th><th>Piątek</th>';
+        calendarHTML += '<th class="weekend">Sobota</th><th class="weekend">Niedziela</th>';
+        calendarHTML += '</tr></thead><tbody>';
+
+        const firstDay = new Date(year, month - 1, 1);
+        const daysInMonth = new Date(year, month, 0).getDate();
+
+        let firstDayOfWeek = firstDay.getDay();
+        firstDayOfWeek = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1;
+
+        let date = 1;
+
+        for (let week = 0; week < 6; week++) {
+            calendarHTML += '<tr>';
+
+            for (let dayOfWeek = 0; dayOfWeek < 7; dayOfWeek++) {
+                if (week === 0 && dayOfWeek < firstDayOfWeek) {
+                    calendarHTML += '<td class="empty"></td>';
+                } else if (date > daysInMonth) {
+                    calendarHTML += '<td class="empty"></td>';
+                } else {
+                    const isWeekend = dayOfWeek === 5 || dayOfWeek === 6;
+                    const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
+                    const dayEvents = events[dateStr] || [];
+
+                    const filteredEvents = dayEvents.filter(event => {
+                        if (event.type === 'holiday') {
+                            return true;
+                        }
+                        if (event.type === 'absence' && classTeachers.includes(event.teacher)) {
+                            return true;
+                        }
+                        if (event.type === 'trip' && event.className) {
+                            return event.className.toLowerCase() === className.toLowerCase() ||
+                                   event.className.toLowerCase().includes(className.toLowerCase());
+                        }
+                        return false;
+                    });
+
+                    calendarHTML += `<td class="${isWeekend ? 'weekend' : ''}">`;
+                    calendarHTML += `<div class="day-number">${date}</div>`;
+
+                    filteredEvents.forEach(event => {
+                        let eventClass = '';
+                        let eventText = '';
+
+                        if (event.type === 'absence') {
+                            eventClass = 'absence';
+                            eventText = `Nieobecność: ${event.teacher}`;
+                            if (event.timeRange) {
+                                eventText += ` (${event.timeRange})`;
                             }
-                            if (event.type === 'absence' && classTeachers.includes(event.teacher)) {
-                                return true;
+                        } else if (event.type === 'holiday') {
+                            eventClass = 'holiday';
+                            eventText = `Dzień Wolny: ${event.title}`;
+                        } else if (event.type === 'trip') {
+                            eventClass = 'trip';
+                            eventText = `Wycieczka klasy`;
+                            if (event.timeRange) {
+                                eventText += ` (${event.timeRange})`;
                             }
-                            if (event.type === 'trip' && event.className) {
-                                return event.className.toLowerCase() === className.toLowerCase() || 
-                                       event.className.toLowerCase().includes(className.toLowerCase());
-                            }
-                            return false;
-                        });
-                        
-                        calendarHTML += `<td class="${isWeekend ? 'weekend' : ''}">`;
-                        calendarHTML += `<div class="day-number">${date}</div>`;
-                        
-                        filteredEvents.forEach(event => {
-                            let eventClass = '';
-                            let eventText = '';
-                            
-                            if (event.type === 'absence') {
-                                eventClass = 'absence';
-                                eventText = `Nieobecność: ${event.teacher}`;
-                                if (event.timeRange) {
-                                    eventText += ` (${event.timeRange})`;
-                                }
-                            } else if (event.type === 'holiday') {
-                                eventClass = 'holiday';
-                                eventText = `Dzień Wolny: ${event.title}`;
-                            } else if (event.type === 'trip') {
-                                eventClass = 'trip';
-                                eventText = `Wycieczka klasy`;
-                                if (event.timeRange) {
-                                    eventText += ` (${event.timeRange})`;
-                                }
-                            }
-                            
-                            calendarHTML += `<div class="event ${eventClass}">${eventText}</div>`;
-                        });
-                        
-                        calendarHTML += '</td>';
-                        date++;
-                    }
+                        }
+
+                        calendarHTML += `<div class="event ${eventClass}">${eventText}</div>`;
+                    });
+
+                    calendarHTML += '</td>';
+                    date++;
                 }
-                
-                calendarHTML += '</tr>';
-                
-                if (date > daysInMonth) break;
             }
-            
-            calendarHTML += '</tbody></table>';
-            
-            classCalendarContainer.innerHTML = calendarHTML;
+
+            calendarHTML += '</tr>';
+
+            if (date > daysInMonth) break;
         }
-        
-        function saveEvents() {
-            return database.ref('schoolCalendarEvents').set(events);
+
+        calendarHTML += '</tbody></table>';
+
+        classCalendarContainer.innerHTML = calendarHTML;
+    }
+
+    function saveEvents() {
+        return database.ref('schoolCalendarEvents').set(events);
+    }
+
+    function saveNews() {
+        return database.ref('schoolCalendarNews').set(news);
+    }
+
+    function addNewsItem(action, details) {
+        const newsItem = {
+            action: action,
+            details: details,
+            timestamp: new Date().toISOString()
+        };
+
+        news.unshift(newsItem);
+        if (news.length > 100) {
+            news = news.slice(0, 100);
         }
-        
-        function saveNews() {
-            return database.ref('schoolCalendarNews').set(news);
-        }
-        
-        function addNewsItem(action, details) {
-            const newsItem = {
-                action: action,
-                details: details,
-                timestamp: new Date().toISOString()
-            };
-            
-            news.unshift(newsItem);
-            if (news.length > 100) {
-                news = news.slice(0, 100);
+
+        return saveNews();
+    }
+
+    function populateMonthSelector() {
+        const monthSelect = document.getElementById('month-select');
+        const now = new Date();
+        const currentYear = now.getFullYear();
+        const currentMonth = now.getMonth();
+
+        let optionsHTML = '';
+
+        for (let year = MONTH_RANGE.startYear; year <= MONTH_RANGE.endYear; year++) {
+            const startM = (year === MONTH_RANGE.startYear) ? MONTH_RANGE.startMonth : 0;
+            const endM = (year === MONTH_RANGE.endYear) ? MONTH_RANGE.endMonth : 11;
+
+            for (let month = startM; month <= endM; month++) {
+                const date = new Date(year, month, 1);
+                const monthName = date.toLocaleString('pl-PL', { month: 'long' });
+                const value = `${year}-${String(month + 1).padStart(2, '0')}`;
+                const isCurrent = (year === currentYear && month === currentMonth);
+                const selected = isCurrent ? 'selected' : '';
+                optionsHTML += `<option value="${value}" ${selected}>${monthName.charAt(0).toUpperCase() + monthName.slice(1)} ${year}</option>`;
             }
-            
-            return saveNews();
         }
-        
-        function populateMonthSelector() {
-            const monthSelect = document.getElementById('month-select');
+
+        monthSelect.innerHTML = optionsHTML;
+    }
+
+    function checkIfMonthInRange(year, month) {
+        if (year < MONTH_RANGE.startYear || year > MONTH_RANGE.endYear) {
+            return false;
+        }
+        if (year === MONTH_RANGE.startYear && month < MONTH_RANGE.startMonth) {
+            return false;
+        }
+        if (year === MONTH_RANGE.endYear && month > MONTH_RANGE.endMonth) {
+            return false;
+        }
+        return true;
+    }
+
+    function navigateMonth(direction) {
+        const monthSelect = document.getElementById('month-select');
+        const currentValue = monthSelect.value;
+
+        if (!currentValue) {
+            monthSelect.selectedIndex = 0;
+            updateCalendarFromSelector();
+            return;
+        }
+
+        const [year, month] = currentValue.split('-').map(Number);
+        const currentDate = new Date(year, month - 1, 1);
+        currentDate.setMonth(currentDate.getMonth() + direction);
+
+        const newYear = currentDate.getFullYear();
+        const newMonth = currentDate.getMonth();
+
+        if (!checkIfMonthInRange(newYear, newMonth)) {
+            return;
+        }
+
+        const newValue = `${newYear}-${String(newMonth + 1).padStart(2, '0')}`;
+        monthSelect.value = newValue;
+        updateCalendarFromSelector();
+    }
+
+    function updateCalendarFromSelector() {
+        const monthSelect = document.getElementById('month-select');
+
+        if (!monthSelect.value) {
+            monthSelect.selectedIndex = 0;
+        }
+
+        const [year, month] = monthSelect.value.split('-').map(Number);
+        generateCalendar(year, month - 1);
+
+        const activeTab = document.querySelector('.tab.active');
+        if (activeTab && activeTab.getAttribute('data-tab') === 'class-calendar' && classSelect.value) {
+            generateClassCalendar(classSelect.value);
+        }
+    }
+
+    async function initCalendar(resetMonth = false) {
+        await Promise.all([loadEvents(), loadNews()]);
+
+        populateMonthSelector();
+
+        if (resetMonth) {
             const now = new Date();
             const currentYear = now.getFullYear();
             const currentMonth = now.getMonth();
-            
-            let optionsHTML = '';
-            
-            for (let year = MONTH_RANGE.startYear; year <= MONTH_RANGE.endYear; year++) {
-                const startM = (year === MONTH_RANGE.startYear) ? MONTH_RANGE.startMonth : 0;
-                const endM = (year === MONTH_RANGE.endYear) ? MONTH_RANGE.endMonth : 11;
-                
-                for (let month = startM; month <= endM; month++) {
-                    const date = new Date(year, month, 1);
-                    const monthName = date.toLocaleString('pl-PL', { month: 'long' });
-                    const value = `${year}-${String(month + 1).padStart(2, '0')}`;
-                    const isCurrent = (year === currentYear && month === currentMonth);
-                    const selected = isCurrent ? 'selected' : '';
-                    optionsHTML += `<option value="${value}" ${selected}>${monthName.charAt(0).toUpperCase() + monthName.slice(1)} ${year}</option>`;
-                }
-            }
-            
-            monthSelect.innerHTML = optionsHTML;
-        }
 
-        function checkIfMonthInRange(year, month) {
-            if (year < MONTH_RANGE.startYear || year > MONTH_RANGE.endYear) {
-                return false;
-            }
-            if (year === MONTH_RANGE.startYear && month < MONTH_RANGE.startMonth) {
-                return false;
-            }
-            if (year === MONTH_RANGE.endYear && month > MONTH_RANGE.endMonth) {
-                return false;
-            }
-            return true;
-        }
-
-        function navigateMonth(direction) {
-            const monthSelect = document.getElementById('month-select');
-            const currentValue = monthSelect.value;
-            
-            if (!currentValue) {
-                monthSelect.selectedIndex = 0;
-                updateCalendarFromSelector();
-                return;
-            }
-            
-            const [year, month] = currentValue.split('-').map(Number);
-            const currentDate = new Date(year, month - 1, 1);
-            currentDate.setMonth(currentDate.getMonth() + direction);
-            
-            const newYear = currentDate.getFullYear();
-            const newMonth = currentDate.getMonth();
-            
-            if (!checkIfMonthInRange(newYear, newMonth)) {
-                return;
-            }
-            
-            const newValue = `${newYear}-${String(newMonth + 1).padStart(2, '0')}`;
-            monthSelect.value = newValue;
-            updateCalendarFromSelector();
-        }
-        
-        function updateCalendarFromSelector() {
-            const monthSelect = document.getElementById('month-select');
-            
-            if (!monthSelect.value) {
-                monthSelect.selectedIndex = 0;
-            }
-            
-            const [year, month] = monthSelect.value.split('-').map(Number);
-            generateCalendar(year, month - 1);
-            
-            const activeTab = document.querySelector('.tab.active');
-            if (activeTab && activeTab.getAttribute('data-tab') === 'class-calendar' && classSelect.value) {
-                generateClassCalendar(classSelect.value);
+            if (checkIfMonthInRange(currentYear, currentMonth)) {
+                const currentValue = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}`;
+                document.getElementById('month-select').value = currentValue;
+            } else {
+                document.getElementById('month-select').selectedIndex = 0;
             }
         }
 
-        async function initCalendar(resetMonth = false) {
-            await Promise.all([loadEvents(), loadNews()]);
-            
-            populateMonthSelector();
-            
-            if (resetMonth) {
-                const now = new Date();
-                const currentYear = now.getFullYear();
-                const currentMonth = now.getMonth();
-                
-                if (checkIfMonthInRange(currentYear, currentMonth)) {
-                    const currentValue = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}`;
-                    document.getElementById('month-select').value = currentValue;
+        updateCalendarFromSelector();
+        displayNews();
+    }
+
+    function generateCalendar(year, month) {
+        calendarBody.innerHTML = '';
+
+        const firstDay = new Date(year, month, 1);
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        let firstDayOfWeek = firstDay.getDay();
+        firstDayOfWeek = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1;
+
+        let date = 1;
+        let calendarHTML = '';
+
+        for (let week = 0; week < 6; week++) {
+            calendarHTML += '<tr>';
+
+            for (let dayOfWeek = 0; dayOfWeek < 7; dayOfWeek++) {
+                if (week === 0 && dayOfWeek < firstDayOfWeek) {
+                    calendarHTML += '<td class="empty"></td>';
+                } else if (date > daysInMonth) {
+                    calendarHTML += '<td class="empty"></td>';
                 } else {
-                    document.getElementById('month-select').selectedIndex = 0;
-                }
-            }
-            
-            updateCalendarFromSelector();
-            displayNews();
-        }
-        
-        function generateCalendar(year, month) {
-            calendarBody.innerHTML = '';
-            
-            const firstDay = new Date(year, month, 1);
-            const daysInMonth = new Date(year, month + 1, 0).getDate();
-            
-            let firstDayOfWeek = firstDay.getDay();
-            firstDayOfWeek = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1;
-            
-            let date = 1;
-            let calendarHTML = '';
-            
-            for (let week = 0; week < 6; week++) {
-                calendarHTML += '<tr>';
-                
-                for (let dayOfWeek = 0; dayOfWeek < 7; dayOfWeek++) {
-                    if (week === 0 && dayOfWeek < firstDayOfWeek) {
-                        calendarHTML += '<td class="empty"></td>';
-                    } else if (date > daysInMonth) {
-                        calendarHTML += '<td class="empty"></td>';
-                    } else {
-                        const currentDate = new Date(year, month, date);
-                        const dayOfMonth = currentDate.getDate();
-                        const isWeekend = dayOfWeek === 5 || dayOfWeek === 6;
-                        
-                        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(dayOfMonth).padStart(2, '0')}`;
-                        const dayEvents = events[dateStr] || [];
-                        
-                        calendarHTML += `<td class="${isWeekend ? 'weekend' : ''}" data-date="${dateStr}">`;
-                        calendarHTML += `<div class="day-number">${dayOfMonth}</div>`;
-                        
-                        dayEvents.forEach((event, index) => {
-                            let eventClass = '';
-                            let eventText = '';
-                            
-                            if (event.type === 'absence') {
-                                eventClass = 'absence';
-                                eventText = `Nieobecność: ${event.teacher}`;
-                                if (event.timeRange) {
-                                    eventText += ` (${event.timeRange})`;
-                                }
-                            } else if (event.type === 'trip') {
-                                eventClass = 'trip';
-                                eventText = `Wycieczka: ${event.className}`;
-                                if (event.timeRange) {
-                                    eventText += ` (${event.timeRange})`;
-                                }
-                            } else if (event.type === 'holiday') {
-                                eventClass = 'holiday';
-                                eventText = `Dzień Wolny: ${event.title}`;
-                                if (event.timeRange) {
-                                    eventText += ` (${event.timeRange})`;
-                                }
-                            } else if (event.type === 'custom') {
-                                eventClass = 'custom';
-                                eventText = `${event.title}`;
-                                if (event.timeRange) {
-                                    eventText += ` (${event.timeRange})`;
-                                }
-                            } else if (event.type === 'bookmark') {
-                                eventClass = 'bookmark';
-                                eventText = `${event.title}`;
-                                if (event.timeRange) {
-                                    eventText += ` (${event.timeRange})`;
-                                }
+                    const currentDate = new Date(year, month, date);
+                    const dayOfMonth = currentDate.getDate();
+                    const isWeekend = dayOfWeek === 5 || dayOfWeek === 6;
+
+                    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(dayOfMonth).padStart(2, '0')}`;
+                    const dayEvents = events[dateStr] || [];
+
+                    calendarHTML += `<td class="${isWeekend ? 'weekend' : ''}" data-date="${dateStr}">`;
+                    calendarHTML += `<div class="day-number">${dayOfMonth}</div>`;
+
+                    dayEvents.forEach((event, index) => {
+                        let eventClass = '';
+                        let eventText = '';
+
+                        if (event.type === 'absence') {
+                            eventClass = 'absence';
+                            eventText = `Nieobecność: ${event.teacher}`;
+                            if (event.timeRange) {
+                                eventText += ` (${event.timeRange})`;
                             }
-                            
-                            calendarHTML += `<div class="event ${eventClass}" data-date="${dateStr}" data-index="${index}">${eventText}</div>`;
-                        });
-                        
-                        calendarHTML += '</td>';
-                        date++;
-                    }
-                }
-                
-                calendarHTML += '</tr>';
-                
-                if (date > daysInMonth) {
-                    break;
-                }
-            }
-            
-            calendarBody.innerHTML = calendarHTML;
-            
-            document.querySelectorAll('.event').forEach(eventEl => {
-                eventEl.addEventListener('click', function() {
-                    const date = this.getAttribute('data-date');
-                    const index = parseInt(this.getAttribute('data-index'));
-                    showEventDetails(date, index);
-                });
-            });
-        }
-        
-        function displayNews() {
-            newsContainer.innerHTML = '';
-            
-            if (news.length === 0) {
-                newsContainer.innerHTML = '<p>Brak aktualności.</p>';
-                return;
-            }
-            
-            news.forEach(item => {
-                const newsItem = document.createElement('div');
-                newsItem.className = 'news-item';
-                
-                const timeAgo = getTimeAgo(item.timestamp);
-                
-                newsItem.innerHTML = `
-                    <div class="news-action">${item.action}</div>
-                    <div>${item.details}</div>
-                    <div class="news-time">${timeAgo}</div>
-                `;
-                
-                newsContainer.appendChild(newsItem);
-            });
-        }
-        
-        function getTimeAgo(timestamp) {
-            const now = new Date();
-            const past = new Date(timestamp);
-            const diffMs = now - past;
-            const diffMins = Math.floor(diffMs / 60000);
-            const diffHours = Math.floor(diffMs / 3600000);
-            const diffDays = Math.floor(diffMs / 86400000);
-            
-            if (diffMins < 1) {
-                return 'Przed chwilą';
-            } else if (diffMins < 60) {
-                return `${diffMins} ${diffMins === 1 ? 'minutę' : diffMins < 5 ? 'minuty' : 'minut'} temu`;
-            } else if (diffHours < 24) {
-                return `${diffHours} ${diffHours === 1 ? 'godzinę' : diffHours < 5 ? 'godziny' : 'godzin'} temu`;
-            } else if (diffDays < 7) {
-                return `${diffDays} ${diffDays === 1 ? 'dzień' : 'dni'} temu`;
-            } else {
-                return past.toLocaleDateString('pl-PL');
-            }
-        }
-        
-        function showEventDetails(date, index) {
-            const event = events[date][index];
-            let detailsHTML = '';
-            
-            if (event.type === 'absence') {
-                detailsHTML = `
-                    <h3>Nieobecność</h3>
-                    <div class="event-details">
-                        <p><strong>Nauczyciel:</strong> ${event.teacher}</p>
-                        <p><strong>Data:</strong> ${formatDate(event.startDate)}${event.endDate && event.endDate !== event.startDate ? ` - ${formatDate(event.endDate)}` : ''}</p>
-                        ${event.timeRange ? `<p><strong>Godziny:</strong> ${event.timeRange}</p>` : ''}
-                        ${event.reason ? `<p><strong>Powód:</strong> ${event.reason}</p>` : ''}
-                        <p><strong>Dodano:</strong> ${formatDateTime(event.createdAt)}</p>
-                    </div>
-                `;
-            } else if (event.type === 'trip') {
-                detailsHTML = `
-                    <h3>Wycieczka</h3>
-                    <div class="event-details">
-                        <p><strong>Klasa:</strong> ${event.className}</p>
-                        <p><strong>Data:</strong> ${formatDate(event.startDate)}${event.endDate && event.endDate !== event.startDate ? ` - ${formatDate(event.endDate)}` : ''}</p>
-                        ${event.timeRange ? `<p><strong>Godziny:</strong> ${event.timeRange}</p>` : ''}
-                        ${event.description ? `<p><strong>Opis wycieczki:</strong> ${event.description}</p>` : ''}
-                        <p><strong>Dodano:</strong> ${formatDateTime(event.createdAt)}</p>
-                    </div>
-                `;
-            } else if (event.type === 'holiday') {
-                detailsHTML = `
-                    <h3>Dzień Wolny</h3>
-                    <div class="event-details">
-                        <p><strong>Tytuł:</strong> ${event.title}</p>
-                        <p><strong>Data:</strong> ${formatDate(event.startDate)}${event.endDate && event.endDate !== event.startDate ? ` - ${formatDate(event.endDate)}` : ''}</p>
-                        ${event.timeRange ? `<p><strong>Godziny:</strong> ${event.timeRange}</p>` : ''}
-                        <p><strong>Dodano:</strong> ${formatDateTime(event.createdAt)}</p>
-                    </div>
-                `;
-            } else if (event.type === 'custom') {
-                detailsHTML = `
-                    <h3>Wydarzenie Niestandardowe</h3>
-                    <div class="event-details">
-                        <p><strong>Tytuł:</strong> ${event.title}</p>
-                        <p><strong>Data:</strong> ${formatDate(event.startDate)}${event.endDate && event.endDate !== event.startDate ? ` - ${formatDate(event.endDate)}` : ''}</p>
-                        ${event.timeRange ? `<p><strong>Godziny:</strong> ${event.timeRange}</p>` : ''}
-                        ${event.description ? `<p><strong>Opis:</strong> ${event.description}</p>` : ''}
-                        <p><strong>Dodano:</strong> ${formatDateTime(event.createdAt)}</p>
-                    </div>
-                `;
-            } else if (event.type === 'bookmark') {
-                detailsHTML = `
-                    <h3>Zakładka</h3>
-                    <div class="event-details">
-                        <p><strong>Tytuł:</strong> ${event.title}</p>
-                        <p><strong>Data:</strong> ${formatDate(event.startDate)}${event.endDate && event.endDate !== event.startDate ? ` - ${formatDate(event.endDate)}` : ''}</p>
-                        ${event.timeRange ? `<p><strong>Godziny:</strong> ${event.timeRange}</p>` : ''}
-                        ${event.description ? `<p><strong>Opis:</strong> ${event.description}</p>` : ''}
-                        <p><strong>Dodano:</strong> ${formatDateTime(event.createdAt)}</p>
-                    </div>
-                `;
-            }
-            
-            detailsHTML += `
-                <div class="event-actions">
-                    <button class="btn btn-primary" id="edit-event">Edytuj</button>
-                    <button class="btn btn-danger" id="delete-event">Usuń</button>
-                </div>
-            `;
-            
-            modalTitle.textContent = 'Szczegóły wydarzenia';
-            modalBody.innerHTML = detailsHTML;
-            
-            currentEditingEvent = event;
-            currentEditingDate = date;
-            currentEditingIndex = index;
-            
-            document.getElementById('edit-event').addEventListener('click', function() {
-                showEventForm(event.type, true);
-            });
-            
-            document.getElementById('delete-event').addEventListener('click', function() {
-                if (confirm('Czy na pewno chcesz usunąć to wydarzenie?')) {
-                    if (currentEditingEvent.type === 'absence' || currentEditingEvent.type === 'holiday' || currentEditingEvent.type === 'trip' || currentEditingEvent.type === 'custom' || currentEditingEvent.type === 'bookmark') {
-                        const startDate = new Date(currentEditingEvent.startDate);
-                        const endDate = new Date(currentEditingEvent.endDate || currentEditingEvent.startDate);
-                        
-                        for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
-                            const dateKey = formatDateForStorage(d);
-                            if (events[dateKey]) {
-                                events[dateKey] = events[dateKey].filter(e => {
-                                    if (e.type !== currentEditingEvent.type) return true;
-                                    if (e.startDate !== currentEditingEvent.startDate) return true;
-                                    
-                                    if (e.type === 'absence') {
-                                        return e.teacher !== currentEditingEvent.teacher || e.timeRange !== currentEditingEvent.timeRange;
-                                    } else if (e.type === 'trip') {
-                                        return e.className !== currentEditingEvent.className || e.timeRange !== currentEditingEvent.timeRange;
-                                    } else {
-                                        return e.title !== currentEditingEvent.title || e.timeRange !== currentEditingEvent.timeRange;
-                                    }
-                                });
-                                if (events[dateKey].length === 0) {
-                                    delete events[dateKey];
-                                }
+                        } else if (event.type === 'trip') {
+                            eventClass = 'trip';
+                            eventText = `Wycieczka: ${event.className}`;
+                            if (event.timeRange) {
+                                eventText += ` (${event.timeRange})`;
+                            }
+                        } else if (event.type === 'holiday') {
+                            eventClass = 'holiday';
+                            eventText = `Dzień Wolny: ${event.title}`;
+                            if (event.timeRange) {
+                                eventText += ` (${event.timeRange})`;
+                            }
+                        } else if (event.type === 'custom') {
+                            eventClass = 'custom';
+                            eventText = `${event.title}`;
+                            if (event.timeRange) {
+                                eventText += ` (${event.timeRange})`;
+                            }
+                        } else if (event.type === 'bookmark') {
+                            eventClass = 'bookmark';
+                            eventText = `${event.title}`;
+                            if (event.timeRange) {
+                                eventText += ` (${event.timeRange})`;
                             }
                         }
-                    }
-                    
-                    if (currentEditingEvent.type !== 'bookmark') {
-                        let newsAction = '';
-                        let newsDetails = '';
-                        
-                        if (currentEditingEvent.type === 'absence') {
-                            newsAction = 'Usunięto nieobecność nauczyciela';
-                            const dateRange = currentEditingEvent.startDate === currentEditingEvent.endDate || !currentEditingEvent.endDate 
-                                ? `w dniu ${formatDate(currentEditingEvent.startDate)}`
-                                : `w dniach ${formatDate(currentEditingEvent.startDate)}-${formatDate(currentEditingEvent.endDate)}`;
-                            newsDetails = `${currentEditingEvent.teacher} ${dateRange}${currentEditingEvent.timeRange ? ` w godzinach ${currentEditingEvent.timeRange}` : ''}`;
-                        } else if (currentEditingEvent.type === 'trip') {
-                            newsAction = 'Usunięto wycieczkę';
-                            const dateRange = currentEditingEvent.startDate === currentEditingEvent.endDate || !currentEditingEvent.endDate 
-                                ? `w dniu ${formatDate(currentEditingEvent.startDate)}`
-                                : `w dniach ${formatDate(currentEditingEvent.startDate)}-${formatDate(currentEditingEvent.endDate)}`;
-                            newsDetails = `dla klasy ${currentEditingEvent.className} ${dateRange}${currentEditingEvent.timeRange ? ` w godzinach ${currentEditingEvent.timeRange}` : ''}`;
-                        } else if (currentEditingEvent.type === 'holiday') {
-                            newsAction = 'Usunięto dzień wolny';
-                            const dateRange = currentEditingEvent.startDate === currentEditingEvent.endDate || !currentEditingEvent.endDate 
-                                ? `w dniu ${formatDate(currentEditingEvent.startDate)}`
-                                : `w dniach ${formatDate(currentEditingEvent.startDate)}-${formatDate(currentEditingEvent.endDate)}`;
-                            newsDetails = `"${currentEditingEvent.title}" ${dateRange}${currentEditingEvent.timeRange ? ` w godzinach ${currentEditingEvent.timeRange}` : ''}`;
-                        } else if (currentEditingEvent.type === 'custom') {
-                            newsAction = 'Usunięto wydarzenie';
-                            const dateRange = currentEditingEvent.startDate === currentEditingEvent.endDate || !currentEditingEvent.endDate 
-                                ? `w dniu ${formatDate(currentEditingEvent.startDate)}`
-                                : `w dniach ${formatDate(currentEditingEvent.startDate)}-${formatDate(currentEditingEvent.endDate)}`;
-                            newsDetails = `"${currentEditingEvent.title}" ${dateRange}${currentEditingEvent.timeRange ? ` w godzinach ${currentEditingEvent.timeRange}` : ''}`;
-                        }
-                        
-                        addNewsItem(newsAction, newsDetails).then(() => {
-                            saveEvents().then(() => {
-                                initCalendar();
-                                eventModal.style.display = 'none';
-                                resetEditingContext();
-                            });
-                        });
-                    } else {
-                        saveEvents().then(() => {
-                            initCalendar();
-                            eventModal.style.display = 'none';
-                            resetEditingContext();
-                        });
-                    }
-                }
-            });
-            
-            eventModal.style.display = 'flex';
-        }
-        
-        function showEventForm(type = null, isEdit = false) {
-            if (!type && !isEdit) {
-                modalTitle.textContent = 'Dodaj wydarzenie';
-                modalBody.innerHTML = `
-                    <div class="event-type-selector">
-                        <div class="event-type" data-type="absence">Nieobecność</div>
-                        <div class="event-type" data-type="bulk-absence">Nieobecność Zbiorowa</div>
-                        <div class="event-type" data-type="trip">Wycieczka</div>
-                        <div class="event-type" data-type="holiday">Dzień Wolny</div>
-                        <div class="event-type" data-type="custom">Wydarzenie Niestandardowe</div>
-                        <div class="event-type" data-type="bookmark">Zakładka</div>
-                    </div>
-                `;
-                
-                document.querySelectorAll('.event-type').forEach(button => {
-                    button.addEventListener('click', function() {
-                        const selectedType = this.getAttribute('data-type');
-                        showSpecificEventForm(selectedType, false);
+
+                        calendarHTML += `<div class="event ${eventClass}" data-date="${dateStr}" data-index="${index}">${eventText}</div>`;
                     });
-                });
-            } else {
-                showSpecificEventForm(type, isEdit);
+
+                    calendarHTML += '</td>';
+                    date++;
+                }
             }
-            
-            eventModal.style.display = 'flex';
-        }
-        
-        function showSpecificEventForm(type, isEdit = false) {
-            let formHTML = '';
-            const eventData = isEdit ? currentEditingEvent : null;
-            
-            modalTitle.textContent = isEdit ? 'Edytuj wydarzenie' : 'Dodaj wydarzenie';
-            
-            if (type === 'bulk-absence') {
-                formHTML = `
-                    <div class="info-box">
-                        <strong>ℹ️ Nieobecność Zbiorowa</strong><br>
-                        <small>Wpisz nauczycieli po przecinku. Każda nieobecność zostanie zapisana osobno.</small>
-                    </div>
-                    <div class="form-group">
-                        <label for="bulk-teachers">Nauczyciele (po przecinku):</label>
-                        <textarea id="bulk-teachers" placeholder="Np. Jan Kowalski, Anna Nowak, Piotr Wiśniewski" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Data nieobecności:</label>
-                        <div class="time-range">
-                            <input type="date" id="bulk-absence-start-date" required>
-                            <span>do</span>
-                            <input type="date" id="bulk-absence-end-date">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="bulk-absence-time">Godziny (np. 8:00-14:00):</label>
-                        <input type="text" id="bulk-absence-time" placeholder="8:00-14:00">
-                    </div>
-                    <div class="form-group">
-                        <label for="bulk-absence-reason">Powód nieobecności:</label>
-                        <textarea id="bulk-absence-reason" placeholder="Np. wycieczka, szkolenie..."></textarea>
-                    </div>
-                    <div class="form-actions">
-                        <button class="btn btn-secondary" id="cancel-form">Anuluj</button>
-                        <button class="btn btn-primary" id="save-bulk-absence">Dodaj nieobecności</button>
-                    </div>
-                `;
-                
-                modalBody.innerHTML = formHTML;
-                
-                document.getElementById('cancel-form').addEventListener('click', function() {
-                    eventModal.style.display = 'none';
-                });
-                
-                document.getElementById('save-bulk-absence').addEventListener('click', function() {
-                    saveBulkAbsence();
-                });
-                
-                return;
+
+            calendarHTML += '</tr>';
+
+            if (date > daysInMonth) {
+                break;
             }
-            
-            if (type === 'absence') {
-                formHTML = `
-                    <div class="form-group">
-                        <label for="absence-teacher">Nauczyciel:</label>
-                        <input type="text" id="absence-teacher" value="${isEdit ? eventData.teacher : ''}" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Data nieobecności:</label>
-                        <div class="time-range">
-                            <input type="date" id="absence-start-date" value="${isEdit ? eventData.startDate : ''}" required>
-                            <span>do</span>
-                            <input type="date" id="absence-end-date" value="${isEdit ? eventData.endDate || eventData.startDate : ''}">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="absence-time">Godziny (np. 8:00-14:00):</label>
-                        <input type="text" id="absence-time" value="${isEdit ? eventData.timeRange || '' : ''}" placeholder="8:00-14:00">
-                    </div>
-                    <div class="form-group">
-                        <label for="absence-reason">Powód nieobecności:</label>
-                        <textarea id="absence-reason" placeholder="Np. choroba, szkolenie, urlop...">${isEdit ? eventData.reason || '' : ''}</textarea>
-                    </div>
-                `;
-            } else if (type === 'trip') {
-                formHTML = `
-                    <div class="form-group">
-                        <label for="trip-class">Klasa:</label>
-                        <input type="text" id="trip-class" value="${isEdit ? eventData.className : ''}" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Data wycieczki:</label>
-                        <div class="time-range">
-                            <input type="date" id="trip-start-date" value="${isEdit ? eventData.startDate : ''}" required>
-                            <span>do</span>
-                            <input type="date" id="trip-end-date" value="${isEdit ? eventData.endDate || eventData.startDate : ''}">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="trip-time">Godziny (np. 8:00-14:00):</label>
-                        <input type="text" id="trip-time" value="${isEdit ? eventData.timeRange || '' : ''}" placeholder="8:00-14:00">
-                    </div>
-                    <div class="form-group">
-                        <label for="trip-description">Opis wycieczki:</label>
-                        <textarea id="trip-description">${isEdit ? eventData.description || '' : ''}</textarea>
-                    </div>
-                `;
-            } else if (type === 'holiday') {
-                formHTML = `
-                    <div class="form-group">
-                        <label for="holiday-title">Tytuł dnia wolnego:</label>
-                        <input type="text" id="holiday-title" value="${isEdit ? eventData.title : ''}" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Data dnia wolnego:</label>
-                        <div class="time-range">
-                            <input type="date" id="holiday-start-date" value="${isEdit ? eventData.startDate : ''}" required>
-                            <span>do</span>
-                            <input type="date" id="holiday-end-date" value="${isEdit ? eventData.endDate || eventData.startDate : ''}">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="holiday-time">Godziny (np. 8:00-14:00) - opcjonalnie:</label>
-                        <input type="text" id="holiday-time" value="${isEdit ? eventData.timeRange || '' : ''}" placeholder="8:00-14:00">
-                    </div>
-                `;
-            } else if (type === 'custom') {
-                formHTML = `
-                    <div class="form-group">
-                        <label for="custom-title">Tytuł wydarzenia:</label>
-                        <input type="text" id="custom-title" value="${isEdit ? eventData.title : ''}" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Data wydarzenia:</label>
-                        <div class="time-range">
-                            <input type="date" id="custom-start-date" value="${isEdit ? eventData.startDate : ''}" required>
-                            <span>do</span>
-                            <input type="date" id="custom-end-date" value="${isEdit ? eventData.endDate || eventData.startDate : ''}">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="custom-time">Godziny (np. 8:00-14:00):</label>
-                        <input type="text" id="custom-time" value="${isEdit ? eventData.timeRange || '' : ''}" placeholder="8:00-14:00">
-                    </div>
-                    <div class="form-group">
-                        <label for="custom-description">Opis wydarzenia:</label>
-                        <textarea id="custom-description">${isEdit ? eventData.description || '' : ''}</textarea>
-                    </div>
-                `;
-            } else if (type === 'bookmark') {
-                formHTML = `
-                    <div class="form-group">
-                        <label for="bookmark-title">Tytuł zakładki:</label>
-                        <input type="text" id="bookmark-title" value="${isEdit ? eventData.title : ''}" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Data zakładki:</label>
-                        <div class="time-range">
-                            <input type="date" id="bookmark-start-date" value="${isEdit ? eventData.startDate : ''}" required>
-                            <span>do</span>
-                            <input type="date" id="bookmark-end-date" value="${isEdit ? eventData.endDate || eventData.startDate : ''}">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="bookmark-time">Godziny (np. 8:00-14:00):</label>
-                        <input type="text" id="bookmark-time" value="${isEdit ? eventData.timeRange || '' : ''}" placeholder="8:00-14:00">
-                    </div>
-                    <div class="form-group">
-                        <label for="bookmark-description">Opis zakładki:</label>
-                        <textarea id="bookmark-description">${isEdit ? eventData.description || '' : ''}</textarea>
-                    </div>
-                `;
-            }
-            
-            formHTML += `
-                <div class="form-actions">
-                    <button class="btn btn-secondary" id="cancel-form">Anuluj</button>
-                    <button class="btn btn-primary" id="save-event">${isEdit ? 'Zapisz zmiany' : 'Dodaj'}</button>
-                </div>
-            `;
-            
-            modalBody.innerHTML = formHTML;
-            
-            document.getElementById('cancel-form').addEventListener('click', function() {
-                eventModal.style.display = 'none';
-                resetEditingContext();
-            });
-            
-            document.getElementById('save-event').addEventListener('click', function() {
-                saveEvent(type, isEdit);
-            });
         }
 
-        function saveBulkAbsence() {
-            const teachersInput = document.getElementById('bulk-teachers').value.trim();
-            const startDate = document.getElementById('bulk-absence-start-date').value;
-            const endDate = document.getElementById('bulk-absence-end-date').value || startDate;
-            const timeRange = document.getElementById('bulk-absence-time').value.trim();
-            const reason = document.getElementById('bulk-absence-reason').value.trim();
-            
-            if (!teachersInput) {
-                alert('Wpisz nauczycieli!');
-                return;
-            }
-            
-            if (!startDate) {
-                alert('Podaj datę nieobecności!');
-                return;
-            }
-            
-            const teachers = teachersInput.split(',').map(t => t.trim()).filter(t => t);
-            
-            if (teachers.length === 0) {
-                alert('Wpisz przynajmniej jednego nauczyciela!');
-                return;
-            }
-            
-            teachers.forEach(teacher => {
-                const eventData = {
-                    type: 'absence',
-                    teacher: teacher,
-                    startDate: startDate,
-                    endDate: endDate,
-                    timeRange: timeRange,
-                    reason: reason,
-                    createdAt: new Date().toISOString()
-                };
-                
-                const start = new Date(startDate);
-                const end = new Date(endDate);
-                
-                for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-                    const dateKey = formatDateForStorage(d);
-                    
-                    if (!events[dateKey]) {
-                        events[dateKey] = [];
-                    }
-                    
-                    const eventCopy = {...eventData};
-                    eventCopy.date = dateKey;
-                    events[dateKey].push(eventCopy);
-                }
-                
-                const dateRange = startDate === endDate 
-                    ? `w dniu ${formatDate(startDate)}`
-                    : `w dniach ${formatDate(startDate)}-${formatDate(endDate)}`;
-                
-                const newsAction = 'Dodano nieobecność nauczyciela';
-                const newsDetails = `${teacher} ${dateRange}${timeRange ? ` w godzinach ${timeRange}` : ''}`;
-                
-                addNewsItem(newsAction, newsDetails);
+        calendarBody.innerHTML = calendarHTML;
+
+        document.querySelectorAll('.event').forEach(eventEl => {
+            eventEl.addEventListener('click', function() {
+                const date = this.getAttribute('data-date');
+                const index = parseInt(this.getAttribute('data-index'));
+                showEventDetails(date, index);
             });
-            
-            saveEvents().then(() => {
-                initCalendar();
-                eventModal.style.display = 'none';
-            });
+        });
+    }
+
+    function displayNews() {
+        newsContainer.innerHTML = '';
+
+        if (news.length === 0) {
+            newsContainer.innerHTML = '<p>Brak aktualności.</p>';
+            return;
         }
-        
-        function saveEvent(type, isEdit = false) {
-            const eventData = {
-                type: type,
-                createdAt: isEdit ? currentEditingEvent.createdAt : new Date().toISOString()
-            };
-            
-            if (type === 'absence') {
-                eventData.teacher = document.getElementById('absence-teacher').value;
-                eventData.startDate = document.getElementById('absence-start-date').value;
-                eventData.endDate = document.getElementById('absence-end-date').value || eventData.startDate;
-                eventData.timeRange = document.getElementById('absence-time').value;
-                eventData.reason = document.getElementById('absence-reason').value;
-                
-                if (!eventData.teacher || !eventData.startDate) {
-                    alert('Proszę wypełnić wymagane pola');
-                    return;
-                }
-            } else if (type === 'trip') {
-                eventData.className = document.getElementById('trip-class').value;
-                eventData.startDate = document.getElementById('trip-start-date').value;
-                eventData.endDate = document.getElementById('trip-end-date').value || eventData.startDate;
-                eventData.timeRange = document.getElementById('trip-time').value;
-                eventData.description = document.getElementById('trip-description').value;
-                
-                if (!eventData.className || !eventData.startDate) {
-                    alert('Proszę wypełnić wymagane pola');
-                    return;
-                }
-            } else if (type === 'holiday') {
-                eventData.title = document.getElementById('holiday-title').value;
-                eventData.startDate = document.getElementById('holiday-start-date').value;
-                eventData.endDate = document.getElementById('holiday-end-date').value || eventData.startDate;
-                eventData.timeRange = document.getElementById('holiday-time').value;
-                
-                if (!eventData.title || !eventData.startDate) {
-                    alert('Proszę wypełnić wymagane pola');
-                    return;
-                }
-            } else if (type === 'custom') {
-                eventData.title = document.getElementById('custom-title').value;
-                eventData.startDate = document.getElementById('custom-start-date').value;
-                eventData.endDate = document.getElementById('custom-end-date').value || eventData.startDate;
-                eventData.timeRange = document.getElementById('custom-time').value;
-                eventData.description = document.getElementById('custom-description').value;
-                
-                if (!eventData.title || !eventData.startDate) {
-                    alert('Proszę wypełnić wymagane pola');
-                    return;
-                }
-            } else if (type === 'bookmark') {
-                eventData.title = document.getElementById('bookmark-title').value;
-                eventData.startDate = document.getElementById('bookmark-start-date').value;
-                eventData.endDate = document.getElementById('bookmark-end-date').value || eventData.startDate;
-                eventData.timeRange = document.getElementById('bookmark-time').value;
-                eventData.description = document.getElementById('bookmark-description').value;
-                
-                if (!eventData.title || !eventData.startDate) {
-                    alert('Proszę wypełnić wymagane pola');
-                    return;
-                }
-            }
-            
-            if (isEdit) {
+
+        news.forEach(item => {
+            const newsItem = document.createElement('div');
+            newsItem.className = 'news-item';
+
+            const timeAgo = getTimeAgo(item.timestamp);
+
+            newsItem.innerHTML = `
+                <div class="news-action">${item.action}</div>
+                <div>${item.details}</div>
+                <div class="news-time">${timeAgo}</div>
+            `;
+
+            newsContainer.appendChild(newsItem);
+        });
+    }
+
+    function getTimeAgo(timestamp) {
+        const now = new Date();
+        const past = new Date(timestamp);
+        const diffMs = now - past;
+        const diffMins = Math.floor(diffMs / 60000);
+        const diffHours = Math.floor(diffMs / 3600000);
+        const diffDays = Math.floor(diffMs / 86400000);
+
+        if (diffMins < 1) {
+            return 'Przed chwilą';
+        } else if (diffMins < 60) {
+            return `${diffMins} ${diffMins === 1 ? 'minutę' : diffMins < 5 ? 'minuty' : 'minut'} temu`;
+        } else if (diffHours < 24) {
+            return `${diffHours} ${diffHours === 1 ? 'godzinę' : diffHours < 5 ? 'godziny' : 'godzin'} temu`;
+        } else if (diffDays < 7) {
+            return `${diffDays} ${diffDays === 1 ? 'dzień' : 'dni'} temu`;
+        } else {
+            return past.toLocaleDateString('pl-PL');
+        }
+    }
+
+    function showEventDetails(date, index) {
+        const event = events[date][index];
+        let detailsHTML = '';
+
+        if (event.type === 'absence') {
+            detailsHTML = `
+                <h3>Nieobecność</h3>
+                <div class="event-details">
+                    <p><strong>Nauczyciel:</strong> ${event.teacher}</p>
+                    <p><strong>Data:</strong> ${formatDate(event.startDate)}${event.endDate && event.endDate !== event.startDate ? ` - ${formatDate(event.endDate)}` : ''}</p>
+                    ${event.timeRange ? `<p><strong>Godziny:</strong> ${event.timeRange}</p>` : ''}
+                    ${event.reason ? `<p><strong>Powód:</strong> ${event.reason}</p>` : ''}
+                    <p><strong>Dodano:</strong> ${formatDateTime(event.createdAt)}</p>
+                </div>
+            `;
+        } else if (event.type === 'trip') {
+            detailsHTML = `
+                <h3>Wycieczka</h3>
+                <div class="event-details">
+                    <p><strong>Klasa:</strong> ${event.className}</p>
+                    <p><strong>Data:</strong> ${formatDate(event.startDate)}${event.endDate && event.endDate !== event.startDate ? ` - ${formatDate(event.endDate)}` : ''}</p>
+                    ${event.timeRange ? `<p><strong>Godziny:</strong> ${event.timeRange}</p>` : ''}
+                    ${event.description ? `<p><strong>Opis wycieczki:</strong> ${event.description}</p>` : ''}
+                    <p><strong>Dodano:</strong> ${formatDateTime(event.createdAt)}</p>
+                </div>
+            `;
+        } else if (event.type === 'holiday') {
+            detailsHTML = `
+                <h3>Dzień Wolny</h3>
+                <div class="event-details">
+                    <p><strong>Tytuł:</strong> ${event.title}</p>
+                    <p><strong>Data:</strong> ${formatDate(event.startDate)}${event.endDate && event.endDate !== event.startDate ? ` - ${formatDate(event.endDate)}` : ''}</p>
+                    ${event.timeRange ? `<p><strong>Godziny:</strong> ${event.timeRange}</p>` : ''}
+                    <p><strong>Dodano:</strong> ${formatDateTime(event.createdAt)}</p>
+                </div>
+            `;
+        } else if (event.type === 'custom') {
+            detailsHTML = `
+                <h3>Wydarzenie Niestandardowe</h3>
+                <div class="event-details">
+                    <p><strong>Tytuł:</strong> ${event.title}</p>
+                    <p><strong>Data:</strong> ${formatDate(event.startDate)}${event.endDate && event.endDate !== event.startDate ? ` - ${formatDate(event.endDate)}` : ''}</p>
+                    ${event.timeRange ? `<p><strong>Godziny:</strong> ${event.timeRange}</p>` : ''}
+                    ${event.description ? `<p><strong>Opis:</strong> ${event.description}</p>` : ''}
+                    <p><strong>Dodano:</strong> ${formatDateTime(event.createdAt)}</p>
+                </div>
+            `;
+        } else if (event.type === 'bookmark') {
+            detailsHTML = `
+                <h3>Zakładka</h3>
+                <div class="event-details">
+                    <p><strong>Tytuł:</strong> ${event.title}</p>
+                    <p><strong>Data:</strong> ${formatDate(event.startDate)}${event.endDate && event.endDate !== event.startDate ? ` - ${formatDate(event.endDate)}` : ''}</p>
+                    ${event.timeRange ? `<p><strong>Godziny:</strong> ${event.timeRange}</p>` : ''}
+                    ${event.description ? `<p><strong>Opis:</strong> ${event.description}</p>` : ''}
+                    <p><strong>Dodano:</strong> ${formatDateTime(event.createdAt)}</p>
+                </div>
+            `;
+        }
+
+        detailsHTML += `
+            <div class="event-actions">
+                <button class="btn btn-primary" id="edit-event">Edytuj</button>
+                <button class="btn btn-danger" id="delete-event">Usuń</button>
+            </div>
+        `;
+
+        modalTitle.textContent = 'Szczegóły wydarzenia';
+        modalBody.innerHTML = detailsHTML;
+
+        currentEditingEvent = event;
+        currentEditingDate = date;
+        currentEditingIndex = index;
+
+        document.getElementById('edit-event').addEventListener('click', function() {
+            showEventForm(event.type, true);
+        });
+
+        document.getElementById('delete-event').addEventListener('click', function() {
+            if (confirm('Czy na pewno chcesz usunąć to wydarzenie?')) {
                 if (currentEditingEvent.type === 'absence' || currentEditingEvent.type === 'holiday' || currentEditingEvent.type === 'trip' || currentEditingEvent.type === 'custom' || currentEditingEvent.type === 'bookmark') {
                     const startDate = new Date(currentEditingEvent.startDate);
                     const endDate = new Date(currentEditingEvent.endDate || currentEditingEvent.startDate);
-                    
+
                     for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
                         const dateKey = formatDateForStorage(d);
                         if (events[dateKey]) {
                             events[dateKey] = events[dateKey].filter(e => {
                                 if (e.type !== currentEditingEvent.type) return true;
                                 if (e.startDate !== currentEditingEvent.startDate) return true;
-                                
+
                                 if (e.type === 'absence') {
                                     return e.teacher !== currentEditingEvent.teacher || e.timeRange !== currentEditingEvent.timeRange;
                                 } else if (e.type === 'trip') {
@@ -1473,139 +1061,553 @@
                         }
                     }
                 }
-            }
-            
-            const startDate = new Date(eventData.startDate);
-            const endDate = new Date(eventData.endDate);
-            
-            for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
-                const dateKey = formatDateForStorage(d);
-                
-                if (!events[dateKey]) {
-                    events[dateKey] = [];
-                }
-                
-                const eventCopy = {...eventData};
-                eventCopy.date = dateKey;
-                events[dateKey].push(eventCopy);
-            }
-            
-            if (type !== 'bookmark') {
-                let newsAction = '';
-                let newsDetails = '';
 
-                if (type === 'absence') {
-                    newsAction = isEdit ? 'Zmieniono nieobecność nauczyciela' : 'Dodano nieobecność nauczyciela';
-                    const dateRange = eventData.startDate === eventData.endDate 
-                        ? `w dniu ${formatDate(eventData.startDate)}`
-                        : `w dniach ${formatDate(eventData.startDate)}-${formatDate(eventData.endDate)}`;
-                    newsDetails = `${eventData.teacher} ${dateRange}${eventData.timeRange ? ` w godzinach ${eventData.timeRange}` : ''}`;
-                } else if (type === 'trip') {
-                    newsAction = isEdit ? 'Zmieniono wycieczkę' : 'Dodano wycieczkę';
-                    const dateRange = eventData.startDate === eventData.endDate 
-                        ? `w dniu ${formatDate(eventData.startDate)}`
-                        : `w dniach ${formatDate(eventData.startDate)}-${formatDate(eventData.endDate)}`;
-                    newsDetails = `dla klasy ${eventData.className} ${dateRange}${eventData.timeRange ? ` w godzinach ${eventData.timeRange}` : ''}`;
-                } else if (type === 'holiday') {
-                    newsAction = isEdit ? 'Zmieniono dzień wolny' : 'Dodano dzień wolny';
-                    const dateRange = eventData.startDate === eventData.endDate 
-                        ? `w dniu ${formatDate(eventData.startDate)}`
-                        : `w dniach ${formatDate(eventData.startDate)}-${formatDate(eventData.endDate)}`;
-                    newsDetails = `${dateRange}. ${eventData.title}${eventData.timeRange ? ` w godzinach ${eventData.timeRange}` : ''}`;
-                } else if (type === 'custom') {
-                    newsAction = isEdit ? 'Zmieniono wydarzenie' : 'Dodano wydarzenie';
-                    const dateRange = eventData.startDate === eventData.endDate 
-                        ? `w dniu ${formatDate(eventData.startDate)}`
-                        : `w dniach ${formatDate(eventData.startDate)}-${formatDate(eventData.endDate)}`;
-                    newsDetails = `"${eventData.title}" ${dateRange}${eventData.timeRange ? ` w godzinach ${eventData.timeRange}` : ''}`;
-                }
-                
-                addNewsItem(newsAction, newsDetails).then(() => {
+                if (currentEditingEvent.type !== 'bookmark') {
+                    let newsAction = '';
+                    let newsDetails = '';
+
+                    if (currentEditingEvent.type === 'absence') {
+                        newsAction = 'Usunięto nieobecność nauczyciela';
+                        const dateRange = currentEditingEvent.startDate === currentEditingEvent.endDate || !currentEditingEvent.endDate
+                            ? `w dniu ${formatDate(currentEditingEvent.startDate)}`
+                            : `w dniach ${formatDate(currentEditingEvent.startDate)}-${formatDate(currentEditingEvent.endDate)}`;
+                        newsDetails = `${currentEditingEvent.teacher} ${dateRange}${currentEditingEvent.timeRange ? ` w godzinach ${currentEditingEvent.timeRange}` : ''}`;
+                    } else if (currentEditingEvent.type === 'trip') {
+                        newsAction = 'Usunięto wycieczkę';
+                        const dateRange = currentEditingEvent.startDate === currentEditingEvent.endDate || !currentEditingEvent.endDate
+                            ? `w dniu ${formatDate(currentEditingEvent.startDate)}`
+                            : `w dniach ${formatDate(currentEditingEvent.startDate)}-${formatDate(currentEditingEvent.endDate)}`;
+                        newsDetails = `dla klasy ${currentEditingEvent.className} ${dateRange}${currentEditingEvent.timeRange ? ` w godzinach ${currentEditingEvent.timeRange}` : ''}`;
+                    } else if (currentEditingEvent.type === 'holiday') {
+                        newsAction = 'Usunięto dzień wolny';
+                        const dateRange = currentEditingEvent.startDate === currentEditingEvent.endDate || !currentEditingEvent.endDate
+                            ? `w dniu ${formatDate(currentEditingEvent.startDate)}`
+                            : `w dniach ${formatDate(currentEditingEvent.startDate)}-${formatDate(currentEditingEvent.endDate)}`;
+                        newsDetails = `"${currentEditingEvent.title}" ${dateRange}${currentEditingEvent.timeRange ? ` w godzinach ${currentEditingEvent.timeRange}` : ''}`;
+                    } else if (currentEditingEvent.type === 'custom') {
+                        newsAction = 'Usunięto wydarzenie';
+                        const dateRange = currentEditingEvent.startDate === currentEditingEvent.endDate || !currentEditingEvent.endDate
+                            ? `w dniu ${formatDate(currentEditingEvent.startDate)}`
+                            : `w dniach ${formatDate(currentEditingEvent.startDate)}-${formatDate(currentEditingEvent.endDate)}`;
+                        newsDetails = `"${currentEditingEvent.title}" ${dateRange}${currentEditingEvent.timeRange ? ` w godzinach ${currentEditingEvent.timeRange}` : ''}`;
+                    }
+
+                    addNewsItem(newsAction, newsDetails).then(() => {
+                        saveEvents().then(() => {
+                            initCalendar();
+                            eventModal.style.display = 'none';
+                            resetEditingContext();
+                        });
+                    });
+                } else {
                     saveEvents().then(() => {
                         initCalendar();
                         eventModal.style.display = 'none';
                         resetEditingContext();
                     });
+                }
+            }
+        });
+
+        eventModal.style.display = 'flex';
+    }
+
+    function showEventForm(type = null, isEdit = false) {
+        if (!type && !isEdit) {
+            modalTitle.textContent = 'Dodaj wydarzenie';
+            modalBody.innerHTML = `
+                <div class="event-type-selector">
+                    <div class="event-type" data-type="absence">Nieobecność</div>
+                    <div class="event-type" data-type="bulk-absence">Nieobecność Zbiorowa</div>
+                    <div class="event-type" data-type="trip">Wycieczka</div>
+                    <div class="event-type" data-type="holiday">Dzień Wolny</div>
+                    <div class="event-type" data-type="custom">Wydarzenie Niestandardowe</div>
+                    <div class="event-type" data-type="bookmark">Zakładka</div>
+                </div>
+            `;
+
+            document.querySelectorAll('.event-type').forEach(button => {
+                button.addEventListener('click', function() {
+                    const selectedType = this.getAttribute('data-type');
+                    showSpecificEventForm(selectedType, false);
                 });
-            } else {
+            });
+        } else {
+            showSpecificEventForm(type, isEdit);
+        }
+
+        eventModal.style.display = 'flex';
+    }
+
+    function showSpecificEventForm(type, isEdit = false) {
+        let formHTML = '';
+        const eventData = isEdit ? currentEditingEvent : null;
+
+        modalTitle.textContent = isEdit ? 'Edytuj wydarzenie' : 'Dodaj wydarzenie';
+
+        if (type === 'bulk-absence') {
+            formHTML = `
+                <div class="info-box">
+                    <strong>ℹ️ Nieobecność Zbiorowa</strong><br>
+                    <small>Wpisz nauczycieli po przecinku. Każda nieobecność zostanie zapisana osobno.</small>
+                </div>
+                <div class="form-group">
+                    <label for="bulk-teachers">Nauczyciele (po przecinku):</label>
+                    <textarea id="bulk-teachers" placeholder="Np. Jan Kowalski, Anna Nowak, Piotr Wiśniewski" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Data nieobecności:</label>
+                    <div class="time-range">
+                        <input type="date" id="bulk-absence-start-date" required>
+                        <span>do</span>
+                        <input type="date" id="bulk-absence-end-date">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="bulk-absence-time">Godziny (np. 8:00-14:00):</label>
+                    <input type="text" id="bulk-absence-time" placeholder="8:00-14:00">
+                </div>
+                <div class="form-group">
+                    <label for="bulk-absence-reason">Powód nieobecności:</label>
+                    <textarea id="bulk-absence-reason" placeholder="Np. wycieczka, szkolenie..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-secondary" id="cancel-form">Anuluj</button>
+                    <button class="btn btn-primary" id="save-bulk-absence">Dodaj nieobecności</button>
+                </div>
+            `;
+
+            modalBody.innerHTML = formHTML;
+
+            document.getElementById('cancel-form').addEventListener('click', function() {
+                eventModal.style.display = 'none';
+            });
+
+            document.getElementById('save-bulk-absence').addEventListener('click', function() {
+                saveBulkAbsence();
+            });
+
+            return;
+        }
+
+        if (type === 'absence') {
+            formHTML = `
+                <div class="form-group">
+                    <label for="absence-teacher">Nauczyciel:</label>
+                    <input type="text" id="absence-teacher" value="${isEdit ? eventData.teacher : ''}" required>
+                </div>
+                <div class="form-group">
+                    <label>Data nieobecności:</label>
+                    <div class="time-range">
+                        <input type="date" id="absence-start-date" value="${isEdit ? eventData.startDate : ''}" required>
+                        <span>do</span>
+                        <input type="date" id="absence-end-date" value="${isEdit ? eventData.endDate || eventData.startDate : ''}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="absence-time">Godziny (np. 8:00-14:00):</label>
+                    <input type="text" id="absence-time" value="${isEdit ? eventData.timeRange || '' : ''}" placeholder="8:00-14:00">
+                </div>
+                <div class="form-group">
+                    <label for="absence-reason">Powód nieobecności:</label>
+                    <textarea id="absence-reason" placeholder="Np. choroba, szkolenie, urlop...">${isEdit ? eventData.reason || '' : ''}</textarea>
+                </div>
+            `;
+        } else if (type === 'trip') {
+            formHTML = `
+                <div class="form-group">
+                    <label for="trip-class">Klasa:</label>
+                    <input type="text" id="trip-class" value="${isEdit ? eventData.className : ''}" required>
+                </div>
+                <div class="form-group">
+                    <label>Data wycieczki:</label>
+                    <div class="time-range">
+                        <input type="date" id="trip-start-date" value="${isEdit ? eventData.startDate : ''}" required>
+                        <span>do</span>
+                        <input type="date" id="trip-end-date" value="${isEdit ? eventData.endDate || eventData.startDate : ''}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="trip-time">Godziny (np. 8:00-14:00):</label>
+                    <input type="text" id="trip-time" value="${isEdit ? eventData.timeRange || '' : ''}" placeholder="8:00-14:00">
+                </div>
+                <div class="form-group">
+                    <label for="trip-description">Opis wycieczki:</label>
+                    <textarea id="trip-description">${isEdit ? eventData.description || '' : ''}</textarea>
+                </div>
+            `;
+        } else if (type === 'holiday') {
+            formHTML = `
+                <div class="form-group">
+                    <label for="holiday-title">Tytuł dnia wolnego:</label>
+                    <input type="text" id="holiday-title" value="${isEdit ? eventData.title : ''}" required>
+                </div>
+                <div class="form-group">
+                    <label>Data dnia wolnego:</label>
+                    <div class="time-range">
+                        <input type="date" id="holiday-start-date" value="${isEdit ? eventData.startDate : ''}" required>
+                        <span>do</span>
+                        <input type="date" id="holiday-end-date" value="${isEdit ? eventData.endDate || eventData.startDate : ''}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="holiday-time">Godziny (np. 8:00-14:00) - opcjonalnie:</label>
+                    <input type="text" id="holiday-time" value="${isEdit ? eventData.timeRange || '' : ''}" placeholder="8:00-14:00">
+                </div>
+            `;
+        } else if (type === 'custom') {
+            formHTML = `
+                <div class="form-group">
+                    <label for="custom-title">Tytuł wydarzenia:</label>
+                    <input type="text" id="custom-title" value="${isEdit ? eventData.title : ''}" required>
+                </div>
+                <div class="form-group">
+                    <label>Data wydarzenia:</label>
+                    <div class="time-range">
+                        <input type="date" id="custom-start-date" value="${isEdit ? eventData.startDate : ''}" required>
+                        <span>do</span>
+                        <input type="date" id="custom-end-date" value="${isEdit ? eventData.endDate || eventData.startDate : ''}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="custom-time">Godziny (np. 8:00-14:00):</label>
+                    <input type="text" id="custom-time" value="${isEdit ? eventData.timeRange || '' : ''}" placeholder="8:00-14:00">
+                </div>
+                <div class="form-group">
+                    <label for="custom-description">Opis wydarzenia:</label>
+                    <textarea id="custom-description">${isEdit ? eventData.description || '' : ''}</textarea>
+                </div>
+            `;
+        } else if (type === 'bookmark') {
+            formHTML = `
+                <div class="form-group">
+                    <label for="bookmark-title">Tytuł zakładki:</label>
+                    <input type="text" id="bookmark-title" value="${isEdit ? eventData.title : ''}" required>
+                </div>
+                <div class="form-group">
+                    <label>Data zakładki:</label>
+                    <div class="time-range">
+                        <input type="date" id="bookmark-start-date" value="${isEdit ? eventData.startDate : ''}" required>
+                        <span>do</span>
+                        <input type="date" id="bookmark-end-date" value="${isEdit ? eventData.endDate || eventData.startDate : ''}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="bookmark-time">Godziny (np. 8:00-14:00):</label>
+                    <input type="text" id="bookmark-time" value="${isEdit ? eventData.timeRange || '' : ''}" placeholder="8:00-14:00">
+                </div>
+                <div class="form-group">
+                    <label for="bookmark-description">Opis zakładki:</label>
+                    <textarea id="bookmark-description">${isEdit ? eventData.description || '' : ''}</textarea>
+                </div>
+            `;
+        }
+
+        formHTML += `
+            <div class="form-actions">
+                <button class="btn btn-secondary" id="cancel-form">Anuluj</button>
+                <button class="btn btn-primary" id="save-event">${isEdit ? 'Zapisz zmiany' : 'Dodaj'}</button>
+            </div>
+        `;
+
+        modalBody.innerHTML = formHTML;
+
+        document.getElementById('cancel-form').addEventListener('click', function() {
+            eventModal.style.display = 'none';
+            resetEditingContext();
+        });
+
+        document.getElementById('save-event').addEventListener('click', function() {
+            saveEvent(type, isEdit);
+        });
+    }
+
+    function saveBulkAbsence() {
+        const teachersInput = document.getElementById('bulk-teachers').value.trim();
+        const startDate = document.getElementById('bulk-absence-start-date').value;
+        const endDate = document.getElementById('bulk-absence-end-date').value || startDate;
+        const timeRange = document.getElementById('bulk-absence-time').value.trim();
+        const reason = document.getElementById('bulk-absence-reason').value.trim();
+
+        if (!teachersInput) {
+            alert('Wpisz nauczycieli!');
+            return;
+        }
+
+        if (!startDate) {
+            alert('Podaj datę nieobecności!');
+            return;
+        }
+
+        const teachers = teachersInput.split(',').map(t => t.trim()).filter(t => t);
+
+        if (teachers.length === 0) {
+            alert('Wpisz przynajmniej jednego nauczyciela!');
+            return;
+        }
+
+        teachers.forEach(teacher => {
+            const eventData = {
+                type: 'absence',
+                teacher: teacher,
+                startDate: startDate,
+                endDate: endDate,
+                timeRange: timeRange,
+                reason: reason,
+                createdAt: new Date().toISOString()
+            };
+
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+
+            for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+                const dateKey = formatDateForStorage(d);
+
+                if (!events[dateKey]) {
+                    events[dateKey] = [];
+                }
+
+                const eventCopy = {...eventData};
+                eventCopy.date = dateKey;
+                events[dateKey].push(eventCopy);
+            }
+
+            const dateRange = startDate === endDate
+                ? `w dniu ${formatDate(startDate)}`
+                : `w dniach ${formatDate(startDate)}-${formatDate(endDate)}`;
+
+            const newsAction = 'Dodano nieobecność nauczyciela';
+            const newsDetails = `${teacher} ${dateRange}${timeRange ? ` w godzinach ${timeRange}` : ''}`;
+
+            addNewsItem(newsAction, newsDetails);
+        });
+
+        saveEvents().then(() => {
+            initCalendar();
+            eventModal.style.display = 'none';
+        });
+    }
+
+    function saveEvent(type, isEdit = false) {
+        const eventData = {
+            type: type,
+            createdAt: isEdit ? currentEditingEvent.createdAt : new Date().toISOString()
+        };
+
+        if (type === 'absence') {
+            eventData.teacher = document.getElementById('absence-teacher').value;
+            eventData.startDate = document.getElementById('absence-start-date').value;
+            eventData.endDate = document.getElementById('absence-end-date').value || eventData.startDate;
+            eventData.timeRange = document.getElementById('absence-time').value;
+            eventData.reason = document.getElementById('absence-reason').value;
+
+            if (!eventData.teacher || !eventData.startDate) {
+                alert('Proszę wypełnić wymagane pola');
+                return;
+            }
+        } else if (type === 'trip') {
+            eventData.className = document.getElementById('trip-class').value;
+            eventData.startDate = document.getElementById('trip-start-date').value;
+            eventData.endDate = document.getElementById('trip-end-date').value || eventData.startDate;
+            eventData.timeRange = document.getElementById('trip-time').value;
+            eventData.description = document.getElementById('trip-description').value;
+
+            if (!eventData.className || !eventData.startDate) {
+                alert('Proszę wypełnić wymagane pola');
+                return;
+            }
+        } else if (type === 'holiday') {
+            eventData.title = document.getElementById('holiday-title').value;
+            eventData.startDate = document.getElementById('holiday-start-date').value;
+            eventData.endDate = document.getElementById('holiday-end-date').value || eventData.startDate;
+            eventData.timeRange = document.getElementById('holiday-time').value;
+
+            if (!eventData.title || !eventData.startDate) {
+                alert('Proszę wypełnić wymagane pola');
+                return;
+            }
+        } else if (type === 'custom') {
+            eventData.title = document.getElementById('custom-title').value;
+            eventData.startDate = document.getElementById('custom-start-date').value;
+            eventData.endDate = document.getElementById('custom-end-date').value || eventData.startDate;
+            eventData.timeRange = document.getElementById('custom-time').value;
+            eventData.description = document.getElementById('custom-description').value;
+
+            if (!eventData.title || !eventData.startDate) {
+                alert('Proszę wypełnić wymagane pola');
+                return;
+            }
+        } else if (type === 'bookmark') {
+            eventData.title = document.getElementById('bookmark-title').value;
+            eventData.startDate = document.getElementById('bookmark-start-date').value;
+            eventData.endDate = document.getElementById('bookmark-end-date').value || eventData.startDate;
+            eventData.timeRange = document.getElementById('bookmark-time').value;
+            eventData.description = document.getElementById('bookmark-description').value;
+
+            if (!eventData.title || !eventData.startDate) {
+                alert('Proszę wypełnić wymagane pola');
+                return;
+            }
+        }
+
+        if (isEdit) {
+            if (currentEditingEvent.type === 'absence' || currentEditingEvent.type === 'holiday' || currentEditingEvent.type === 'trip' || currentEditingEvent.type === 'custom' || currentEditingEvent.type === 'bookmark') {
+                const startDate = new Date(currentEditingEvent.startDate);
+                const endDate = new Date(currentEditingEvent.endDate || currentEditingEvent.startDate);
+
+                for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+                    const dateKey = formatDateForStorage(d);
+                    if (events[dateKey]) {
+                        events[dateKey] = events[dateKey].filter(e => {
+                            if (e.type !== currentEditingEvent.type) return true;
+                            if (e.startDate !== currentEditingEvent.startDate) return true;
+
+                            if (e.type === 'absence') {
+                                return e.teacher !== currentEditingEvent.teacher || e.timeRange !== currentEditingEvent.timeRange;
+                            } else if (e.type === 'trip') {
+                                return e.className !== currentEditingEvent.className || e.timeRange !== currentEditingEvent.timeRange;
+                            } else {
+                                return e.title !== currentEditingEvent.title || e.timeRange !== currentEditingEvent.timeRange;
+                            }
+                        });
+                        if (events[dateKey].length === 0) {
+                            delete events[dateKey];
+                        }
+                    }
+                }
+            }
+        }
+
+        const startDate = new Date(eventData.startDate);
+        const endDate = new Date(eventData.endDate);
+
+        for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+            const dateKey = formatDateForStorage(d);
+
+            if (!events[dateKey]) {
+                events[dateKey] = [];
+            }
+
+            const eventCopy = {...eventData};
+            eventCopy.date = dateKey;
+            events[dateKey].push(eventCopy);
+        }
+
+        if (type !== 'bookmark') {
+            let newsAction = '';
+            let newsDetails = '';
+
+            if (type === 'absence') {
+                newsAction = isEdit ? 'Zmieniono nieobecność nauczyciela' : 'Dodano nieobecność nauczyciela';
+                const dateRange = eventData.startDate === eventData.endDate
+                    ? `w dniu ${formatDate(eventData.startDate)}`
+                    : `w dniach ${formatDate(eventData.startDate)}-${formatDate(eventData.endDate)}`;
+                newsDetails = `${eventData.teacher} ${dateRange}${eventData.timeRange ? ` w godzinach ${eventData.timeRange}` : ''}`;
+            } else if (type === 'trip') {
+                newsAction = isEdit ? 'Zmieniono wycieczkę' : 'Dodano wycieczkę';
+                const dateRange = eventData.startDate === eventData.endDate
+                    ? `w dniu ${formatDate(eventData.startDate)}`
+                    : `w dniach ${formatDate(eventData.startDate)}-${formatDate(eventData.endDate)}`;
+                newsDetails = `dla klasy ${eventData.className} ${dateRange}${eventData.timeRange ? ` w godzinach ${eventData.timeRange}` : ''}`;
+            } else if (type === 'holiday') {
+                newsAction = isEdit ? 'Zmieniono dzień wolny' : 'Dodano dzień wolny';
+                const dateRange = eventData.startDate === eventData.endDate
+                    ? `w dniu ${formatDate(eventData.startDate)}`
+                    : `w dniach ${formatDate(eventData.startDate)}-${formatDate(eventData.endDate)}`;
+                newsDetails = `${dateRange}. ${eventData.title}${eventData.timeRange ? ` w godzinach ${eventData.timeRange}` : ''}`;
+            } else if (type === 'custom') {
+                newsAction = isEdit ? 'Zmieniono wydarzenie' : 'Dodano wydarzenie';
+                const dateRange = eventData.startDate === eventData.endDate
+                    ? `w dniu ${formatDate(eventData.startDate)}`
+                    : `w dniach ${formatDate(eventData.startDate)}-${formatDate(eventData.endDate)}`;
+                newsDetails = `"${eventData.title}" ${dateRange}${eventData.timeRange ? ` w godzinach ${eventData.timeRange}` : ''}`;
+            }
+
+            addNewsItem(newsAction, newsDetails).then(() => {
                 saveEvents().then(() => {
                     initCalendar();
                     eventModal.style.display = 'none';
                     resetEditingContext();
                 });
-            }
-        }
-        
-        function resetEditingContext() {
-            currentEditingEvent = null;
-            currentEditingDate = null;
-            currentEditingIndex = null;
-        }
-        
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleDateString('pl-PL');
-        }
-        
-        function formatDateTime(dateTimeString) {
-            const date = new Date(dateTimeString);
-            return date.toLocaleString('pl-PL');
-        }
-        
-        function formatDateForStorage(date) {
-            return date.toISOString().split('T')[0];
-        }
-
-        // Nasłuchiwacze zdarzeń
-        classSelect.addEventListener('change', function() {
-            const selectedClass = this.value;
-            
-            if (!selectedClass) {
-                classCalendarContainer.innerHTML = '<p>Wybierz klasę, aby zobaczyć nieobecności jej nauczycieli.</p>';
-                return;
-            }
-            
-            generateClassCalendar(selectedClass);
-        });
-        
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                const tabId = tab.getAttribute('data-tab');
-                
-                tabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                
-                tabContents.forEach(content => {
-                    content.classList.remove('active');
-                });
-                document.getElementById(`${tabId}-tab`).classList.add('active');
             });
-        });
-        
-        // Obsługa strzałek
-        document.getElementById('prev-month').addEventListener('click', function() {
-            navigateMonth(-1);
-        });
-
-        document.getElementById('next-month').addEventListener('click', function() {
-            navigateMonth(1);
-        });
-        
-        monthSelect.addEventListener('change', updateCalendarFromSelector);
-        addEventBtn.addEventListener('click', () => showEventForm());
-        closeModal.addEventListener('click', () => {
-            eventModal.style.display = 'none';
-            resetEditingContext();
-        });
-        
-        window.addEventListener('click', (e) => {
-            if (e.target === eventModal) {
+        } else {
+            saveEvents().then(() => {
+                initCalendar();
                 eventModal.style.display = 'none';
                 resetEditingContext();
-            }
+            });
+        }
+    }
+
+    function resetEditingContext() {
+        currentEditingEvent = null;
+        currentEditingDate = null;
+        currentEditingIndex = null;
+    }
+
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('pl-PL');
+    }
+
+    function formatDateTime(dateTimeString) {
+        const date = new Date(dateTimeString);
+        return date.toLocaleString('pl-PL');
+    }
+
+    function formatDateForStorage(date) {
+        return date.toISOString().split('T')[0];
+    }
+
+    // Nasłuchiwacze zdarzeń
+    classSelect.addEventListener('change', function() {
+        const selectedClass = this.value;
+
+        if (!selectedClass) {
+            classCalendarContainer.innerHTML = '<p>Wybierz klasę, aby zobaczyć nieobecności jej nauczycieli.</p>';
+            return;
+        }
+
+        generateClassCalendar(selectedClass);
+    });
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const tabId = tab.getAttribute('data-tab');
+
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`${tabId}-tab`).classList.add('active');
         });
-        
-        initCalendar(true);
-    </script>
+    });
+
+    document.getElementById('prev-month').addEventListener('click', function() {
+        navigateMonth(-1);
+    });
+
+    document.getElementById('next-month').addEventListener('click', function() {
+        navigateMonth(1);
+    });
+
+    monthSelect.addEventListener('change', updateCalendarFromSelector);
+    addEventBtn.addEventListener('click', () => showEventForm());
+    closeModal.addEventListener('click', () => {
+        eventModal.style.display = 'none';
+        resetEditingContext();
+    });
+
+    window.addEventListener('click', (e) => {
+        if (e.target === eventModal) {
+            eventModal.style.display = 'none';
+            resetEditingContext();
+        }
+    });
+
+    initCalendar(true);
+</script>
 </body>
 </html>
