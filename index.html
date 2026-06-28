@@ -35,6 +35,8 @@
             margin-bottom: 20px;
             padding-bottom: 15px;
             border-bottom: 1px solid #eee;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         h1 {
@@ -45,6 +47,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            flex-wrap: wrap;
         }
 
         select {
@@ -55,18 +58,38 @@
         }
 
         .add-button {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.3s;
-        }
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
 
         .add-button:hover {
             background-color: #2980b9;
+        }
+
+        .nav-button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s;
+            line-height: 1;
+        }
+
+        .nav-button:hover {
+            background-color: #2980b9;
+        }
+
+        .nav-button:active {
+            transform: scale(0.95);
         }
 
         .calendar {
@@ -393,21 +416,14 @@
         <header>
             <h1>Terminarz Szkolny</h1>
             <div class="month-selector">
+                <button id="prev-month" class="nav-button" title="Poprzedni miesiąc">◀</button>
                 <label for="month-select">Miesiąc:</label>
                 <select id="month-select">
-                    <option value="2025-09">Wrzesień 2025</option>
-                    <option value="2025-10">Październik 2025</option>
-                    <option value="2025-11">Listopad 2025</option>
-                    <option value="2025-12">Grudzień 2025</option>
-                    <option value="2026-01">Styczeń 2026</option>
-                    <option value="2026-02">Luty 2026</option>
-                    <option value="2026-03">Marzec 2026</option>
-                    <option value="2026-04">Kwiecień 2026</option>
-                    <option value="2026-05">Maj 2026</option>
-                    <option value="2026-06">Czerwiec 2026</option>
+                    <!-- Opcje będą generowane dynamicznie przez JavaScript -->
                 </select>
+                <button id="next-month" class="nav-button" title="Następny miesiąc">▶</button>
+                <button class="add-button" id="add-event-btn">DODAJ</button>
             </div>
-            <button class="add-button" id="add-event-btn">DODAJ</button>
         </header>
 
         <div class="tabs">
@@ -447,25 +463,25 @@
                     <option value="1a">1a</option>
                     <option value="1b">1b</option>
                     <option value="1m">1m</option>
-					<option value="2a">2a</option>
+                    <option value="2a">2a</option>
                     <option value="2b">2b</option>
                     <option value="2c">2c</option>
-					<option value="3a">3a</option>
+                    <option value="3a">3a</option>
                     <option value="3b">3b</option>
                     <option value="3c">3c</option>
-					<option value="4a">4a</option>
+                    <option value="4a">4a</option>
                     <option value="4b">4b</option>
                     <option value="4c">4c</option>
-					<option value="5a">5a</option>
+                    <option value="5a">5a</option>
                     <option value="5b">5b</option>
                     <option value="5c">5c</option>
-					<option value="6a">6a</option>
+                    <option value="6a">6a</option>
                     <option value="6b">6b</option>
                     <option value="6m">6m</option>
-					<option value="7a">7a</option>
+                    <option value="7a">7a</option>
                     <option value="7b">7b</option>
                     <option value="7m">7m</option>
-					<option value="8a">8a</option>
+                    <option value="8a">8a</option>
                     <option value="8b">8b</option>
                     <option value="8m">8m</option>
                 </select>
@@ -536,6 +552,14 @@
         let currentEditingEvent = null;
         let currentEditingDate = null;
         let currentEditingIndex = null;
+        
+        // KONFIGURACJA ZAKRESU MIESIĘCY
+        const MONTH_RANGE = {
+            startYear: 2025,
+            startMonth: 8,    // Wrzesień
+            endYear: 2027,
+            endMonth: 5       // Czerwiec
+        };
         
         const monthSelect = document.getElementById('month-select');
         const calendarBody = document.getElementById('calendar-body');
@@ -689,7 +713,77 @@
             return saveNews();
         }
         
+        function populateMonthSelector() {
+            const monthSelect = document.getElementById('month-select');
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            const currentMonth = now.getMonth();
+            
+            let optionsHTML = '';
+            
+            for (let year = MONTH_RANGE.startYear; year <= MONTH_RANGE.endYear; year++) {
+                const startM = (year === MONTH_RANGE.startYear) ? MONTH_RANGE.startMonth : 0;
+                const endM = (year === MONTH_RANGE.endYear) ? MONTH_RANGE.endMonth : 11;
+                
+                for (let month = startM; month <= endM; month++) {
+                    const date = new Date(year, month, 1);
+                    const monthName = date.toLocaleString('pl-PL', { month: 'long' });
+                    const value = `${year}-${String(month + 1).padStart(2, '0')}`;
+                    const isCurrent = (year === currentYear && month === currentMonth);
+                    const selected = isCurrent ? 'selected' : '';
+                    optionsHTML += `<option value="${value}" ${selected}>${monthName.charAt(0).toUpperCase() + monthName.slice(1)} ${year}</option>`;
+                }
+            }
+            
+            monthSelect.innerHTML = optionsHTML;
+        }
+
+        function checkIfMonthInRange(year, month) {
+            if (year < MONTH_RANGE.startYear || year > MONTH_RANGE.endYear) {
+                return false;
+            }
+            if (year === MONTH_RANGE.startYear && month < MONTH_RANGE.startMonth) {
+                return false;
+            }
+            if (year === MONTH_RANGE.endYear && month > MONTH_RANGE.endMonth) {
+                return false;
+            }
+            return true;
+        }
+
+        function navigateMonth(direction) {
+            const monthSelect = document.getElementById('month-select');
+            const currentValue = monthSelect.value;
+            
+            if (!currentValue) {
+                monthSelect.selectedIndex = 0;
+                updateCalendarFromSelector();
+                return;
+            }
+            
+            const [year, month] = currentValue.split('-').map(Number);
+            const currentDate = new Date(year, month - 1, 1);
+            currentDate.setMonth(currentDate.getMonth() + direction);
+            
+            const newYear = currentDate.getFullYear();
+            const newMonth = currentDate.getMonth();
+            
+            if (!checkIfMonthInRange(newYear, newMonth)) {
+                return;
+            }
+            
+            const newValue = `${newYear}-${String(newMonth + 1).padStart(2, '0')}`;
+            monthSelect.value = newValue;
+            updateCalendarFromSelector();
+        }
+        
         function updateCalendarFromSelector() {
+            const monthSelect = document.getElementById('month-select');
+            
+            if (!monthSelect.value) {
+                monthSelect.selectedIndex = 0;
+            }
+            
             const [year, month] = monthSelect.value.split('-').map(Number);
             generateCalendar(year, month - 1);
             
@@ -700,17 +794,26 @@
         }
 
         async function initCalendar(resetMonth = false) {
-    await Promise.all([loadEvents(), loadNews()]);
-    
-    if (resetMonth) {
-        const now = new Date();
-        const currentMonthValue = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-        monthSelect.value = currentMonthValue;
-    }
-    
-    updateCalendarFromSelector();
-    displayNews();
-}
+            await Promise.all([loadEvents(), loadNews()]);
+            
+            populateMonthSelector();
+            
+            if (resetMonth) {
+                const now = new Date();
+                const currentYear = now.getFullYear();
+                const currentMonth = now.getMonth();
+                
+                if (checkIfMonthInRange(currentYear, currentMonth)) {
+                    const currentValue = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}`;
+                    document.getElementById('month-select').value = currentValue;
+                } else {
+                    document.getElementById('month-select').selectedIndex = 0;
+                }
+            }
+            
+            updateCalendarFromSelector();
+            displayNews();
+        }
         
         function generateCalendar(year, month) {
             calendarBody.innerHTML = '';
@@ -1233,7 +1336,6 @@
                 return;
             }
             
-            // Rozdziel nauczycieli po przecinku i usuń białe znaki
             const teachers = teachersInput.split(',').map(t => t.trim()).filter(t => t);
             
             if (teachers.length === 0) {
@@ -1241,7 +1343,6 @@
                 return;
             }
             
-            // Dla każdego nauczyciela tworzymy osobną nieobecność
             teachers.forEach(teacher => {
                 const eventData = {
                     type: 'absence',
@@ -1268,7 +1369,6 @@
                     events[dateKey].push(eventCopy);
                 }
                 
-                // Dodaj osobną wiadomość do aktualności dla każdego nauczyciela
                 const dateRange = startDate === endDate 
                     ? `w dniu ${formatDate(startDate)}`
                     : `w dniach ${formatDate(startDate)}-${formatDate(endDate)}`;
@@ -1456,6 +1556,7 @@
             return date.toISOString().split('T')[0];
         }
 
+        // Nasłuchiwacze zdarzeń
         classSelect.addEventListener('change', function() {
             const selectedClass = this.value;
             
@@ -1479,6 +1580,15 @@
                 });
                 document.getElementById(`${tabId}-tab`).classList.add('active');
             });
+        });
+        
+        // Obsługa strzałek
+        document.getElementById('prev-month').addEventListener('click', function() {
+            navigateMonth(-1);
+        });
+
+        document.getElementById('next-month').addEventListener('click', function() {
+            navigateMonth(1);
         });
         
         monthSelect.addEventListener('change', updateCalendarFromSelector);
